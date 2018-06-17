@@ -5,15 +5,7 @@ exports.view = {
     ".tpl": "nunjucks"
   }
 };
-// mount middleware
-exports.middleware = ["robot", "errorHandler", "apiWrapper"];
-(exports.errorHandler = {
-  match: "/api"
-}),
-  // middleware config
-  (exports.robot = {
-    ua: [/curl/i, /Baiduspider/i]
-  });
+ 
 
 exports.security = {
   ignore: "/api/",
