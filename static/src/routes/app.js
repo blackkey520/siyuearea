@@ -1,0 +1,238 @@
+import React, { PropTypes } from "react";
+import { connect } from "dva";
+import Login from "./login";
+import { Layout } from "../components";
+import { Spin, Modal, Input, message ,Icon} from "antd";
+import { classnames, config } from "../utils";
+import { Helmet } from "react-helmet";
+import { Router, Switch, Route, Redirect, routerRedux } from "dva/router";
+import "../components/skin.less";
+import Cookie from "../utils/js.cookie";
+import { withRouter } from "dva/router";
+import { TabBar } from 'antd-mobile';
+
+import 'antd-mobile/lib/tab-bar/style/css';
+import 'antd-mobile/lib/toast/style/css';
+
+
+const Item=TabBar.Item;
+const { Header, Bread, Footer, Sider, styles } = Layout;
+let loginPage = "";
+
+const App = ({ children, location, dispatch, app, loading }) => {
+  if (!loginPage) {
+    loginPage = window.location.href;
+  }
+  const {
+    login,
+    loginButtonLoading,
+    user,
+    siderFold,
+    darkTheme,
+    isNavbar,
+    menuPopoverVisible,
+    navOpenKeys,
+    selecttab
+  } = app;
+  const loginProps = {
+    loading,
+    loginButtonLoading,
+    onOk(data) {
+      dispatch({ type: "app/login", payload: data });
+    }
+  };
+
+  const headerProps = {
+    user,
+    siderFold,
+    location,
+    isNavbar,
+    menuPopoverVisible,
+    navOpenKeys,
+    switchMenuPopover() {
+      dispatch({ type: "app/switchMenuPopver" });
+    },
+    logout() {
+      // const href = window.location.origin + '/';
+      Cookie.remove("SESSION_NP");
+      Cookie.remove("SESSION_TOKEN");
+      const href = loginPage.split("#")[0];
+      window.open(href, "_self");
+    },
+    changePassword() {
+      dispatch({ type: "app/showPasswordModal" });
+    },
+    switchSider() {
+      dispatch({ type: "app/switchSider" });
+    },
+    changeOpenKeys(openKeys) {
+      localStorage.setItem("navOpenKeys", JSON.stringify(openKeys));
+      dispatch({
+        type: "app/handleNavOpenKeys",
+        payload: { navOpenKeys: openKeys }
+      });
+    }
+  };
+
+  const updatePassword = () => {
+    const passwd = document.getElementById("passwd");
+    dispatch({
+      type: "app/changePassword",
+      payload: {
+        password: passwd.value,
+        name: app.user.name,
+        uid: app.user.uid,
+        callback: data => {
+          if (data && data.success) {
+            message.success("更新成功");
+            passwd.value = "";
+          } else {
+            message.error("更新失败");
+          }
+        }
+      }
+    });
+  };
+ 
+  const siderProps = {
+    siderFold,
+    darkTheme,
+    location,
+    navOpenKeys,
+    changeTheme() {
+      dispatch({ type: "app/changeTheme" });
+    },
+    changeOpenKeys(openKeys) {
+      localStorage.setItem("navOpenKeys", JSON.stringify(openKeys));
+      dispatch({
+        type: "app/handleNavOpenKeys",
+        payload: { navOpenKeys: openKeys }
+      });
+    }
+  };
+if (location.pathname.indexOf('mobile') === -1 && location.pathname.indexOf('callback') === -1)
+  {
+    return (
+    <div>
+      <Helmet>
+        <title>{config.logoText}</title>
+        <link rel="icon" href={config.logoSrc} type="image/x-icon" />
+        {config.iconFontUrl ? <script src={config.iconFontUrl} /> : ""}
+      </Helmet>
+      {login ? (
+        <div
+          className={classnames(
+            styles.layout,
+            { [styles.fold]: isNavbar ? false : siderFold },
+            { [styles.withnavbar]: isNavbar }
+          )}
+        >
+          {!isNavbar ? (
+            <aside
+              className={classnames(styles.sider, {
+                [styles.light]: !darkTheme
+              })}
+            >
+              <Sider {...siderProps} />
+            </aside>
+          ) : (
+            ""
+          )}
+          <div className={styles.main}>
+            <Header {...headerProps} />
+            <Bread location={location} />
+            <div className={styles.container}>
+              <div className={styles.content}>{children}</div>
+            </div>
+            <Footer />
+          </div>
+        </div>
+      ) : (
+        <div className={styles.spin}>
+          <Spin tip="加载用户信息..." spinning={!!loading} size="large">
+            <Login {...loginProps} />
+          </Spin>
+        </div>
+      )}
+
+      <Modal
+        visible={app.passwordModalVisible}
+        title="修改密码(只是显示，不做真实的功能业务)"
+        onOk={updatePassword}
+        okText="更新"
+        onCancel={() => dispatch({ type: "app/hidePasswordModal" })}
+      >
+        <Input type="password" id="passwd" placeholder="请输入新的密码" />
+      </Modal>
+    </div>
+  );
+  }else{
+    return ( 
+        <div>
+          <div style={{height:'calc(100vh - 50px)'}}>
+            {children}
+          </div>
+          <TabBar
+          unselectedTintColor="#949494"
+          tintColor="#33A3F4"
+          barTintColor="white"
+        >
+          <Item
+            title="预定"
+            key="reserve"
+            icon={<Icon type="calendar" />}
+            selectedIcon={<Icon type="calendar" style={{color:'#2390ff'}} />} 
+            selected={selecttab==='reserve'}
+            onPress={() => {
+               dispatch({
+                type: "app/selecttab",
+                payload: { tab: 'reserve' }
+              });
+            }}
+          />
+          <Item
+             icon={<Icon type="bars" />}
+            selectedIcon={<Icon type="bars" style={{color:'#2390ff'}} />} 
+            selected={selecttab==='order'}
+            title="订单"
+            key="order"
+            onPress={() => {
+                dispatch({
+                type: "app/selecttab",
+                payload: { tab: 'order' }
+              });
+            }}
+            data-seed="logId1"
+          />
+          <Item
+             icon={<Icon type="user" />}
+            selectedIcon={<Icon type="user" style={{color:'#2390ff'}} />} 
+            selected={selecttab==='mine'}
+            title="我的"
+            key="mine" 
+            onPress={() => {
+               dispatch({
+                type: "app/selecttab",
+                payload: { tab: 'mine' }
+              });
+            }}
+          />
+        
+        </TabBar>
+        </div>
+  );
+  }
+};
+
+App.propTypes = {
+  children: PropTypes.element.isRequired,
+  location: PropTypes.object,
+  dispatch: PropTypes.func,
+  app: PropTypes.object,
+  loading: PropTypes.bool
+};
+
+export default withRouter(
+  connect(({ app, loading }) => ({ app, loading: loading.models.app }))(App)
+);
+// export default connect(({ app, loading }) => ({ app, loading: loading.models.app }))(App)
