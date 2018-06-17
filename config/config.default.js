@@ -5,7 +5,6 @@ exports.view = {
     ".tpl": "nunjucks"
   }
 };
- 
 
 exports.security = {
   ignore: "/api/",
@@ -21,7 +20,9 @@ exports.security = {
     ignoreJSON: true // 默认为 false，当设置为 true 时，将会放过所有 content-type 为 `application/json` 的请求
   }
 };
-
+exports.notfound={
+  pageUrl: '/',
+}
 exports.cors = {
   allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH"
 };

@@ -10,7 +10,9 @@
     "build": "webpack  --progress --config ./static/build/webpack.prod.config.js && node ./scripts/copy.js",
     "server": "egg-bin dev",
     "debug": "egg-bin debug",
-    "test": "egg-bin test"
+    "test": "egg-bin test",
+    "start": "egg-scripts start --ignore-stderr  --daemon",
+    "stop": "egg-scripts stop"
   },
   "author": "",
   "license": "ISC",
@@ -74,6 +76,7 @@
     "egg-cors": "^1.1.0",
     "egg-multipart": "^1.2.0",
     "egg-mysql": "^2.0.0",
+    "egg-scripts": "^2.6.0",
     "egg-security": "^1.8.0",
     "egg-sequelize": "^2.0.1",
     "egg-validate": "^1.0.0",
