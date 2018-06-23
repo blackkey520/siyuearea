@@ -140,8 +140,6 @@ class TableManager extends Component {
 
 		const pagination = {
 			showTotal: total => `共${total}条数据`,
-			showSizeChanger: true,
-			showQuickJumper: true,
 			...this.props.pagination
 		};
 

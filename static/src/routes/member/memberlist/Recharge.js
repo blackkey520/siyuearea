@@ -11,7 +11,8 @@ import {
 	message,
 	Radio,
 	Modal,
-	Tooltip
+	Tooltip,
+	DatePicker
 } from "antd";
 import { config } from "../../../utils/config";
 import moment from "moment";
@@ -51,8 +52,11 @@ class Recharge extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state={
-			rechargevalue:'',
-			visible:false
+			rechargevalue:0,
+			visible:false,
+			modaltype:0,
+			cardtype:'1',
+			cardusedate: moment().format('YYYY-MM-DD 00:00:00')
 		}
 	}
 
@@ -102,15 +106,23 @@ class Recharge extends Component {
 						<Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>
 							返回
 						</Button>
-						<Button type="primary" onClick={(e)=>{
+						<Button style={{ marginRight: 10 }} type="primary" onClick={(e)=>{
 								 this.setState({
-									visible:true
+									visible:true,
+									modaltype:0
 								});
 							}}>
 							充值
 						</Button>
+						<Button type="primary" onClick={(e)=>{
+								 this.setState({
+									visible:true,
+									modaltype: 1
+								});
+							}}>
+							开卡
+						</Button>
 					</div>
-
 					<Form>
 						<FormItem {...formItemLayout} label="会员名称">
 							{getFieldDecorator("mname", {
@@ -172,14 +184,15 @@ class Recharge extends Component {
 						</FormItem>
 					</Form> 
 					 <Modal
-					title="充值确定"
+					title={this.state.modaltype===0?'充值':'开卡'}
 					visible={this.state.visible}
 					onOk={()=>{
 						const hide = message.loading("正在保存...", 0);
 						this.setState({
 							visible:false
 						});
-						this.props.dispatch({ type: "member/recharge", payload: { rechargevalue:this.state.rechargevalue
+						this.props.dispatch({ type: "member/recharge", payload: { recchargetype:this.state.modaltype,
+						cardtype: this.state.cardtype,cardusedate:this.state.cardusedate,rechargevalue: this.state.rechargevalue
 						,callback: data => {
 							hide();
 							if (data && data.success) {
@@ -198,8 +211,8 @@ class Recharge extends Component {
 					okText="确认"
 					cancelText="取消"
 					>
-						<div style={{fontSize:15,paddingBottom:15}}>请问您确定为<span style={{color:'red',fontWeight: 'bold'}}>
-								{this.props.checkmember.mname}</span>充值吗吗？</div>
+						{this.state.modaltype===0?<div><div style={{fontSize:15,paddingBottom:15}}>请问您确定为<span style={{color:'red',fontWeight: 'bold'}}>
+								{this.props.checkmember.mname}</span>充值吗？</div>
 
 						 <Tooltip
 							trigger={['focus']}
@@ -218,10 +231,30 @@ class Recharge extends Component {
 								   });
 								}
 							}}
-							placeholder="Input a number"
+							placeholder="输入金额"
 							maxLength="25"
 							/>
-						</Tooltip>
+						</Tooltip></div>:
+							<div><div style={{fontSize:15,paddingBottom:15}}>请问您确定为<span style={{color:'red',fontWeight: 'bold'}}>
+								{this.props.checkmember.mname}</span>开卡吗？</div>
+							<RadioGroup onChange={(e)=>{
+									this.setState({
+										cardtype: e.target.value
+									});
+								}} defaultValue="1">
+								<RadioButton value="1">日卡会员</RadioButton>
+								<RadioButton value="2">周卡会员</RadioButton>
+								<RadioButton value="3">月卡会员</RadioButton>
+								<RadioButton value="4">季卡会员</RadioButton>
+							</RadioGroup>
+							<br/>
+							<DatePicker style={{marginTop:10,width:170}} placeholder="选择生效时间(默认当天)" onChange={(date, dateString)=>{
+								this.setState({
+									cardusedate: date.format('YYYY-MM-DD 00:00:00')
+								});
+							}}/>
+						 </div>
+						}
 					</Modal>
 				</div>
 			)

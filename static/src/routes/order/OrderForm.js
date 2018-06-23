@@ -10,22 +10,29 @@ import {
 	Icon,
 	message,
     Radio,
-    Modal
+	Modal,
+	Tabs,
+	Steps, Popover
 } from "antd";
+
+const Step = Steps.Step;
 import Result from "../../components/Result"
 import { config } from "../../utils/config";
 import moment from "moment";
-import {ostate} from '../../utils/enum';
+import {ostate,mstate,mtype} from '../../utils/enum';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
+import OrderFormItem from '../../components/OrderFormItem';
 import SitMap from '../../components/SitMap';
+const TabPane = Tabs.TabPane;
 
 @connect(({place,order, loading}) => ({
 	placelist : place.placelist,
         errormsg : order.errormsg,
         orderdetail : order.orderdetail,
-        recordsdetail:order.recordsdetail,
+		recordsdetail:order.recordsdetail,
+		memberdetail: order.memberdetail,
 		formloading: loading.effects['order/loadorder']
  }))
 class OrderForm extends Component {
@@ -36,7 +43,8 @@ class OrderForm extends Component {
         super(props, context);
         this.state={
 			visible:false,
-			pdesc:''
+			pdesc:'',
+			show:0
 		}
 	}
 	componentDidMount() {
@@ -55,11 +63,11 @@ class OrderForm extends Component {
 		);
     }
     StopRecord(){
-        this.props.dispatch(
-			routerRedux.push({
-				pathname: `/memberlist/orderrecord/${this.props.match.params.id}/${this.props.match.params.oid}/orderend`
-			})
-		);
+			 this.props.dispatch(
+			 	routerRedux.push({
+			 		pathname: `/memberlist/orderrecord/${this.props.match.params.id}/${this.props.match.params.oid}/orderend`
+			 	})
+			 );
     }
     CreateOrder(){
 		this.props.dispatch(
@@ -70,7 +78,7 @@ class OrderForm extends Component {
     }
 	CreateRecord(e) {
         	this.setState({
-                    visible:true
+					visible:true,
                 });
 	}
 
@@ -135,96 +143,97 @@ class OrderForm extends Component {
                                 </Button>:null
                         }
 					</div>
-					<div
-						style={{
-							borderBottom: "1px solid #ddd",
-							marginBottom: 20,
-							paddingBottom: 10,
-							marginLeft:20,
-							width:'95%'
-						}}
-					>
-					订单信息
-					</div>
-					<SitMap selectPid={this.props.orderdetail.pid} sitemap={this.props.placelist} style={{paddingLeft:80,paddingBottom:50}}/>
-					<Form>
-						<FormItem {...formItemLayout} label="会员名称">
+					<Steps  current={this.props.orderdetail.ostate} >
+						<Step onClick={()=>{
+							this.setState({
+								show:0
+							});
+							}} title="预定" description={this.props.orderdetail.mregisttime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')} />
+						<Step onClick={()=>{
+							if(this.props.orderdetail.ostate>0)
+							{
+								this.setState({
+									show:1
+								});
+							}
+							}} title="到店使用" description={this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):''} />
+						<Step onClick={()=>{
+							if(this.props.orderdetail.ostate>0)
+							{
+								this.setState({
+									show:1
+								});
+							}
+							}} title="订单完成" description={this.props.recordsdetail.etime?moment(this.props.recordsdetail.etime).format('YYYY-MM-DD HH:mm:ss'):''} />
+					</Steps>
+					{
+						this.state.show===0?
+						<div  style={{paddingTop:50}}>
+							<SitMap selectPid={this.props.orderdetail.pid} sitemap={this.props.placelist} style={{paddingLeft:170,paddingBottom:50}}/>
+							<Form>
+								<FormItem {...formItemLayout} label="订单状态">
+									{getFieldDecorator("ostate", {
+										initialValue: ostate[this.props.orderdetail.ostate]
+									})(<Input disabled / > )}
+								</FormItem>
+								<FormItem {...formItemLayout} label="预定时间">
+									{getFieldDecorator("otime", {
+										initialValue: this.props.orderdetail.mregisttime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss'),
+									})( <Input disabled / > )
+									}
+								</FormItem>
+								<FormItem {...formItemLayout} label="订单备注">
+									{getFieldDecorator("mdesc", {
+										initialValue: this.props.orderdetail.mdesc,
+									})(
+										<Input
+											type="textarea"
+											disabled
+											autosize={{ minRows: 5, maxRows: 10 }}
+										/>
+									)}
+								</FormItem>
+								<FormItem {...formItemLayout} label="会员名称">
 							{getFieldDecorator("mname", {
-								initialValue: this.props.orderdetail.mname,
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="订单状态">
-							{getFieldDecorator("ostate", {
-								initialValue: ostate[this.props.orderdetail.ostate]
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="预定时间">
-							{getFieldDecorator("otime", {
-								initialValue: this.props.orderdetail.mregisttime ? this.props.orderdetail.mregisttime : moment().format('YYYY-MM-DD HH:mm:ss'),
-							})( <Input disabled / > )
+								initialValue: this.props.memberdetail.mname,
+								rules: [
+									{
+										required: true,
+										message: "请输入会员名称"
+									}
+								]
+							})( <Input disabled placeholder = "请输入会员名称" / > )
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="订单备注">
-							{getFieldDecorator("mdesc", {
-								initialValue: this.props.orderdetail.mdesc,
+						<FormItem {...formItemLayout} label="电话号码">
+							{getFieldDecorator("phonenum", {
+								initialValue: this.props.memberdetail.phonenum,
+								rules: [
+									{
+										required: true,
+										message: "请输入电话号码"
+									}
+								]
+							})(<Input disabled placeholder="请输入电话号码" />)}
+						</FormItem>
+						<FormItem {...formItemLayout} label="会员状态">
+							{getFieldDecorator("mstate", {
+								initialValue: this.props.memberdetail.mstate ? this.props.memberdetail.mstate : 0
 							})(
-								<Input
-									type="textarea"
-                                    disabled
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
+								<RadioGroup disabled>
+									{
+										mstate.map((item,key)=>{
+											return (<RadioButton key={item} value={key}>{item}</RadioButton>)
+										})
+									}
+								</RadioGroup>
 							)}
-						</FormItem>
-					</Form>
-                    {
-                        this.props.orderdetail.ostate!==0&&this.props.orderdetail.ostate!==3?
-                        <div><div
-						style={{
-							borderBottom: "1px solid #ddd",
-							marginBottom: 20,
-							paddingBottom: 10,
-							marginLeft:20,
-							width:'95%'
-						}}
-					>
-					使用信息
-					</div>
-						<Form>
-						<FormItem {...formItemLayout} label="开始使用时间">
-							{getFieldDecorator("btime", {
-								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
-							})( <Input disabled / > )
-							}
-						</FormItem>
-						<FormItem {...formItemLayout} label="结束使用时间">
-							{getFieldDecorator("etime", {
-								initialValue: this.props.recordsdetail.etime?moment(this.props.recordsdetail.etime).format('YYYY-MM-DD HH:mm:ss'):'',//
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="收款金额(元)">
-							{getFieldDecorator("money", {
-								initialValue: this.props.recordsdetail.money
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="持续时间(小时)">
-							{getFieldDecorator("timespan", {
-								initialValue: moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime),'hours'),
-							})( <Input disabled / > )
-							}
-						</FormItem>
-						<FormItem {...formItemLayout} label="使用备注">
-							{getFieldDecorator("pdesc", {
-								initialValue: this.props.recordsdetail.pdesc,
-							})(
-								<Input
-									type="textarea"
-                                    disabled
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
-							)}
-						</FormItem>
-					</Form></div>:null
-                    }
+						</FormItem> 
+							</Form>
+						</div>
+						:<OrderFormItem  {...this.props} />	
+					}
+					 
                     <Modal
 					title="开台确定"
 					visible={this.state.visible}
@@ -253,8 +262,7 @@ class OrderForm extends Component {
 					}}
 					okText="确认"
 					cancelText="取消"
-					>
-						<div style={{fontSize:15,paddingBottom:15}}>请问您确定在<span style={{color:'red',fontWeight: 'bold'}}>
+					><div style={{fontSize:15,paddingBottom:15}}>请问您确定在<span style={{color:'red',fontWeight: 'bold'}}>
 							{moment().format('YYYY-MM-DD HH:mm:ss')}</span>为<span style={{fontWeight: 'bold'}}>
 								{this.props.orderdetail.mname}</span>开台吗？</div>
 
@@ -274,3 +282,9 @@ class OrderForm extends Component {
 	}
 }
 export default createForm()(OrderForm);
+
+const customDot = (dot, { status, index }) => (
+  <Popover content={<span>step {index} status: {status}</span>}>
+    {dot}
+  </Popover>
+);

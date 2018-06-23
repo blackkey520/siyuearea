@@ -39,6 +39,11 @@ module.exports = [
     icon: "bars",
   },
   {
+    key: "accountslist",
+    name: "账目信息",
+    icon: "api",
+  },
+  {
     key: "tableManager",
     name: "模块管理", //模块
     icon: "database",
@@ -61,20 +66,6 @@ module.exports = [
         key: "info",
         name: "模块详情",
         icon: "setting",
-        isMenuTab: false,
-        clickable: false
-      }
-    ]
-  },
-  {
-    key: "showApi",
-    name: "接口管理",
-    icon: "api",
-    child: [
-      {
-        key: "info",
-        name: "接口详情",
-        icon: "code-o",
         isMenuTab: false,
         clickable: false
       }

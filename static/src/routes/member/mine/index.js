@@ -39,8 +39,8 @@ class Mine extends React.Component {
          <Item  multipleLine >
           会员状态 <Brief>{mstate[this.props.loginuser.member.mstate]}</Brief>
         </Item>
-           <Item  multipleLine>
-          会员状态 <Brief>{mtype[this.props.loginuser.member.mtype]}</Brief>
+        <Item  multipleLine>
+          会员类型 <Brief>{mtype[this.props.loginuser.member.mtype]}</Brief>
         </Item>
         <Item
           arrow="horizontal"

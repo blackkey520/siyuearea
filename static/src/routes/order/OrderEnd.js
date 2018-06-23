@@ -15,19 +15,23 @@ import {
 import Result from "../../components/Result"
 import { hourprice } from "../../utils/config";
 import moment from "moment";
-import {ostate} from '../../utils/enum';
+import { GetMoney,GetMoneyDetail } from '../../utils'
+import {
+	ostate,
+	mstate,
+	mtype
+} from '../../utils/enum';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
 const confirm = Modal.confirm;
 import SitMap from '../../components/SitMap';
 
-
 @connect(({ order,loading,place }) => ({
 		errormsg : order.errormsg,
-		placelist : place.placelist,
         orderdetail : order.orderdetail,
-        recordsdetail:order.recordsdetail,
+		recordsdetail:order.recordsdetail,
+		memberdetail: order.memberdetail,
  }))
 class OrderEnd extends Component {
 	static contextTypes = {
@@ -35,9 +39,17 @@ class OrderEnd extends Component {
 	};
 	constructor(props, context) {
 		super(props, context);
+		this.state={
+			money:0
+		}
 	}
 	 componentDidMount() {
-        this.props.dispatch({ type: "place/getplacelist", payload: {  } });
+        const oid = this.props.match.params && this.props.match.params.oid;
+		this.props.dispatch({ type: "place/getplacelist", payload: {  } });
+		const { dispatch } = this.props;
+		if (oid) {
+			dispatch({ type: "order/loadorder", payload: { oid } });
+		}
 	}
 	goBack() {
         this.props.dispatch(
@@ -89,10 +101,7 @@ class OrderEnd extends Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 
-		const formItemLayout = {
-			labelCol: { span:10 },
-			wrapperCol: { span: 14 }
-		};
+ 
 		const formItemWiLayout = {
 			labelCol: { span:2},
 			wrapperCol: { span: 17}
@@ -134,15 +143,17 @@ class OrderEnd extends Component {
                                 </Button></div>}
                         />
             )
-        }else if(this.props.errormsg==='usernotfound'){
+        } else if (this.props.errormsg === 'outofcardtime') {
             return (
                  <Result
                             type="error"
-                            title={'用户没有找到'}
-                            description={'该用户信息发生异常，请联系程序开发人员，后台解决'}
+                            title={'您的会员卡已经到期'}
+                            description={`您的${mtype[this.props.memberdetail.mtype]}已经到期`}
                             extra={''}
                             actions={<div>
                                 <Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
+                                </Button><Button type="primary" onClick={this.Recharge.bind(this)}>
+                                    充值 / 充卡
                                 </Button></div>}
                         />
             )
@@ -156,7 +167,7 @@ class OrderEnd extends Component {
                             actions={<div>
                                 <Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
                                 </Button><Button type="primary" onClick={this.Recharge.bind(this)}>
-                                    充值
+                                    充值 / 充卡
                                 </Button></div>}
                         />
             )
@@ -175,83 +186,58 @@ class OrderEnd extends Component {
                         <Button type="primary" onClick={this.FinishRecord.bind(this)}>
                                     完成
                                 </Button>
-					</div>
-					{/* <div
-						style={{
-							borderBottom: "1px solid #ddd",
-							marginBottom: 20,
-							paddingBottom: 10
-						}}
-					>
-					订单信息
-					</div>
-					<SitMap selectPid={this.props.orderdetail.pid} sitemap={this.props.placelist} style={{paddingLeft:80,paddingBottom:50}}/>
-					<Form layout="inline"	>
-						<FormItem {...formItemLayout} label="会员名称">
-							{getFieldDecorator("mname", {
-								initialValue: this.props.orderdetail.mname,
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="订单状态">
-							{getFieldDecorator("ostate", {
-								initialValue: ostate[this.props.orderdetail.ostate]
-							})(<Input disabled / > )}
-						</FormItem>
-						<FormItem {...formItemLayout} label="预定时间">
-							{getFieldDecorator("otime", {
-								initialValue: this.props.orderdetail.mregisttime ? this.props.orderdetail.mregisttime : moment().format('YYYY-MM-DD HH:mm:ss'),
-							})( <Input disabled / > )
-							}
-						</FormItem>
-						
-					</Form>
-					<Form style={{marginTop:15}}>
-						<FormItem {...formItemWiLayout} label="订单备注">
-							{getFieldDecorator("mdesc", {
-								initialValue: this.props.recordsdetail.mdesc,
-							})(
-								<Input
-									type="textarea"
-                                    disabled
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
-							)}
-						</FormItem>
-					</Form>
-					<div
-						style={{
-							borderBottom: "1px solid #ddd",
-							marginBottom: 20,
-							paddingBottom: 10
-						}}
-					>
-					使用信息
-					</div> */}
-					<Form style={{marginTop:15}} layout="inline"	>
-						<FormItem {...formItemLayout} label="开始时间">
+					</div> 
+					<Form style={{marginTop:15}}  	>
+						<FormItem {...formItemWiLayout} label="开始时间">
 							{getFieldDecorator("btime", {
 								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
 							})( <Input disabled / > )
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="结束时间">
+						<FormItem {...formItemWiLayout} label="结束时间">
 							{getFieldDecorator("etime", {
 								initialValue: moment().format('YYYY-MM-DD HH:mm:ss'),
 							})(<Input disabled / > )}
 						</FormItem>
-						<FormItem {...formItemLayout} label="收款金额(元)">
+					</Form>
+					{
+						this.props.memberdetail.mtype === 0?<Form style={{marginTop:15}}  	>
+						<FormItem {...formItemWiLayout} label="收款金额(元)">
 							{getFieldDecorator("money", {
-								initialValue: hourprice*Math.ceil(moment().diff(moment(this.props.recordsdetail.btime),'hours',true))
-							})(<Input disabled / > )}
+								initialValue: GetMoney(moment(this.props.recordsdetail.btime), moment())
+							})(<Input   / > )}
 						</FormItem>
-						<FormItem {...formItemLayout} label="持续时间(小时)">
+						<FormItem {...formItemWiLayout} label="持续时间(小时)">
 							{getFieldDecorator("timespan", {
 								initialValue: Math.ceil(moment().diff(moment(this.props.recordsdetail.btime),'hours',true)),
 							})( <Input disabled / > )
 							}
 						</FormItem>
+					</Form>:<Form style={{marginTop:15}}  	>
+						<FormItem {...formItemWiLayout} label="会员类型">
+							 {getFieldDecorator("mtype", {
+								initialValue: this.props.memberdetail.mtype ? this.props.memberdetail.mtype : 0
+							})(<RadioGroup disabled>
+									{
+										mtype.map((item, key) => {
+											return (<RadioButton key={item} value={key}>{item}</RadioButton>)
+										})
+									}
+								</RadioGroup>)}
+						</FormItem>
 					</Form>
+					}
 					<Form style={{marginTop:15}}>
+						{this.props.memberdetail.mtype === 0?<FormItem {...formItemWiLayout} label="收款明细">
+							{getFieldDecorator("pdetail", {
+								initialValue: GetMoneyDetail(moment(this.props.recordsdetail.btime), moment()),
+							})(
+								<Input
+									type="textarea"
+									autosize={{ minRows: 5, maxRows: 10 }}
+								/>
+							)}
+						</FormItem>:null}
 						<FormItem {...formItemWiLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
 								initialValue: this.props.recordsdetail.pdesc,

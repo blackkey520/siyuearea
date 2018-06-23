@@ -36,7 +36,8 @@ module.exports = app => {
   app.post('/api/table', 'tableinfo.create');
   app.put('/api/table', 'tableinfo.update');
   app.del('/api/table/:res', 'tableinfo.destroy');
-  app.post('/api/order/getorderlist', 'order.index');
+  app.post('/api/accounts/getaccountslist', 'accounts.index');
+   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
  app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');

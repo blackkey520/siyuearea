@@ -8,8 +8,6 @@ class DataTable extends React.Component {
   constructor (props) {
     super(props)
     const { dataSource, pagination = {
-      showSizeChanger: true,
-      showQuickJumper: true,
       showTotal: total => `共 ${total} 条`,
       current: 1,
       total: 100 },

@@ -80,14 +80,13 @@ class Order extends React.Component {
           </div>
         );
       };
-
     return (
       <div> 
         <ListView
           ref={el => this.lv = el}
           dataSource={ds.cloneWithRows(this.props.mobileorderlist)}
           renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-            {this.props.loadingorder&&this.props.pagination.total>this.props.pagination.current*5 ? <a onClick={()=>{
+            {!this.props.loadingorder&&this.props.pagination.total>this.props.pagination.current*5 ? <a onClick={()=>{
                   this.props.dispatch({
                     type:"order/getmobileorderlist",
                     payload:{

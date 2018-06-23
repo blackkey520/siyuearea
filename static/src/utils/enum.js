@@ -1,3 +1,5 @@
-export const mtype=['微信注册','线下注册','特别会员']
+export const mtype=['储值用户','日卡会员','周卡会员','月卡会员','季卡会员']
 export const mstate=['正常','欠费','停用']
 export const ostate=['预定','正在使用','使用完成','过期']
+export const astate = ['收入', '消费']
+export const atype = ['充值', '办卡', '餐饮']

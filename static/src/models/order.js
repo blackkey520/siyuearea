@@ -1,6 +1,8 @@
 import {add, querylist, updateorder, queryrecordlist,updaterecord} from "../services/order";
 import {loadmemeber,update} from "../services/member";
 import { updateplace } from "../services/place";
+import { addaccournt } from "../services/accournt";
+
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
@@ -14,9 +16,11 @@ export default {
     usestate:0,
     orderdetail:{},
     recordsdetail:{},
+    memberdetail:{},
     orderlist:[],
     selectedmobileorder:{},
     mobileorderlist:[],
+    mobilemember:{},
     errormsg:'',
     pagination: {
       current: 1,
@@ -44,7 +48,7 @@ export default {
       const actionData = action.payload.data;
       return {
         ...state,
-        mobileorderlist: actionData.data.record,
+        mobileorderlist: action.payload.current !== 1 ? state.mobileorderlist.concat(actionData.data.record) : actionData.data.record,
         pagination: {
           current: action.payload.current,
           pageSize: action.payload.pageSize,
@@ -61,7 +65,7 @@ export default {
           pid:payload.pid,
           mid:payload.mid,
           oid:payload.oid,
-          ostate:1,
+          ostate:0,
           btime:moment().format('YYYY-MM-DD HH:mm:ss'),
           etime:moment().format('YYYY-MM-DD HH:mm:ss'),
           disid:1,
@@ -72,6 +76,7 @@ export default {
           const callback = payload.callback;
           let data={};
             delete payload.callback;
+            delete payload.restate;
         payload.ostate=1;
         payload.otime=moment(payload.otime).format('YYYY-MM-DD HH:mm:ss');
         payload.pdesc='';
@@ -82,6 +87,7 @@ export default {
         delete payload.disid;
         delete payload.etime;
         delete payload.money;
+        delete payload.rstate;
         const result=yield call(updateorder,payload);
         if(result.success)
         {
@@ -104,68 +110,107 @@ export default {
         })
         
     },
-    *finishrecord({ payload }, { call, put }) {
+    *finishrecord({ payload }, { call, put,select }) {
       yield put({
             type: "updateState",
             payload: {
               errormsg:'',
             }
           });
-         let errormsg='';
-         let member=yield call(loadmemeber,{id:payload.record.mid});
-            if(member.success)
-            {
-               let mem=member.data;
-               if(mem.mmoney>=payload.param.money)
-               {
-                  mem.mmoney=mem.mmoney-payload.param.money;
-                  mem.mregisttime=moment(mem.mregisttime).format('YYYY-MM-DD HH:mm:ss');
-                  delete mem.nextOne;
-                  delete mem.preOne;
-                  const member=yield call(update,mem);
-                  payload.order.ostate=2;
-                  payload.order.otime=moment(payload.otime).format('YYYY-MM-DD HH:mm:ss');
-                  delete payload.order.pname;
-                  delete payload.order.mname;
-                    delete payload.order.btime;
-                    delete payload.order.discount;
-                    delete payload.order.disid;
-                    delete payload.order.etime;
-                    delete payload.order.money;
-                  const result=yield call(updateorder,payload.order);
-                  
-                  if(result.success)
-                  {
-                    payload.record.btime=moment(payload.record.btime).format('YYYY-MM-DD HH:mm:ss');
-                    payload.record.etime=payload.param.etime;
-                    payload.record.money=payload.param.money;
-                    payload.record.pdesc=payload.param.pdesc;
-                    delete payload.record.pname;
-                    delete payload.record.mname;
-                    const dataurecord = yield call(updaterecord, payload.record);
-                    if(dataurecord.success)
-                    { 
-                      const data=yield call(updateplace,{pid:payload.record.pid,pstate:0});
-                      if(data.success)
-                      {
-                        errormsg='success';
-                      }
-                      else{
-                        errormsg='faild';
-                      }
-                    }else{
-                      errormsg='faild';
-                    }
-                  }else{
-                      errormsg='ordernotfound';
-                  }
-               }else{
-                 errormsg='outofmoney';
-               }
-            }else{
-               errormsg='usernotfound';
-            }
         
+         let errormsg='';
+          let { memberdetail } = yield select(state => state.order);
+            const accournt = {};
+            accournt.mid = memberdetail.mid;
+          if (memberdetail.mtype===0)
+          {
+            if (memberdetail.mmoney >= payload.param.money) {
+              memberdetail.mmoney = memberdetail.mmoney - payload.param.money;
+              memberdetail.mregisttime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+              delete memberdetail.nextOne;
+              delete memberdetail.preOne;
+              const member = yield call(update, memberdetail);
+               accournt.atype = 0;
+               accournt.amoney = payload.param.money;
+               accournt.asmoney = payload.param.money;
+               accournt.adesc = '充值消费';
+               payload.record.ostate=0;
+            } else {
+              errormsg = 'outofmoney';
+            }
+          }
+          else{
+            let overtime = moment(memberdetail.mregisttime);
+            if (memberdetail.mtype===1)
+            {
+              overtime = overtime.add(1,'days');
+            }else if(memberdetail.mtype===2)
+            {
+              overtime = overtime.add(1, 'weeks');
+            }else if(memberdetail.mtype===3)
+            {
+              overtime = overtime.add(1, 'months');
+            }else{
+              overtime = overtime.add(1, 'quarters');
+            }
+            const now = moment();
+            const hours = now.diff(overtime, 'hours', true);
+             
+            if (Math.ceil(hours) > 0)
+            {
+               errormsg = 'outofcardtime';
+            }
+            accournt.atype = 1;
+            accournt.amoney = 0;
+            accournt.asmoney =0;
+            accournt.adesc = '会员卡消费';
+            payload.record.ostate = 1;
+          }
+          accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+          accournt.astate = 1;
+          if(errormsg==='')
+          {
+            //记账
+            const accourntdata = yield call(addaccournt, accournt);
+            //更改订单状态和使用记录
+            payload.order.ostate = 2;
+              payload.order.otime = moment(payload.otime).format('YYYY-MM-DD HH:mm:ss');
+              delete payload.order.pname;
+              delete payload.order.mname;
+              delete payload.order.btime;
+              delete payload.order.discount;
+              delete payload.order.disid;
+              delete payload.order.etime;
+              delete payload.order.money;
+              delete payload.order.rstate;
+              const result = yield call(updateorder, payload.order);
+              
+              if (result.success) {
+                payload.record.btime = moment(payload.record.btime).format('YYYY-MM-DD HH:mm:ss');
+                payload.record.etime = payload.param.etime;
+                payload.record.money = payload.param.money;
+                payload.record.pdesc = payload.param.pdesc;
+                delete payload.record.pname;
+                delete payload.record.mname;
+                delete payload.record.rstate;
+                const dataurecord = yield call(updaterecord, payload.record);
+                if (dataurecord.success) {
+                  const data = yield call(updateplace, {
+                    pid: payload.record.pid,
+                    pstate: 0
+                  });
+                  if (data.success) {
+                    errormsg = 'success';
+                  } else {
+                    errormsg = 'faild';
+                  }
+                } else {
+                  errormsg = 'faild';
+                }
+              } else {
+                errormsg = 'ordernotfound';
+              }
+          }
         yield put({
               type: "updateState",
               payload: {
@@ -196,9 +241,11 @@ export default {
     },
      *getmobileorderlist({ payload }, { call, put }) {
       const data = yield call(querylist, payload.page,payload.pageSize,{mid:payload.mid});
+       const member=yield call(loadmemeber,{id:payload.mid});
       yield put({
         type: "loaddataMobileSuccess",
         payload: {
+          mobilemember: member.data,
           data,
           current: payload.page,
           pageSize: payload.pageSize
@@ -215,8 +262,10 @@ export default {
       let errormsg='';
       let orderdetail={};
       let recordsdetail={};
+      let memberdetail={};
       const data = yield call(querylist, 1,10,{oid:payload.oid});
       const record=yield call(queryrecordlist,1,10,{oid:payload.oid});
+      
       if(data.data.record.length!==0)
       {
         if (data && data.success) {
@@ -232,7 +281,11 @@ export default {
                }
             }
           }
-          orderdetail=data.data.record[0]
+          orderdetail=data.data.record[0];
+          const member=yield call(loadmemeber,{id:data.data.record[0].mid});
+          if (member && member.success) {
+            memberdetail = member.data;
+          }
         }
       }else{
         errormsg='none';
@@ -242,6 +295,7 @@ export default {
             payload: {
               orderdetail,
               recordsdetail,
+              memberdetail,
               errormsg,
             }
           });

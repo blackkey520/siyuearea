@@ -70,6 +70,14 @@ const Routers = function({ history, app }) {
         import ("./routes/order/index")
     },
     {
+      path: "/accountslist",
+      models: () => [
+        import ("./models/accournt")
+      ],
+      component: () =>
+        import ("./routes/accournt/index")
+    },
+    {
       path: "/memberlist/recharge/:id",
       models: () => [
         import ("./models/member")

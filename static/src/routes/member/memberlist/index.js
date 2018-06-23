@@ -47,8 +47,6 @@ class MemberList extends Component {
 		 
 		const pagination = {
 			showTotal: total => `共${total}条数据`,
-			showSizeChanger: true,
-			showQuickJumper: true,
 			...this.props.pagination
 		};
 		 
@@ -59,6 +57,10 @@ class MemberList extends Component {
             }, {
             title: '联系方式',
             dataIndex: 'phonenum',
+            }, {
+            	title: '生效时间',
+				dataIndex: 'mregisttime',
+				render:text=><span>{moment(text).format('YYYY-MM-DD')}</span>,
             }, {
             title: '会员状态',
 			dataIndex: 'mstate',
@@ -95,7 +97,7 @@ class MemberList extends Component {
 								    );
 							   }
 							}}>
-							<Menu.Item key ="1">充值</Menu.Item>
+							<Menu.Item key ="1">充值/开卡</Menu.Item>
 							<Menu.Item key="2">编辑</Menu.Item>
 							<Menu.Item key="3">预定记录</Menu.Item>
 						</Menu>);
