@@ -5,6 +5,8 @@ module.exports = app => {
     console.log(app.oAuth2Server);
   app.get('/', 'client.index');
   app.get('/mobile/init/:routeid', 'client.index');
+  app.get('/mobile/login/:routeid', 'client.index');
+  app.get('/mobile/result/:suc/:tit', 'client.index');
   app.get('/mobile/register', 'client.index');
   app.get('/mobile/mine', 'client.index');
   app.get('/mobile/mine/:memberid', 'client.index');
@@ -13,6 +15,7 @@ module.exports = app => {
   app.get('/mobile/reserve', 'client.index');
   app.get('/mobile/init/:routeid', 'client.index');
   app.get('/callback', 'client.index');
+  app.get('/accountslist', 'client.index');
   app.get('/memberlist', 'client.index');
   app.get('/orderlist', 'client.index');
   app.get('/memberlist/recharge/:id', 'client.index');
