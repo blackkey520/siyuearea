@@ -54,60 +54,76 @@ const moneyarray=[
 const GetMoney=(btime,etime)=>{
   let momey=0;
   const tarr=moneyarray.filter((item)=>{
-    return item.timeend > btime.hour()
+    return item.timeend >= btime.hour()
   }).filter((item)=>{
-    return item.timestart < etime.hour()
+    return item.timestart <= etime.hour()
   });
-  for(let i=0;i<tarr.length;i++)
-  {
-    const t=tarr[i];
-    let begin;
-    let end;
-    if(i===tarr.length-1)
-    {
-      begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-      end = etime;
-    } else if (i === 0) {
-      begin = btime;
-      end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
-    }else{
-      begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-      end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  if (tarr.length === 1) {
+    const shours = etime.diff(btime, 'hours', true);
+    if (shours > 0.5) {
+      momey = momey + Math.round(shours) * tarr[0].money;
     }
-    const hours = end.diff(begin, 'hours', true);
-    if (hours > 0.5) {
-      momey = momey + Math.ceil(hours) * t.money;
+  } else {
+    for (let i = 0; i < tarr.length; i++) {
+      const t = tarr[i];
+      let begin;
+      let end;
+      if (i === tarr.length - 1) {
+        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+        end = etime;
+      } else if (i === 0) {
+        begin = btime;
+        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+      } else {
+        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+      }
+      const hours = end.diff(begin, 'hours', true);
+      if (hours > 0.5) {
+        momey = momey + Math.round(hours) * t.money;
+      }
     }
   }
   return momey;
 }
 const GetMoneyDetail = (btime, etime) => {
-  let rtnval='';
+  let rtnval='使用时间未超过半小时';
   const tarr = moneyarray.filter((item) => {
-    return item.timeend > btime.hour()
+    return item.timeend >= btime.hour()
   }).filter((item) => {
-    return item.timestart < etime.hour()
+    return item.timestart <= etime.hour()
   });
- for (let i = 0; i < tarr.length; i++) {
-   const t = tarr[i];
-   let begin;
-   let end;
-   if (i === tarr.length - 1) {
-     begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-     end = etime;
-   } else if (i === 0) {
-     begin = btime;
-     end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
-   } else {
-     begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-     end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
-   }
-   const hours = end.diff(begin, 'hours', true);
-   if (hours > 0.5) {
-    rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}-${end.format('YYYY-MM-DD HH:mm:ss')}[${Math.ceil(hours)}小时]（收费：${Math.ceil(hours) * t.money}）`;
-   }
- }
- return rtnval;
+  if(tarr.length===1)
+  {
+      const shours = etime.diff(btime, 'hours', true);
+      if (shours > 0.5) {
+        rtnval = `${btime.format('YYYY-MM-DD HH:mm:ss')}-${etime.format('YYYY-MM-DD HH:mm:ss')}[${Math.round(shours)}小时]（收费：${Math.round(shours) * tarr[0].money}）`;
+      }
+  }else{
+    rtnval = '';
+    for (let i = 0; i < tarr.length; i++) {
+      const t = tarr[i];
+      let begin;
+      let end;
+      if (i === tarr.length - 1) {
+        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+        end = etime;
+      } else if (i === 0) {
+        begin = btime;
+        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+      } else {
+        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+      }
+      const hours = end.diff(begin, 'hours', true);
+      if (hours > 0.5) {
+        rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[${hours}小时]（收费：${Math.round(hours) * t.money}）`;
+      }else{
+        rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[不足小时]（收费：0）`;
+      }
+    }
+  }
+  return rtnval;
 }
 const MD5 = s => {
   function L(k, d) {

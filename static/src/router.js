@@ -13,6 +13,16 @@ const Routers = function({ history, app }) {
     component: () => import("./routes/error")
   });
   const routes = [
+     {
+      path: "/mobile/login/:routeid",
+      models: () => [import("./models/member")],
+      component: () => import("./routes/member/login/index")
+    },
+    {
+      path: "/mobile/result/:suc/:tit",
+      models: () => [import("./models/member")],
+      component: () => import("./routes/member/resultpage/index")
+    },
     {
       path: "/mobile/register",
       models: () => [import("./models/member")],

@@ -12,6 +12,7 @@ import {
 } from "antd";
 import moment from "moment";
 import {ostate,mstate,mtype} from '../../utils/enum';
+import { GetMoney,GetMoneyDetail } from '../../utils'
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
@@ -41,18 +42,21 @@ const { getFieldDecorator } = this.props.form;
 							})(<Input disabled / > )}
 						</FormItem>
 						{
-							this.props.recordsdetail.rstate === 0 ? < div > < FormItem { ...formItemLayout
+							this.props.recordsdetail.rstate === 0 ? <div > < FormItem { ...formItemLayout
 							}
 							label = "消费金额(元)" >
 							{getFieldDecorator("money", {
 								initialValue: this.props.recordsdetail.money
 							})(<Input disabled / > )}
+						</FormItem><FormItem { ...formItemLayout
+							}
+							label = "使用明细" >
+							{GetMoneyDetail(moment(this.props.recordsdetail.btime), moment(this.props.recordsdetail.etime))}
 						</FormItem></div>:null
 						}
 						<FormItem {...formItemLayout} label="持续时间(小时)">
-							{getFieldDecorator("timespan", {
-								initialValue: moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime),'hours'),
-							})( <Input disabled / > )
+							{
+								moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime), 'hours',true)
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">

@@ -14,6 +14,7 @@ export default {
     loginuser:{},
     checkmember:{},
     memberlist:[],
+    resultmsg: '您还不是我们的会员，请到店体验吧！我们的位置：北京市海淀区北四环西路68号6层。',
     pagination: {
       current: 1,
       pageSize: 10,
@@ -40,6 +41,21 @@ export default {
   subscriptions: {
   },
   effects: {
+    *getusrbyphone({payload},{call,out,put}){
+      const result = yield call(querylist, {phonenum:payload.phone});
+      if(result.success&&result.data.record.length!==0)
+      {
+        yield put({
+            type: "updateState",
+            payload: {
+              loginuser:{member:result.data.record[0]},
+            }
+          });
+          yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}`, }));
+      }else{
+          yield put(routerRedux.push({ pathname: `/mobile/result/false/认证失败`, }));
+      }
+    },
     *getusrmsg({ payload }, { call, put }) {
         const result = yield call(getusrmsg, payload);
         if(result.success)
@@ -64,7 +80,7 @@ export default {
           memberopenid:payload.userInfo.openid,
           mname:payload.userInfo.nickname,
           phonenum:payload.phone,
-          mstate:1,
+          mstate:0,
           mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
           mtype:1,
           mdesc:'',
@@ -160,15 +176,27 @@ export default {
 				tableData = null;
 			const callback = payload.callback;
       delete payload.callback;
-			if (payload.param.id!==null) {
+			if (payload.param.id) {
         payload.param.mid = payload.param.id;
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
         delete payload.param.id;
 				data = yield call(update, payload.param);
 			} else {
+        payload.param.membercode = Math.random().toString(20).substr(2);
+        payload.param.memberopenid = '-';
          delete payload.param.id;
 				data = yield call(register, payload.param);
       }
+
+      // membercode: Math.random().toString(20).substr(2),
+      //   memberopenid: payload.userInfo.openid,
+      //   mname: payload.userInfo.nickname,
+      //   phonenum: payload.phone,
+      //   mstate: 1,
+      //   mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      //   mtype: 1,
+      //   mdesc: '',
+      //   mmoney: 0
 			callback && callback(data);
 		}
   },

@@ -17,10 +17,19 @@ class Mine extends React.Component {
   componentWillMount(){
     //   const url = global.client.getAuthorizeURL('http://'+self.location.host+'/callback','','snsapi_userinfo');
     //  window.open(url, "_self");
+    if (this.props.loginuser.member) {
        this.props.dispatch({
                 type: "app/changetab",
                 payload: { tab: 'mine' }
               });
+
+            }else{
+              this.props.dispatch(
+         routerRedux.push({
+           pathname: `/mobile/login/mine`
+         })
+       );
+            }
   }
   render() {
     return (
@@ -32,15 +41,15 @@ class Mine extends React.Component {
                 pathname: `/mobile/mine/${that.props.loginuser.member.membercode}`
               })
             );
-           }}><img style={{width:'70px',height:'70px'}} src={this.props.loginuser.userInfo.headimgurl}/>{this.props.loginuser.userInfo.nickname}</div>} className="my-list">
+           }}><img style={{width:'70px',height:'70px'}} src={this.props.loginuser.userInfo?this.props.loginuser.userInfo.headimgurl:''}/>{this.props.loginuser.userInfo?this.props.loginuser.userInfo.nickname:''}</div>} className="my-list">
         <Item  multipleLine >
-          注册时间 <Brief>{moment(this.props.loginuser.member.mregisttime).format('YYYY-MM-DD HH:mm:ss')}</Brief>
+          注册时间 <Brief>{moment(this.props.loginuser.member?this.props.loginuser.member.mregisttime:'').format('YYYY-MM-DD HH:mm:ss')}</Brief>
         </Item>
          <Item  multipleLine >
-          会员状态 <Brief>{mstate[this.props.loginuser.member.mstate]}</Brief>
+          会员状态 <Brief>{mstate[this.props.loginuser.member?this.props.loginuser.member.mstate:0]}</Brief>
         </Item>
         <Item  multipleLine>
-          会员类型 <Brief>{mtype[this.props.loginuser.member.mtype]}</Brief>
+          会员类型 <Brief>{mtype[this.props.loginuser.member?this.props.loginuser.member.mtype:0]}</Brief>
         </Item>
         <Item
           arrow="horizontal"
@@ -48,7 +57,7 @@ class Mine extends React.Component {
           multipleLine
           onClick={() => {}}
         >
-          我的账户 <Brief>{this.props.loginuser.member.mmoney}</Brief>
+          我的账户 <Brief>{this.props.loginuser.member?this.props.loginuser.member.mmoney:0}</Brief>
         </Item>
       </List>
       </div>

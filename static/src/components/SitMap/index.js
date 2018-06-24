@@ -95,7 +95,7 @@ class SiteMap extends React.Component {
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(2)}}><Icon style={{ fontSize: 25, color:this.findColor(2)}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(3)}}><Icon style={{ fontSize: 25, color:this.findColor(3)}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(4)}}><Icon style={{ fontSize: 25, color:this.findColor(4)}} type="laptop" /></li>
-             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(5)}}><Icon style={{ fontSize: 25, color:this.findColor(5)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(5)}}><Icon style={{ fontSize: 25, color:this.findColor(5)}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(6)}}><Icon style={{ fontSize: 25, color:this.findColor(6)}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(7)}}><Icon style={{ fontSize: 25, color:this.findColor(7)}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(8)}}><Icon style={{ fontSize: 25, color:this.findColor(8)}} type="laptop" /></li>
