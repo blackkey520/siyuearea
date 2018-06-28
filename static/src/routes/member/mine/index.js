@@ -26,12 +26,25 @@ class Mine extends React.Component {
             }else{
               this.props.dispatch(
          routerRedux.push({
-           pathname: `/mobile/login/mine`
+           pathname: `/mobile/init/mine`
          })
        );
             }
   }
   render() {
+    let cpd = null;
+    if (this.props.loginuser.member)
+    {
+        const days = moment(this.props.loginuser.member.etime).diff(moment(), 'days', false);
+      
+        if (this.props.loginuser.member.pcname !== null)
+        {
+          cpd=<div>{this.props.loginuser.member.pcname}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>;
+        }
+        else{
+          cpd=<div>无</div>;
+        }
+    }
     return (
       <div> 
          <List renderHeader={() => <div onClick={()=>{
@@ -51,6 +64,10 @@ class Mine extends React.Component {
         <Item  multipleLine>
           会员类型 <Brief>{mtype[this.props.loginuser.member?this.props.loginuser.member.mtype:0]}</Brief>
         </Item>
+        <Item  multipleLine>
+          会员卡 <Brief>{cpd}</Brief>
+        </Item>
+        
         <Item
           arrow="horizontal"
           thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"

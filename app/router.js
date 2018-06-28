@@ -17,11 +17,15 @@ module.exports = app => {
   app.get('/callback', 'client.index');
   app.get('/accountslist', 'client.index');
   app.get('/memberlist', 'client.index');
+  app.get('/productcard','client.index');
+  app.get('/productcard/create', 'client.index');
+  app.get('/productcard/edit/:id', 'client.index');
   app.get('/orderlist', 'client.index');
   app.get('/memberlist/recharge/:id', 'client.index');
   app.get('/memberlist/create', 'client.index');
   app.get('/memberlist/edit/:id', 'client.index');
   app.get('/memberlist/orderrecord/:id', 'client.index');
+  app.get('/memberlist/userecord/:id', 'client.index');
   app.get('/memberlist/orderrecord/:id/add', 'client.index');
   app.get('/memberlist/orderrecord/:id/:oid', 'client.index');
   app.get('/memberlist/orderrecord/:id/:oid/orderend', 'client.index');
@@ -40,7 +44,9 @@ module.exports = app => {
   app.put('/api/table', 'tableinfo.update');
   app.del('/api/table/:res', 'tableinfo.destroy');
   app.post('/api/accounts/getaccountslist', 'accounts.index');
-   app.post('/api/order/getorderlist', 'order.index');
+  app.post('/api/member/getmemberlist', 'member.index');
+  app.get('/api/member/getsinglemember/:id', 'member.single');
+  app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
  app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');

@@ -38,7 +38,7 @@ class Reserve extends React.Component {
     else{
       this.props.dispatch(
         routerRedux.push({
-          pathname: `/mobile/login/reserve`
+          pathname: `/mobile/init/reserve`
         })
       );
     }

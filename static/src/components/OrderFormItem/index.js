@@ -11,7 +11,7 @@ import {
 	Tabs
 } from "antd";
 import moment from "moment";
-import {ostate,mstate,mtype} from '../../utils/enum';
+import {ostate,mstate,mtype,atype} from '../../utils/enum';
 import { GetMoney,GetMoneyDetail } from '../../utils'
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -25,10 +25,37 @@ const { getFieldDecorator } = this.props.form;
 		const formItemLayout = {
 			labelCol: { span: 3 },
 			wrapperCol: { span: 12 }
-        };
-		return (<Form style={{paddingTop:50}}>
+		};
+		if(this.props.recordsdetail.rstate===0)
+		{
+			return(<Form style={{paddingTop:50}}>
+						<FormItem {...formItemLayout} label="开始使用时间">
+							{getFieldDecorator("btime", {
+								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
+							})( <Input disabled / > )
+							}
+						</FormItem>
+						<FormItem {...formItemLayout} label="持续时间(小时)">
+							{
+								moment().diff(moment(this.props.recordsdetail.btime), 'hours',true)
+							}
+						</FormItem>
+						<FormItem {...formItemLayout} label="使用备注">
+							{getFieldDecorator("pdesc", {
+								initialValue: this.props.recordsdetail.pdesc,
+							})(
+								<Input
+									type="textarea"
+                                    disabled
+									autosize={{ minRows: 5, maxRows: 10 }}
+								/>
+							)}
+						</FormItem>
+					</Form>)
+		}else{
+			return (<Form style={{paddingTop:50}}>
 			<FormItem {...formItemLayout} label="消费方式">
-							{this.props.recordsdetail.rstate === 0?'充值消费':'会员卡消费'}
+							{atype[this.props.recordsdetail.rstate]}
 						</FormItem>
 						<FormItem {...formItemLayout} label="开始使用时间">
 							{getFieldDecorator("btime", {
@@ -56,7 +83,7 @@ const { getFieldDecorator } = this.props.form;
 						}
 						<FormItem {...formItemLayout} label="持续时间(小时)">
 							{
-								moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime), 'hours',true)
+								Math.round(moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime), 'hours', true))
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">
@@ -71,6 +98,7 @@ const { getFieldDecorator } = this.props.form;
 							)}
 						</FormItem>
 					</Form>)
+		}
 	}
 }
 

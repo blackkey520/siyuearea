@@ -7,19 +7,27 @@ export async function register(params) {
     data: params
   });
 }
+
 export async function querylist(params) {
   return request({
-    url: "/api/restql/Base_Member",
-    method: "GET",
+    url: "/api/member/getmemberlist",
+    method: "POST",
     data: params
   });
 }
 export async function loadmemeber(params) {
   const id = params.id || 0;
-  const url = `/api/restql/Base_Member/${id}`;
+  const url = `/api/member/getsinglemember/${id}`;
   return request({
     url,
     method: "get"
+  });
+}
+export async function loadmemberbyphone(params) {
+  return request({
+    url: "/api/restql/Base_Member",
+    method: "GET",
+    data: params
   });
 }
 export async function update(params) {

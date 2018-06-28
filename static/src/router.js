@@ -64,6 +64,29 @@ const Routers = function({ history, app }) {
       component: () => import("./routes/wechat/callback")
     },
     {
+      path: "/productcard",
+      models: () => [
+        import ("./models/productcard")
+      ],
+      component: () =>
+        import ("./routes/productcard/index")
+    },
+    {
+      path: "/productcard/create",
+      models: () => [
+        import ("./models/productcard")
+      ],
+      component: () =>
+        import ("./routes/productcard/ProductCardForm")
+    }, {
+      path: "/productcard/edit/:id",
+      models: () => [
+        import ("./models/productcard")
+      ],
+      component: () =>
+        import ("./routes/productcard/ProductCardForm")
+    },
+    {
       path: "/memberlist",
       models: () => [
         import ("./models/member")
@@ -90,7 +113,9 @@ const Routers = function({ history, app }) {
     {
       path: "/memberlist/recharge/:id",
       models: () => [
-        import ("./models/member")
+        import ("./models/member"),
+        import ("./models/accournt"),
+        import ("./models/productcard")
       ],
       component: () =>
         import ("./routes/member/memberlist/Recharge")
@@ -118,6 +143,14 @@ const Routers = function({ history, app }) {
       ],
       component: () =>
         import ("./routes/member/memberlist/OrderRecord")
+    },
+    {
+      path: "/memberlist/userecord/:id",
+      models: () => [
+        import ("./models/accournt")
+      ],
+      component: () =>
+        import ("./routes/member/memberlist/UseRecord")
     },
     {
       path: "/memberlist/orderrecord/:id/add",

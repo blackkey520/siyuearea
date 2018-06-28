@@ -16,7 +16,6 @@ export async function login(params) {
 
 export async function updatePassword(params) {
   const uid = params.uid;
-
   return request({
     url: `/api/restql/web_admin/${uid}`,
     method: 'put',

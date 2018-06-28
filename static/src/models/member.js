@@ -1,4 +1,4 @@
-import { register,querylist,loadmemeber,update,getusrmsg } from "../services/member";
+import { register,querylist,loadmemeber,update,getusrmsg,loadmemberbyphone } from "../services/member";
 import { addaccournt } from "../services/accournt";
 import { parse } from "qs";
 import { message } from "antd";
@@ -75,23 +75,36 @@ export default {
         }
     },
     *register({ payload }, { call, put,select }) {
-        const param={
-          membercode:Math.random().toString(20).substr(2),
-          memberopenid:payload.userInfo.openid,
-          mname:payload.userInfo.nickname,
-          phonenum:payload.phone,
-          mstate:0,
-          mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
-          mtype:1,
-          mdesc:'',
-          mmoney:0
-        }
         const { loginuser } = yield select(state => state.member);
-       
-        const result = yield call(register, param);
+        let result=null;
+        const loaduser = yield call(loadmemberbyphone, {phonenum:payload.phone});
+        if (loaduser.data.record.length !== 0)
+        {
+          const mem = loaduser.data.record[0];
+          mem.memberopenid = payload.userInfo.openid;
+          mem.mregisttime = moment(mem.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+          result = yield call(update, mem);
+           loginuser.member = mem;
+        }
+        else{
+          
+          const param = {
+            membercode: Math.random().toString(20).substr(2),
+            memberopenid: payload.userInfo.openid,
+            mpd: 0,
+            mname: payload.userInfo.nickname,
+            phonenum: payload.phone,
+            mstate: 0,
+            mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
+            mtype: 1,
+            mdesc: '',
+            mmoney: 0
+          }
+          result = yield call(register, param);
+           loginuser.member = result.data;
+        }
         if(result.success)
         {
-           loginuser.member=result.data;
           yield put({
             type: "updateState",
             payload: {
@@ -129,10 +142,11 @@ export default {
     *recharge({ payload }, { call, put,select }) {
 			let data = null;
       const {checkmember} = yield select(state => state.member);
+      const {productcardlist} = yield select(state => state.productcard);
       const callback = payload.callback;
       const accournt={};
       accournt.mid = checkmember.mid;
-      if(payload.recchargetype===0)
+      if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
         if(rechargev>1000)
@@ -149,23 +163,37 @@ export default {
         checkmember.mtype = 0;
         checkmember.mregisttime = moment().format('YYYY-MM-DD HH:mm:ss');
         checkmember.mmoney = parseInt(checkmember.mmoney) + rechargev;
-        accournt.atype=0;
+        accournt.atype=1;
         accournt.amoney = rechargev;
         accournt.asmoney = rechargev;
         accournt.adesc ='会员充值';
-      }else{
+      } else if (payload.rechargetype === "2") {
         //开卡的
         checkmember.mregisttime = payload.cardusedate;
         checkmember.mtype = parseInt(payload.cardtype);
-        accournt.atype = 1;
+        accournt.atype = 2;
         accournt.amoney = payload.cardtype === '1' ? 140 : payload.cardtype === '2' ? 488 : payload.cardtype === '3'?1688:3688;
         accournt.asmoney = payload.cardtype === '1' ? 140 : payload.cardtype === '2' ? 488 : payload.cardtype === '3' ? 1688 : 3688;
         accournt.adesc = mtype[payload.cardtype];
+      }else{
+        const pcitem = productcardlist.find((item) => {
+          return item.pcid === parseInt(payload.pctype)
+        });
+        checkmember.mpd = pcitem.pcid;
+        checkmember.mregisttime = moment(checkmember.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+        accournt.atype = 3;
+        accournt.amoney = pcitem.value;
+        accournt.asmoney = pcitem.value;
+        accournt.adesc = pcitem.pcname;
       }
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
       accournt.astate = 0;
-      delete checkmember.nextOne;
-      delete checkmember.preOne;
+      delete checkmember.pcname;
+      delete checkmember.btime;
+      delete checkmember.etime;
+      delete checkmember.isused;
+      delete checkmember.pcdesc;
+      delete checkmember.value;
       data = yield call(update, checkmember);
       //记账
       const accourntdata = yield call(addaccournt, accournt);
@@ -176,6 +204,7 @@ export default {
 				tableData = null;
 			const callback = payload.callback;
       delete payload.callback;
+      payload.param.mpd=0;
 			if (payload.param.id) {
         payload.param.mid = payload.param.id;
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
@@ -187,16 +216,6 @@ export default {
          delete payload.param.id;
 				data = yield call(register, payload.param);
       }
-
-      // membercode: Math.random().toString(20).substr(2),
-      //   memberopenid: payload.userInfo.openid,
-      //   mname: payload.userInfo.nickname,
-      //   phonenum: payload.phone,
-      //   mstate: 1,
-      //   mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
-      //   mtype: 1,
-      //   mdesc: '',
-      //   mmoney: 0
 			callback && callback(data);
 		}
   },

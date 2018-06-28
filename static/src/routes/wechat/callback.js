@@ -47,15 +47,14 @@ class Callback extends React.Component {
     {
       return (
         <div style={{width:'100%'}}> 
-          <div style={{width: '100%', backgroundColor:'#fff', textAlign: 'center',paddingTop:100}}>
+          <div style={{width: '100%', backgroundColor:'#fff', textAlign: 'center',paddingTop:170}}>
             你好，<span style={{fontWeight: 'bold'}}>
               {this.props.loginuser.userInfo?this.props.loginuser.userInfo.nickname:''}</span> 
-              您还不是我们的会员，输入电话号码，注册一个吧~</div>
+              为了让我们知道您是谁，输入电话号码来预定吧~</div>
         <List>
           <List.Item>
             <InputItem
             {...getFieldProps('phone')}
-            type="phone"
             onChange = {(value)=>{
               this.setState({phone:value});
             }}

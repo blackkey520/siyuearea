@@ -38,7 +38,7 @@ class Order extends React.Component {
     }else{
        this.props.dispatch(
          routerRedux.push({
-           pathname: `/mobile/login/order`
+           pathname: `/mobile/init/order`
          })
        );
     }

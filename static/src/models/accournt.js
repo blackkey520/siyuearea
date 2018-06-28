@@ -34,6 +34,19 @@ export default {
   subscriptions: {
   },
   effects: {
+    *getaccourntlistbymid({ payload }, { call, put }) {
+      const param={};
+      param.mid = payload.mid;
+      const data = yield call(querylist, payload.page,payload.pageSize,param);
+      yield put({
+        type: "loaddataSuccess",
+        payload: {
+          data,
+          current: payload.page,
+          pageSize: payload.pageSize
+        }
+      });
+    },
     *getaccourntlist({ payload }, { call, put }) {
       const param={};
       if (payload.membercode!==undefined)

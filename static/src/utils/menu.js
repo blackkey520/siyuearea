@@ -30,6 +30,13 @@ module.exports = [
         icon: "setting",
         isMenuTab: false,
         clickable: false,
+      },
+      {
+        key: "userecord",
+        name: "使用记录",
+        icon: "folder",
+        isMenuTab: false,
+        clickable: false,
       }
     ]
   },
@@ -37,6 +44,26 @@ module.exports = [
     key: "orderlist",
     name: "订单信息", //模块
     icon: "bars",
+  },
+  {
+    key: "productcard",
+    name: "优惠卡信息", //模块
+    icon: "book",
+    child: [{
+        key: "create",
+        name: "添加优惠卡",
+        icon: "file",
+        isMenuTab: false,
+        clickable: false
+      },
+      {
+        key: "edit",
+        name: "编辑优惠卡",
+        icon: "file",
+        isMenuTab: false,
+        clickable: false
+      },
+    ]
   },
   {
     key: "accountslist",

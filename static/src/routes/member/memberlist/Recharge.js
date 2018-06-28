@@ -10,17 +10,20 @@ import {
 	Icon,
 	message,
 	Radio,
-	Modal,
+	Tabs,
 	Tooltip,
-	DatePicker
+	DatePicker,
+	Table,
+	Select
 } from "antd";
 import { config } from "../../../utils/config";
 import moment from "moment";
-import { mtype,mstate} from '../../../utils/enum';
-
+import { mtype,mstate,atype,astate} from '../../../utils/enum';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
+const TabPane = Tabs.TabPane;
+const Option = Select.Option;
 
 
 function formatNumber(value) {
@@ -40,9 +43,12 @@ function formatNumber(value) {
 }
 
 
-@connect(({ member,loading }) => ({
-		checkmember: member.checkmember,
-		formloading: loading.effects['member/loadmember']
+@connect(({ productcard,member,loading,accournt }) => ({
+	accourntlist: accournt.accourntlist,
+	checkmember: member.checkmember,
+	formloading: loading.effects['member/loadmember'] && loading.effects['accournt/getaccourntlistbymid'],
+	pagination: accournt.pagination,
+	productcardlist: productcard.productcardlist
  }))
 class Recharge extends Component {
 	static contextTypes = {
@@ -53,18 +59,34 @@ class Recharge extends Component {
 		super(props, context);
 		this.state={
 			rechargevalue:0,
-			visible:false,
-			modaltype:0,
+			modaltype:"1",
 			cardtype:'1',
+			pctype:'',
 			cardusedate: moment().format('YYYY-MM-DD 00:00:00')
 		}
 	}
-
+	loadTableData(page = 1, pageSize = 5) {
+		this.props.dispatch({
+			type: "accournt/getaccourntlistbymid",
+			payload: {
+				page,
+				pageSize,
+				mid: this.props.match.params.id
+			}
+		});
+	}
+	tableChange(pagination) {
+		this.loadTableData(pagination.current, pagination.pageSize);
+	}
 	componentDidMount() {
 		const id = this.props.match.params && this.props.match.params.id;
 		const { dispatch } = this.props;
-
 		if (id) {
+			this.loadTableData(1, 5);
+			this.props.dispatch({
+				type: "productcard/getproductcardlist",
+				payload: { page:1, pageSize:10000,isused:1 }
+			}); 
 			dispatch({ type: "member/loadmember", payload: { id } });
 		}
 	}
@@ -80,16 +102,43 @@ class Recharge extends Component {
 	}
  
 	render() {
+		const pagination = {
+			showTotal: total => `共${total}条数据`,
+			...this.props.pagination
+		};
 		const { getFieldDecorator } = this.props.form;
 		const title = this.state.rechargevalue ? (
 							<span className="numeric-input-title">
 								{this.state.rechargevalue !== '' ? formatNumber(this.state.rechargevalue) : ''}
 							</span>
 							) : '输入充值金额';
-		const formItemLayout = {
-			labelCol: { span: 3 },
-			wrapperCol: { span: 12 }
-		};
+		const columns = [{
+            title: '会员名称',
+            dataIndex: 'mname',
+            render: text => <a href="javascript:;">{text}</a>,
+            }, {
+                title: '入账类型',
+				dataIndex: 'atype',
+				render:text=><span>{atype[text]}</span>,
+            },{
+                title: '账目类型',
+				dataIndex: 'astate',
+				render:text=><span>{astate[text]}</span>,
+            },{
+            title: '入账金额',
+            dataIndex: 'amoney',
+            }, {
+            title: '备注',
+			dataIndex: 'adesc',
+            }, {
+                title: '入账时间',
+				dataIndex: 'atime',
+				render: (text, record, index) => { 
+					return (
+						moment(text).format('YYYY-MM-DD HH:mm:ss')
+					);
+				}
+            }];
 		if(this.props.formloading)
 		{
 			return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
@@ -107,136 +156,67 @@ class Recharge extends Component {
 							返回
 						</Button>
 						<Button style={{ marginRight: 10 }} type="primary" onClick={(e)=>{
-								 this.setState({
-									visible:true,
-									modaltype:0
-								});
-							}}>
-							充值
-						</Button>
-						<Button type="primary" onClick={(e)=>{
-								 this.setState({
-									visible:true,
-									modaltype: 1
-								});
-							}}>
-							开卡
-						</Button>
-					</div>
-					<Form>
-						<FormItem {...formItemLayout} label="会员名称">
-							{getFieldDecorator("mname", {
-								initialValue: this.props.checkmember.mname
-							})( <Input disabled / > )
-							}
-						</FormItem>
-						<FormItem {...formItemLayout} label="电话号码">
-							{getFieldDecorator("phonenum", {
-								initialValue: this.props.checkmember.phonenum
-							})(<Input disabled />)}
-						</FormItem>
-						<FormItem {...formItemLayout} label="会员状态">
-							{getFieldDecorator("mstate", {
-								initialValue: this.props.checkmember.mstate ? this.props.checkmember.mstate:0
-							})(
-								<RadioGroup disabled>
-									{
-										mstate.map((item,key)=>{
-											return (<RadioButton key={item} value={key}>{item}</RadioButton>)
-										})
-									}
-								</RadioGroup>
-							)}
-						</FormItem>
-						<FormItem {...formItemLayout} label="会员类型">
-							{getFieldDecorator("mtype", {
-								initialValue: this.props.checkmember.status?this.props.checkmember.status:0
-							})(<RadioGroup disabled>
-									{
-										mtype.map((item, key) => {
-											return (<RadioButton key={item} value={key}>{item}</RadioButton>)
-										})
-									}
-								</RadioGroup>)}
-						</FormItem>
-						<FormItem {...formItemLayout} label="注册时间">
-							{getFieldDecorator("mregisttime", {
-								initialValue: this.props.checkmember.mregisttime ? this.props.checkmember.mregisttime : moment().format('YYYY-MM-DD HH:mm:ss'),
-							})( <Input disabled / > )
-							}
-						</FormItem>
-						<FormItem {...formItemLayout} label="会员余额(元)">
-							{getFieldDecorator("mmoney", {
-								initialValue: this.props.checkmember.mmoney?this.props.checkmember.mmoney:0,
-							})( <Input disabled  / > )
-							}
-						</FormItem>
-						<FormItem {...formItemLayout} label="备注">
-							{getFieldDecorator("mdesc", {
-								initialValue: this.props.checkmember.mdesc,
-							})(
-								<Input
-								disabled
-									type="textarea"
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
-							)}
-						</FormItem>
-					</Form> 
-					 <Modal
-					title={this.state.modaltype===0?'充值':'开卡'}
-					visible={this.state.visible}
-					onOk={()=>{
-						const hide = message.loading("正在保存...", 0);
-						this.setState({
-							visible:false
-						});
-						this.props.dispatch({ type: "member/recharge", payload: { recchargetype:this.state.modaltype,
-						cardtype: this.state.cardtype,cardusedate:this.state.cardusedate,rechargevalue: this.state.rechargevalue
-						,callback: data => {
-							hide();
-							if (data && data.success) {
-								message.success("保存成功");
-								this.goBack();
-							} else {
-								message.error("保存失败");
-							}
-					} } });
-					}}
-					onCancel={()=>{
-						this.setState({
-							visible:false
-						});
-					}}
-					okText="确认"
-					cancelText="取消"
-					>
-						{this.state.modaltype===0?<div><div style={{fontSize:15,paddingBottom:15}}>请问您确定为<span style={{color:'red',fontWeight: 'bold'}}>
-								{this.props.checkmember.mname}</span>充值吗？</div>
-
-						 <Tooltip
-							trigger={['focus']}
-							title={title}
-							placement="topLeft"
-							overlayClassName="numeric-input"
-						>
-							<Input
-							value={this.state.rechargevalue}
-							onChange={(e)=>{
-								   const { value } = e.target;
-								const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
-								if ((!isNaN(value) && reg.test(value)) || value === '') {
-								   this.setState({
-									   rechargevalue:value
-								   });
+								if (this.state.modaltype==="3"&&this.state.pctype==="")
+								{
+									message.warn("请选择优惠卡");
 								}
-							}}
-							placeholder="输入金额"
-							maxLength="25"
-							/>
-						</Tooltip></div>:
-							<div><div style={{fontSize:15,paddingBottom:15}}>请问您确定为<span style={{color:'red',fontWeight: 'bold'}}>
-								{this.props.checkmember.mname}</span>开卡吗？</div>
+								else{
+									const hide = message.loading("正在保存...", 0);
+									this.props.dispatch({
+									type: "member/recharge",
+									payload: {
+										rechargetype: this.state.modaltype,
+										cardtype: this.state.cardtype,
+										pctype: this.state.pctype,
+										cardusedate: this.state.cardusedate,
+										rechargevalue: this.state.rechargevalue,
+										callback: data => {
+											hide();
+											if (data && data.success) {
+												message.success("保存成功");
+												this.goBack();
+											} else {
+												message.error("保存失败");
+											}
+										}
+									}
+									});
+								}
+							}}>
+							确定
+						</Button>
+						 
+					</div>
+					 <Tabs defaultActiveKey="1" onChange={(key)=>{
+						this.setState({
+							modaltype:key
+						});
+					}}>
+						<TabPane style={{height:100}} tab="充值" key="1">
+							 <Tooltip
+								trigger={['focus']}
+								title={title}
+								placement="topLeft"
+								overlayClassName="numeric-input"
+							>
+								<Input
+								value={this.state.rechargevalue}
+								style={{width:200}}
+								onChange={(e)=>{
+									const { value } = e.target;
+									const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
+									if ((!isNaN(value) && reg.test(value)) || value === '') {
+									this.setState({
+										rechargevalue:value
+									});
+									}
+								}}
+								placeholder="输入金额"
+								maxLength="25"
+								/>
+							</Tooltip>
+						</TabPane>
+						<TabPane tab="储值卡" key="2">
 							<RadioGroup onChange={(e)=>{
 									this.setState({
 										cardtype: e.target.value
@@ -253,9 +233,44 @@ class Recharge extends Component {
 									cardusedate: date.format('YYYY-MM-DD 00:00:00')
 								});
 							}}/>
-						 </div>
-						}
-					</Modal>
+						</TabPane>
+						<TabPane tab="优惠卡" key="3">
+							
+							<Select
+								style={{ width: 200 }}
+								placeholder="选择优惠卡"
+								value={this.state.pctype}
+								onChange={(value)=>{
+									 this.setState({
+										 pctype:value
+									 });
+								}}
+							>
+								{
+									this.props.productcardlist.map((item,key)=>{
+										const days=moment(item.etime).diff(moment(), 'days', false);
+										return (<Option key={key} value={item.pcid.toString()}>{days>0?`${item.pcname}(还有${days}天过期)`:'已经过期'}</Option>);
+									})
+								}
+							</Select>
+							</TabPane>
+					</Tabs>		
+						<div
+					style={{
+						paddingBottom: 10,
+						marginBottom: 20,
+						borderBottom: "1px solid #ddd"
+					}}
+				>储值记录</div>
+					 <Table
+						columns={columns}
+						pagination={pagination}
+						dataSource={this.props.accourntlist}
+						rowKey="aid"
+						loading={this.props.accourntloading}
+						bordered
+						onChange={this.tableChange.bind(this)}
+					/>
 				</div>
 			)
 	}

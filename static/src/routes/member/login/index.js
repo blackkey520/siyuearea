@@ -19,19 +19,8 @@ class Login extends React.Component {
     return (
       <div style={{backgroundColor:'#fff'}}> 
          <div style={{width: '100%', backgroundColor:'#fff', textAlign: 'center',paddingTop:180,fontSize:20}}>请输入手机号码</div>
-        <List style={{paddingTop:20}}>
-           <InputItem
-            {...getFieldProps('phone')}
-            onChange = {(value)=>{
-              this.setState({phone:value});
-            }}
-            value={this.state.phone}
-            placeholder="手机号码"
-            clear
-          />
-          <List.Item >
-              <div style={{width: '100%', backgroundColor:'#fff', textAlign: 'center',paddingTop:30}}> 
-           <a onClick={()=>{
+        <input/>
+        <a onClick={()=>{
               this.props.dispatch({
                 type: "member/getusrbyphone",
                 payload: {
@@ -40,9 +29,6 @@ class Login extends React.Component {
                 }
               });
               }}>提交</a>
-              </div>
-              </List.Item>
-        </List>
       </div>
     );
   }

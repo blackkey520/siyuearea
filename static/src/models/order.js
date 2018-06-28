@@ -117,55 +117,69 @@ export default {
               errormsg:'',
             }
           });
-        
          let errormsg='';
           let { memberdetail } = yield select(state => state.order);
             const accournt = {};
             accournt.mid = memberdetail.mid;
-          if (memberdetail.mtype===0)
-          {
-            if (memberdetail.mmoney >= payload.param.money) {
-              memberdetail.mmoney = memberdetail.mmoney - payload.param.money;
-              memberdetail.mregisttime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
-              delete memberdetail.nextOne;
-              delete memberdetail.preOne;
-              const member = yield call(update, memberdetail);
-               accournt.atype = 0;
-               accournt.amoney = payload.param.money;
-               accournt.asmoney = payload.param.money;
-               accournt.adesc = '充值消费';
-               payload.record.ostate=0;
-            } else {
-              errormsg = 'outofmoney';
-            }
-          }
-          else{
-            let overtime = moment(memberdetail.mregisttime);
-            if (memberdetail.mtype===1)
+            const days = moment(memberdetail.etime).diff(moment(), 'days', false);
+            if (memberdetail.pcname != null && days>0)
             {
-              overtime = overtime.add(1,'days');
-            }else if(memberdetail.mtype===2)
-            {
-              overtime = overtime.add(1, 'weeks');
-            }else if(memberdetail.mtype===3)
-            {
-              overtime = overtime.add(1, 'months');
+               accournt.atype = 3;
+               accournt.amoney = 0;
+               accournt.asmoney = 0;
+               accournt.adesc = memberdetail.pcname;
+               payload.record.ostate = 3;
             }else{
-              overtime = overtime.add(1, 'quarters');
+              if (memberdetail.mtype===0)
+              {
+                if (memberdetail.mmoney >= payload.param.money) {
+                  memberdetail.mmoney = memberdetail.mmoney - payload.param.money;
+                  memberdetail.mregisttime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+                  delete memberdetail.pcname;
+                  delete memberdetail.btime;
+                  delete memberdetail.etime;
+                  delete memberdetail.isused;
+                  delete memberdetail.pcdesc;
+                  delete memberdetail.value;
+                  const member = yield call(update, memberdetail);
+                  accournt.atype = 1;
+                  accournt.amoney = payload.param.money;
+                  accournt.asmoney = payload.param.money;
+                  accournt.adesc = '充值消费';
+                  payload.record.ostate=1;
+                } else {
+                  errormsg = 'outofmoney';
+                }
+              }
+              else{
+                let overtime = moment(memberdetail.mregisttime);
+                if (memberdetail.mtype===1)
+                {
+                  overtime = overtime.add(1,'days');
+                }else if(memberdetail.mtype===2)
+                {
+                  overtime = overtime.add(1, 'weeks');
+                }else if(memberdetail.mtype===3)
+                {
+                  overtime = overtime.add(1, 'months');
+                }else{
+                  overtime = overtime.add(1, 'quarters');
+                }
+                const now = moment();
+                const hours = now.diff(overtime, 'hours', true);
+                
+                if (Math.ceil(hours) > 0)
+                {
+                  errormsg = 'outofcardtime';
+                }
+                accournt.atype = 2;
+                accournt.amoney = 0;
+                accournt.asmoney =0;
+                accournt.adesc = memberdetail.mtype===1?'日卡消费':memberdetail.mtype===2?'周卡消费':memberdetail.mtype===3?'月卡消费':'季卡消费';
+                payload.record.ostate = 2;
+              }
             }
-            const now = moment();
-            const hours = now.diff(overtime, 'hours', true);
-             
-            if (Math.ceil(hours) > 0)
-            {
-               errormsg = 'outofcardtime';
-            }
-            accournt.atype = 1;
-            accournt.amoney = 0;
-            accournt.asmoney =0;
-            accournt.adesc = '会员卡消费';
-            payload.record.ostate = 1;
-          }
+          
           accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
           accournt.astate = 1;
           if(errormsg==='')
@@ -300,20 +314,5 @@ export default {
             }
           });
     },
-    *saveorder({ payload }, { call, put }) {
-			let data = null,
-				tableData = null;
-			const callback = payload.callback;
-            delete payload.callback;
-			if (payload.param.id!==null) {
-            payload.param.oid = payload.param.id;
-            delete payload.param.id;
-                    data = yield call(update, payload.param);
-                } else {
-            delete payload.param.id;
-                    data = yield call(register, payload.param);
-      }
-			callback && callback(data);
-		}
   },
 }

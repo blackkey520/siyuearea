@@ -81,7 +81,7 @@ class OrderList extends Component {
 								})
 							);
 							}}>
-								 <Icon type="right-square" />查看详情
+								 <Icon type="bars" />查看详情
 							</Button>
 					);
 				}

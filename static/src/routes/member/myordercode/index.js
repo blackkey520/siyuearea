@@ -8,7 +8,7 @@ import {
 } from 'antd-mobile';
 import moment from 'moment';
 import QRCode from 'qrcode';
-import {ostate} from '../../../utils/enum';
+import {ostate,atype} from '../../../utils/enum';
 import { GetMoney,GetMoneyDetail } from '../../../utils'
 import 'antd-mobile/lib/steps/style/css';
 const Item = List.Item;
@@ -56,15 +56,22 @@ constructor(props, context) {
                this.state.show===0?<div style={{marginTop:10}}><div style={{fontSize:17,paddingTop:20}}>我的预定码</div>
           <div style={{fontSize:25,paddingTop:10}}>{this.props.match.params.orderid}</div>
           <img src={this.state.url} style={{height:250,width:250,marginTop:30}}/></div>:
+          this.props.selectedmobileorder.rstate === 0?
            <div style={{marginTop:10}}>
                <List renderHeader={() => '使用信息'} className="my-list">
-                   <Item>消费方式<Brief>{this.props.selectedmobileorder.rstate===0?'充值消费':'会员卡消费'}</Brief></Item>
+                    <Item>预定时间<Brief>{moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')}</Brief></Item>
+                    <Item>使用时间<Brief>{moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')}</Brief></Item>
+                    <Item>使用时间(小时)<Brief>{Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))}</Brief></Item>
+                </List> 
+            </div>:<div style={{marginTop:10}}>
+               <List renderHeader={() => '使用信息'} className="my-list">
+                   <Item>消费方式<Brief>{atype[this.props.selectedmobileorder.rstate]}</Brief></Item>
                     <Item>预定时间<Brief>{moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')}</Brief></Item>
                     <Item>使用时间<Brief>{moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')}</Brief></Item>
                     <Item>结束时间<Brief>{moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')}</Brief></Item>
-                    <Item>使用时间(小时)<Brief>{moment(this.props.selectedmobileorder.etime).diff(moment(this.props.selectedmobileorder.btime),'hours',true)}</Brief></Item>
-                    {this.props.selectedmobileorder.rstate===0?<Item>消费金额（元）<Brief>{this.props.selectedmobileorder.money}</Brief></Item>:null}
-                    {this.props.selectedmobileorder.rstate===0?<Item wrap>{GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))}</Item>:null}
+                    <Item>使用时间(小时)<Brief>{Math.round(moment(this.props.selectedmobileorder.etime).diff(moment(this.props.selectedmobileorder.btime),'hours',true))}</Brief></Item>
+                    {this.props.selectedmobileorder.rstate===1?<Item>消费金额（元）<Brief>{this.props.selectedmobileorder.money}</Brief></Item>:null}
+                    {this.props.selectedmobileorder.rstate===1?<Item wrap>{GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))}</Item>:null}
                 </List> 
             </div>
           }

@@ -98,6 +98,15 @@ class MemberForm extends Component {
 		{
 			return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
 		}
+		const days = moment(this.props.checkmember.etime).diff(moment(), 'days', false);
+		let cpd=null;
+		if (this.props.checkmember.pcname !== null)
+		{
+			cpd=<div>{this.props.checkmember.pcname}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>;
+		}
+		else{
+			cpd=<div>无</div>;
+		}
 		return (
 				<div className="content-inner">
 					<div
@@ -162,6 +171,11 @@ class MemberForm extends Component {
 										})
 									}
 								</RadioGroup>)}
+						</FormItem>
+						<FormItem {...formItemLayout} label="优惠卡">
+							 {
+								 cpd
+							 }
 						</FormItem>
 						<FormItem {...formItemLayout} label="注册时间">
 							{getFieldDecorator("mregisttime", {

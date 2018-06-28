@@ -35,7 +35,7 @@ function Bread ({ location }) {
       return null;
     }
     return (
-      <Breadcrumb.Item key={key} {...((pathNames.length - 1 === key) || !pathSet[item].clickable) ? '' : { href: `#${pathSet[item].path}` }}>
+      <Breadcrumb.Item key={key} {...((pathNames.length - 1 === key) || !pathSet[item].clickable) ? '' : { href: `${pathSet[item].path}` }}>
         {pathSet[item].icon
           ? <Icon type={pathSet[item].icon} />
           : ''}

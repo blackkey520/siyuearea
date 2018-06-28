@@ -11,7 +11,7 @@ exports.index = function*() {
         var userInfo = yield client.getUser(openid);
         rtnval.ismember=false;
         rtnval.userInfo=userInfo;
-        const memberlist = yield this.service.restql.index('Base_Member',{page:1,pageSize:1}, {memberopenid:userInfo.openid});
+        const memberlist =  yield this.service.member.index({}, {page:1,pageSize:1}, {memberopenid:userInfo.openid});
         if(memberlist.record.length!==0)
         {
           rtnval.ismember=true;

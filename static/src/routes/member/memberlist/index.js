@@ -69,6 +69,18 @@ class MemberList extends Component {
                 title: '会员类型',
 				dataIndex: 'mtype',
 				render:text=><span>{mtype[text]}</span>,
+            },{
+                title: '优惠卡',
+				render: (text, record, index) => {
+					const days = moment(record.etime).diff(moment(), 'days', false);
+					if(record.pcname!==null)
+					{
+						return(<div>{record.pcname}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
+					}
+					else{
+						return(<div>无</div>);
+					}
+				}
             }, {
                 title: '卡内余额',
                 dataIndex: 'mmoney',
@@ -95,11 +107,18 @@ class MemberList extends Component {
 								    		pathname: `/memberlist/orderrecord/${this.state.record.mid}`
 								    	})
 								    );
+							   } else if (e.key === "4") {
+							   	this.props.dispatch(
+							   		routerRedux.push({
+							   			pathname: `/memberlist/userecord/${this.state.record.mid}`
+							   		})
+							   	);
 							   }
 							}}>
 							<Menu.Item key ="1">充值/开卡</Menu.Item>
 							<Menu.Item key="2">编辑</Menu.Item>
 							<Menu.Item key="3">预定记录</Menu.Item>
+							<Menu.Item key="4">使用记录</Menu.Item>
 						</Menu>);
 					return (
 						<Dropdown onVisibleChange={()=>{
