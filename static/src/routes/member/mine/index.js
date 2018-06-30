@@ -61,18 +61,30 @@ class Mine extends React.Component {
          <Item  multipleLine >
           会员状态 <Brief>{mstate[this.props.loginuser.member?this.props.loginuser.member.mstate:0]}</Brief>
         </Item>
-        <Item  multipleLine>
+        <Item arrow="horizontal" onClick={() => {this.props.dispatch(
+              routerRedux.push({
+                pathname: `/mobile/mine/pay/membercard`
+              })
+            )}} multipleLine>
           会员类型 <Brief>{mtype[this.props.loginuser.member?this.props.loginuser.member.mtype:0]}</Brief>
         </Item>
-        <Item  multipleLine>
-          会员卡 <Brief>{cpd}</Brief>
+        <Item arrow="horizontal" onClick={() => {this.props.dispatch(
+              routerRedux.push({
+                pathname: `/mobile/mine/pay/productcard`
+              })
+            )}} multipleLine>
+          优惠卡 <Brief>{cpd}</Brief>
         </Item>
         
         <Item
-          arrow="horizontal"
+        arrow = "horizontal"
           thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
           multipleLine
-          onClick={() => {}}
+          onClick={() => {this.props.dispatch(
+              routerRedux.push({
+                pathname: `/mobile/mine/pay/recharge`
+              })
+            )}}
         >
           我的账户 <Brief>{this.props.loginuser.member?this.props.loginuser.member.mmoney:0}</Brief>
         </Item>

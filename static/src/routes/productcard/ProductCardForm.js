@@ -11,7 +11,8 @@ import {
 	message,
 	DatePicker,
 	Switch,
-	Radio
+	Radio,
+	Upload, Modal
 } from "antd";
 import moment from "moment";
 
@@ -23,7 +24,8 @@ const RadioGroup = Radio.Group;
 
 @connect(({ productcard,loading }) => ({
 		checkproductcard: productcard.checkproductcard,
-		formloading: loading.effects['member/loadproductcard']
+		formloading: loading.effects['member/loadproductcard'],
+		imglist: productcard.imglist
  }))
 class ProductCardForm extends Component {
 	static contextTypes = {
@@ -32,6 +34,16 @@ class ProductCardForm extends Component {
 
 	constructor(props, context) {
 		super(props, context);
+		this.state = {
+			previewVisible: false,
+			previewImage: '',
+			fileList: [{
+				uid: -1,
+				name: 'xxx.png',
+				status: 'done',
+				url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+			}],
+		};
 	}
 
 	componentDidMount() {
@@ -71,7 +83,7 @@ class ProductCardForm extends Component {
 						etime: values.time[1],
 						value: values.value,
 						pcdesc: values.pcdesc,
-						isused: values.isused
+						isused: values.isused,
 					},
 					callback: data => {
 						hide();
@@ -89,7 +101,15 @@ class ProductCardForm extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		const { previewVisible, previewImage } = this.state;
+		
 
+		const uploadButton = (
+			<div>
+				<Icon type="plus" />
+				<div className="ant-upload-text">上传</div>
+			</div>
+		);
 		const formItemLayout = {
 			labelCol: { span: 3 },
 			wrapperCol: { span: 12 }
@@ -145,6 +165,38 @@ class ProductCardForm extends Component {
 								initialValue: this.props.checkproductcard.value ? this.props.checkproductcard.value : 0,
 							})( <Input   / > )
 							}
+						</FormItem>
+						<FormItem {...formItemLayout} label="封面图片">
+							 <div className="clearfix">
+								<Upload
+								action="//jsonplaceholder.typicode.com/posts/"
+								listType="picture-card"
+								fileList={this.props.imglist}
+								onPreview = {
+									(file) => {
+										this.setState({
+											previewImage: file.url || file.thumbUrl,
+											previewVisible: true,
+										});
+									}
+								}
+								onChange={({ fileList }) => {
+								 
+										this.props.dispatch({
+											type: "productcard/updateState",
+											payload: {
+												imglist: fileList
+											}
+										});
+								}}
+								>
+								{this.props.imglist.length >= 1 ? null :uploadButton }
+							 
+								</Upload>
+								<Modal visible={previewVisible} footer={null} onCancel={() => this.setState({ previewVisible: false })}>
+								<img alt="example" style={{ width: '100%' }} src={previewImage} />
+								</Modal>
+							</div>
 						</FormItem>
 						<FormItem {...formItemLayout} label="是否启用">
 							{getFieldDecorator("isused", {

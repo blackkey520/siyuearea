@@ -10,6 +10,9 @@ module.exports = app => {
   app.get('/mobile/register', 'client.index');
   app.get('/mobile/mine', 'client.index');
   app.get('/mobile/mine/:memberid', 'client.index');
+  app.get('/mobile/mine/pay/recharge', 'client.index');
+  app.get('/mobile/mine/pay/productcard', 'client.index');
+  app.get('/mobile/mine/pay/membercard', 'client.index');
   app.get('/mobile/order', 'client.index');
   app.get('/mobile/order/:orderid', 'client.index');
   app.get('/mobile/reserve', 'client.index');

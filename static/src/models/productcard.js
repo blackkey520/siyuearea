@@ -12,6 +12,7 @@ export default {
   state: {
     checkproductcard: {},
     productcardlist: [],
+    imglist:[],
     pagination: {
       current: 1,
       pageSize: 10,
@@ -52,19 +53,32 @@ export default {
     *loadproductcard({ payload }, { call, put }) {
       const data = yield call(loadsingle, payload);
       if (data && data.success) {
+        let imglist=[];
+        if (data.data.img!=='') {
+          imglist=[{
+            uid: -1,
+            name: data.data.imgname,
+            status: 'done',
+            thumbUrl: data.data.img,
+          }]
+        }
         yield put({
           type: "updateState",
           payload: {
             checkproductcard: data.data,
+            imglist
           }
         });
       }
     },
-    *saveproductcard({ payload }, { call, put }) {
+    *saveproductcard({ payload }, { call, put,select }) {
         let data = null,
             tableData = null;
         const callback = payload.callback;
         delete payload.callback;
+        const { imglist } = yield select(state => state.productcard);
+        payload.param.img = imglist.length !== 0 ? imglist[0].thumbUrl : '',
+        payload.param.imgname = imglist.length !== 0 ? imglist[0].name : ''
         if (payload.param.id) {
             payload.param.pcid = payload.param.id;
             payload.param.btime = payload.param.btime.format('YYYY-MM-DD HH:mm:ss');
@@ -77,6 +91,12 @@ export default {
              payload.param.etime = payload.param.etime.format('YYYY-MM-DD HH:mm:ss'); 
             data = yield call(add, payload.param);
         }
+         yield put({
+           type: "updateState",
+           payload: {
+             imglist: []
+           }
+         });
         callback && callback(data);
     }
   },

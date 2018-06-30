@@ -5,7 +5,10 @@ exports.view = {
     ".tpl": "nunjucks"
   }
 };
-
+ exports.bodyParser = {
+   jsonLimit: '5mb',
+   formLimit: '6mb',
+ };
 exports.security = {
   ignore: "/api/",
   domainWhiteList: [

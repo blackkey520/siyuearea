@@ -39,6 +39,29 @@ const Routers = function({ history, app }) {
       component: () => import("./routes/member/mymembercode/index")
     },
     {
+      path: "/mobile/mine/pay/recharge",
+      models: () => [import("./models/member")],
+      component: () =>
+        import ("./routes/member/pay/Recharge")
+    },
+    {
+      path: "/mobile/mine/pay/productcard",
+      models: () => [
+        import ("./models/member"),
+        import ("./models/productcard")
+      ],
+      component: () =>
+        import ("./routes/member/pay/ProductCard")
+    },
+    {
+      path: "/mobile/mine/pay/membercard",
+      models: () => [
+        import ("./models/member")
+      ],
+      component: () =>
+        import ("./routes/member/pay/MemberCard")
+    },
+    {
       path: "/mobile/order",
       models: () => [import("./models/member"),import("./models/order")],
       component: () => import("./routes/member/order/index")
