@@ -4,27 +4,33 @@ import { connect } from "dva";
 import {routerRedux} from "dva/router";
 import { Grid } from 'antd-mobile';
 import 'antd-mobile/lib/grid/style/css';
-@connect(({ member,loading }) => ({
+@connect(({ member,loading,config }) => ({
   loginuser: member.loginuser,
+  checkconfig: config.checkconfig,
  }))
 class MemberCard extends React.Component {
+
+	componentDidMount() {
+		const { dispatch } = this.props;
+		dispatch({ type: "config/loadconfig", payload: { id:1 } });
+	}
   render() { 
       const data = [{
           title: '日卡',
-          desc: '9.3/时',
-          money: 140
+          desc: this.props.checkconfig.dayvalue/24,
+          money: this.props.checkconfig.dayvalue
       }, {
           title: '周卡',
-          desc: '4.6/时',
-          money: 488
+          desc: this.props.checkconfig.weekvalue/(24*7),
+          money: this.props.checkconfig.weekvalue
       }, {
           title: '月卡',
-          desc: '3.73/时',
-          money: 1688
+          desc: this.props.checkconfig.monthvalue/(24*7*4),
+          money: this.props.checkconfig.monthvalue
       }, {
           title: '季卡',
-          desc: '2.73/时',
-          money: 3688
+          desc: this.props.checkconfig.sessionvalue/(24*7*4*3),
+          money: this.props.checkconfig.sessionvalue
       }];
     return (
       <div> 
@@ -38,7 +44,7 @@ class MemberCard extends React.Component {
                   <div style={{ color: '#888', fontSize: '25px'}}>
                     <span>{dataItem.title}</span>
                   </div>
-                  <span style={{ color: '#888', fontSize: '13px'}}>{dataItem.desc}</span>
+                  <span style={{ color: '#888', fontSize: '13px'}}>{`${dataItem.desc.toFixed(2)}/小时`}</span>
                 </div>);
             }}
           />

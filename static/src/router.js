@@ -56,7 +56,8 @@ const Routers = function({ history, app }) {
     {
       path: "/mobile/mine/pay/membercard",
       models: () => [
-        import ("./models/member")
+        import ("./models/member"),
+        import ("./models/config")
       ],
       component: () =>
         import ("./routes/member/pay/MemberCard")
@@ -93,6 +94,14 @@ const Routers = function({ history, app }) {
       ],
       component: () =>
         import ("./routes/productcard/index")
+    },
+    {
+      path: "/config",
+      models: () => [
+        import ("./models/config")
+      ],
+      component: () =>
+        import ("./routes/config/index")
     },
     {
       path: "/productcard/create",

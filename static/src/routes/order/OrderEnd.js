@@ -12,8 +12,7 @@ import {
     Radio,
 	Modal,
 } from "antd";
-import Result from "../../components/Result"
-import { hourprice } from "../../utils/config";
+import Result from "../../components/Result";
 import moment from "moment";
 import { GetMoney,GetMoneyDetail } from '../../utils'
 import {

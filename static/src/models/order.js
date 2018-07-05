@@ -167,7 +167,6 @@ export default {
                 }
                 const now = moment();
                 const hours = now.diff(overtime, 'hours', true);
-                
                 if (Math.ceil(hours) > 0)
                 {
                   errormsg = 'outofcardtime';

@@ -1,5 +1,6 @@
 import { register,querylist,loadmemeber,update,getusrmsg,loadmemberbyphone } from "../services/member";
 import { addaccournt } from "../services/accournt";
+import { loadsingle } from "../services/config";
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
@@ -145,15 +146,16 @@ export default {
       const {productcardlist} = yield select(state => state.productcard);
       const callback = payload.callback;
       const accournt={};
+      const config = yield call(loadsingle, { id:1 });
       accournt.mid = checkmember.mid;
       if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
-        if(rechargev>1000)
+        if (rechargev > 1000 && rechargev <= 2000)
         {
           rechargev = rechargev+100;
         }
-        if (rechargev > 2000) {
+        if (rechargev > 2000 && rechargev <= 5000) {
           rechargev = rechargev + 200;
         }
         if (rechargev > 5000) {
@@ -164,16 +166,17 @@ export default {
         checkmember.mregisttime = moment().format('YYYY-MM-DD HH:mm:ss');
         checkmember.mmoney = parseInt(checkmember.mmoney) + rechargev;
         accournt.atype=1;
-        accournt.amoney = rechargev;
-        accournt.asmoney = rechargev;
+        accournt.amoney = parseInt(payload.rechargevalue) * config.data.rechargedis;
+        accournt.asmoney = parseInt(payload.rechargevalue) * config.data.rechargedis;
         accournt.adesc ='会员充值';
       } else if (payload.rechargetype === "2") {
         //开卡的
+        debugger;
         checkmember.mregisttime = payload.cardusedate;
         checkmember.mtype = parseInt(payload.cardtype);
         accournt.atype = 2;
-        accournt.amoney = payload.cardtype === '1' ? 140 : payload.cardtype === '2' ? 488 : payload.cardtype === '3'?1688:3688;
-        accournt.asmoney = payload.cardtype === '1' ? 140 : payload.cardtype === '2' ? 488 : payload.cardtype === '3' ? 1688 : 3688;
+        accournt.amoney = payload.cardtype === '1' ? config.data.dayvalue : payload.cardtype === '2' ? config.data.weekvalue : payload.cardtype === '3' ? config.data.monthvalue : config.data.sessionvalue;
+        accournt.asmoney = payload.cardtype === '1' ? config.data.dayvalue : payload.cardtype === '2' ? config.data.weekvalue : payload.cardtype === '3' ? config.data.monthvalue : config.data.sessionvalue;
         accournt.adesc = mtype[payload.cardtype];
       }else{
         const pcitem = productcardlist.find((item) => {

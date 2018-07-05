@@ -24,6 +24,7 @@ module.exports = app => {
   app.get('/productcard/create', 'client.index');
   app.get('/productcard/edit/:id', 'client.index');
   app.get('/orderlist', 'client.index');
+  app.get('/config', 'client.index');
   app.get('/memberlist/recharge/:id', 'client.index');
   app.get('/memberlist/create', 'client.index');
   app.get('/memberlist/edit/:id', 'client.index');

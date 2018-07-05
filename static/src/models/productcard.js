@@ -72,8 +72,7 @@ export default {
       }
     },
     *saveproductcard({ payload }, { call, put,select }) {
-        let data = null,
-            tableData = null;
+        let data = null;
         const callback = payload.callback;
         delete payload.callback;
         const { imglist } = yield select(state => state.productcard);

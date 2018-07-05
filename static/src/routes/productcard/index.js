@@ -96,6 +96,12 @@ class ProductCard extends Component {
 							this.props.dispatch(
 									routerRedux.push({ pathname: "/productcard/create" })
 							);
+							this.props.dispatch({
+								type: "productcard/updateState",
+								payload: {
+									imglist: []
+								}
+							});
 						}}
 						style={{ marginLeft: 10 }}
 					>

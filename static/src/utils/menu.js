@@ -71,6 +71,11 @@ module.exports = [
     icon: "api",
   },
   {
+    key: "config",
+    name: "系统设置", //模块
+    icon: "setting",
+  },
+  {
     key: "tableManager",
     name: "模块管理", //模块
     icon: "database",
