@@ -11,7 +11,7 @@
     "server": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "egg-bin test",
-    "start": "egg-scripts start --ignore-stderr  --daemon",
+    "start": "egg-scripts start --port=80 --ignore-stderr  --daemon",
     "stop": "egg-scripts stop"
   },
   "author": "",
