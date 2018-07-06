@@ -7,7 +7,7 @@ import { hashHistory } from "dva/router";
 import createHistory from 'history/createBrowserHistory'
 import { createLogger } from 'redux-logger';
 const OAuth = require('wechat-oauth');
-global.client = new OAuth('wx40e94d70b161bccb', '02dd058278c7ef97b1fabdad73d55e5f');
+global.client = new OAuth('wx806d517c00b4e3db', 'c463edb586c68158ea39679621ad5a40');
 const app = dva({
   ...createLoading({
     effects: true
