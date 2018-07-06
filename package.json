@@ -102,7 +102,8 @@
     "rndm": "^1.2.0",
     "rucksack-css": "^0.9.1",
     "stream-wormhole": "^1.0.3",
-    "wechat": "^2.1.0"
+    "wechat": "^2.1.0",
+    "wechat-oauth": "^1.4.2"
   },
   "eslintConfig": {
     "parser": "babel-eslint",

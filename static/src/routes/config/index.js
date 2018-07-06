@@ -62,7 +62,7 @@ class Config extends Component {
 						monthvalue: values.monthvalue,
 						sessionvalue: values.sessionvalue,
 						rechargedis: parseInt(values.rechargedis)/100,
-						overspan: values.overspan
+						overspan: 30
 					},
 					callback: data => {
 						hide();
@@ -161,7 +161,7 @@ class Config extends Component {
                                     /> )
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="过期时间(分钟)">
+						{/* <FormItem {...formItemLayout} label="过期时间(分钟)">
 							{getFieldDecorator("overspan", {
 								initialValue: this.props.checkconfig.overspan,
 							})( <InputNumber
@@ -170,7 +170,7 @@ class Config extends Component {
                                     max={120}
                                     />)
 							}
-						</FormItem>
+						</FormItem> */}
 					</Form> 
 				</div>
 			)
