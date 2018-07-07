@@ -20,7 +20,7 @@ class Mine extends React.Component {
     this.props.dispatch({
                 type: "app/changetab",
                 payload: { tab: 'mine' }
-              });]
+              });
   }
   render() {
     let cpd = null;
