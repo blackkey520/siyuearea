@@ -78,11 +78,6 @@ const Routers = function({ history, app }) {
       component: () => import("./routes/member/reserve/index")
     },
     {
-      path: "/mobile/init/:routeid",
-      models: () => [import("./models/member")],
-      component: () => import("./routes/wechat/index")
-    },
-    {
       path: "/callback",
       models: () => [import("./models/member")],
       component: () => import("./routes/wechat/callback")

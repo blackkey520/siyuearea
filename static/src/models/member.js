@@ -97,12 +97,15 @@ export default {
             phonenum: payload.phone,
             mstate: 0,
             mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
-            mtype: 1,
+            mtype: 0,
             mdesc: '',
             mmoney: 0
           }
           result = yield call(register, param);
-           loginuser.member = result.data;
+          const luser = yield call(loadmemberbyphone, {
+            phonenum: payload.phone
+          });
+           loginuser.member = luser.data.record[0];
         }
         if(result.success)
         {

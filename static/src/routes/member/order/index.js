@@ -22,8 +22,7 @@ class Order extends React.Component {
   componentWillMount(){
     //   const url = global.client.getAuthorizeURL('http://'+self.location.host+'/callback','','snsapi_userinfo');
     //  window.open(url, "_self");
-    if (this.props.loginuser.member) {
-       this.props.dispatch({
+    this.props.dispatch({
                 type: "app/changetab",
                 payload: { tab: 'order' }
               });
@@ -35,13 +34,6 @@ class Order extends React.Component {
           pageSize:5
         }
       });
-    }else{
-       this.props.dispatch(
-         routerRedux.push({
-           pathname: `/mobile/init/order`
-         })
-       );
-    }
   }
   //  componentDidMount() {
   //   // you can scroll to the specified position

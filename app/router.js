@@ -4,7 +4,7 @@
 module.exports = app => {
     console.log(app.oAuth2Server);
   app.get('/', 'client.index');
-  app.get('/mobile/init/:routeid', 'client.index');
+  app.get('/mobile/init/:routeid', 'wechat.redirect');
   app.get('/mobile/login/:routeid', 'client.index');
   app.get('/mobile/result/:suc/:tit', 'client.index');
   app.get('/mobile/register', 'client.index');
@@ -16,7 +16,7 @@ module.exports = app => {
   app.get('/mobile/order', 'client.index');
   app.get('/mobile/order/:orderid', 'client.index');
   app.get('/mobile/reserve', 'client.index');
-  app.get('/mobile/init/:routeid', 'client.index');
+
   app.get('/callback', 'client.index');
   app.get('/accountslist', 'client.index');
   app.get('/memberlist', 'client.index');
@@ -53,7 +53,7 @@ module.exports = app => {
   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
- app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
+  app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
 
   app.post('/user/authorize',  'user.authenticate');
   app.get('/user/authenticate',  'user.authenticate');

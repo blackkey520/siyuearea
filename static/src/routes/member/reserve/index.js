@@ -27,21 +27,11 @@ class Reserve extends React.Component {
   componentWillMount(){
     //   const url = global.client.getAuthorizeURL('http://'+self.location.host+'/callback','','snsapi_userinfo');
     //  window.open(url, "_self");
-    if(this.props.loginuser.member)
-    {
-      this.props.dispatch({
+    this.props.dispatch({
                 type: "app/changetab",
                 payload: { tab: 'reserve' }
               });
       this.props.dispatch({ type: "place/getplacelist", payload: {  } });
-    }
-    else{
-      this.props.dispatch(
-        routerRedux.push({
-          pathname: `/mobile/init/reserve`
-        })
-      );
-    }
   }
   render() {
     const now = new Date();
