@@ -69,7 +69,7 @@ export default {
           });
           if(result.data.ismember)
           {
-            yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}?v1`, }));
+            yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}?v=v1`, }));
           }
         }else{
           mobilemsg='系统出现问题，请稍后再试';
