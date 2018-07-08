@@ -17,7 +17,7 @@ class CheckPlace extends Subscription {
             console.log(memberlist);
             for (let i = 0;i<memberlist.record.length; i++) {
                 const item=memberlist.record[i];
-                if(moment().diff(moment(item.otime),'hours',true)>5)
+                if(moment().diff(moment(item.otime),'hours',true)>1)
                 {
                     console.log(`找到过期订单${item.oid}|${item.pid}|${item.mid}|${moment(item.otime).format('YYYY-MM-DD HH:mm:ss')}`);
                     const result=yield this.service.restql.update('Base_Order',item.oid, {ostate:3});

@@ -15,7 +15,7 @@ module.exports = app => {
   app.get('/mobile/mine/pay/membercard', 'client.index');
   app.get('/mobile/order', 'client.index');
   app.get('/mobile/order/:orderid', 'client.index');
-  app.get('/mobile/reserve', 'client.index');
+  app.get('/mobile/reserve?v1', 'client.index');
 
   app.get('/callback', 'client.index');
   app.get('/accountslist', 'client.index');

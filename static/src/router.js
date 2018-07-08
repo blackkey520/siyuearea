@@ -73,7 +73,7 @@ const Routers = function({ history, app }) {
       component: () => import("./routes/member/myordercode/index")
     },
     {
-      path: "/mobile/reserve",
+      path: "/mobile/reserve?v1",
       models: () => [import("./models/member"),import("./models/place")],
       component: () => import("./routes/member/reserve/index")
     },
