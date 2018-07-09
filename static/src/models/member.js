@@ -86,40 +86,36 @@ export default {
           mem.mregisttime = moment(mem.mregisttime).format('YYYY-MM-DD HH:mm:ss');
           result = yield call(update, mem);
            loginuser.member = mem;
+          yield put({
+              type: "updateState",
+              payload: {
+                loginuser,
+              }
+            });
+             
+            yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}`, }));
         }
         else{
-          
-          const param = {
-            membercode: Math.random().toString(20).substr(2),
-            memberopenid: payload.userInfo.openid,
-            mpd: 0,
-            mname: payload.userInfo.nickname,
-            phonenum: payload.phone,
-            mstate: 0,
-            mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
-            mtype: 0,
-            mdesc: '',
-            mmoney: 0
-          }
-          result = yield call(register, param);
-          const luser = yield call(loadmemberbyphone, {
-            phonenum: payload.phone
-          });
-           loginuser.member = luser.data.record[0];
+          yield put(routerRedux.push({ pathname: `/mobile/result/false/认证失败`, }));
+          // const param = {
+          //   membercode: Math.random().toString(20).substr(2),
+          //   memberopenid: payload.userInfo.openid,
+          //   mpd: 0,
+          //   mname: payload.userInfo.nickname,
+          //   phonenum: payload.phone,
+          //   mstate: 0,
+          //   mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
+          //   mtype: 0,
+          //   mdesc: '',
+          //   mmoney: 0
+          // }
+          // result = yield call(register, param);
+          // const luser = yield call(loadmemberbyphone, {
+          //   phonenum: payload.phone
+          // });
+          //  loginuser.member = luser.data.record[0];
         }
-        if(result.success)
-        {
-          yield put({
-            type: "updateState",
-            payload: {
-              loginuser,
-            }
-          });
-          Toast.info('注册成功', 1);
-          yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}`, }));
-        }else{
-          Toast.info('注册失败，请稍后再试', 1);
-        }
+        
     },
     *getmemberlist({ payload }, { call, put }) {
       const data = yield call(querylist, payload);

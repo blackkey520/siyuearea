@@ -136,10 +136,5 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin("public/css/[name].css"),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ["vendor"],
-      minChunks: Infinity,
-      filename: "public/js/[name].js"
-    })
   ]
 };

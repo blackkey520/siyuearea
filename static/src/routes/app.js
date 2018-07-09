@@ -9,13 +9,7 @@ import { Router, Switch, Route, Redirect, routerRedux } from "dva/router";
 import "../components/skin.less";
 import Cookie from "../utils/js.cookie";
 import { withRouter } from "dva/router";
-import { TabBar } from 'antd-mobile';
 
-import 'antd-mobile/lib/tab-bar/style/css';
-import 'antd-mobile/lib/toast/style/css';
-
-
-const Item=TabBar.Item;
 const { Header, Bread, Footer, Sider, styles } = Layout;
 let loginPage = "";
 
@@ -169,56 +163,7 @@ if (location.pathname.indexOf('mobile') === -1 && location.pathname.indexOf('cal
   }else{
     return ( 
         <div>
-          <div style={{height:'calc(100vh - 50px)'}}>
             {children}
-          </div>
-          <TabBar
-          unselectedTintColor="#949494"
-          tintColor="#33A3F4"
-          barTintColor="white"
-        >
-          <Item
-            title="预定"
-            key="reserve"
-            icon={<Icon type="calendar" />}
-            selectedIcon={<Icon type="calendar" style={{color:'#2390ff'}} />} 
-            selected={selecttab==='reserve'}
-            onPress={() => {
-               dispatch({
-                type: "app/selecttab",
-                payload: { tab: 'reserve' }
-              });
-            }}
-          />
-          <Item
-             icon={<Icon type="bars" />}
-            selectedIcon={<Icon type="bars" style={{color:'#2390ff'}} />} 
-            selected={selecttab==='order'}
-            title="订单"
-            key="order"
-            onPress={() => {
-                dispatch({
-                type: "app/selecttab",
-                payload: { tab: 'order' }
-              });
-            }}
-            data-seed="logId1"
-          />
-          <Item
-             icon={<Icon type="user" />}
-            selectedIcon={<Icon type="user" style={{color:'#2390ff'}} />} 
-            selected={selecttab==='mine'}
-            title="我的"
-            key="mine" 
-            onPress={() => {
-               dispatch({
-                type: "app/selecttab",
-                payload: { tab: 'mine' }
-              });
-            }}
-          />
-        
-        </TabBar>
         </div>
   );
   }

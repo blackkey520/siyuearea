@@ -5,7 +5,7 @@ import { request, config } from "../../../utils";
 import moment from 'moment';
 import { connect } from "dva";
 import { routerRedux } from "dva/router";
-import SitMap from '../../../components/SitMap?v=2'
+import SitMap from '../../../components/SitMap'
 import {DatePicker, ActivityIndicator} from 'antd-mobile';
 import {Toast} from 'antd-mobile';
 import 'antd-mobile/lib/date-picker/style/css';
