@@ -7,7 +7,7 @@
     "pro": "EGG_SERVER_ENV=prod nohup node dispatch.js > stdout.log 2> stderr.log &",
     "dev": "npm run debug & npm run dev_static",
     "dev_static": "webpack-dev-server --inline --hot  --history-api-fallback --watch --progress --config ./static/build/webpack.dev.config.js",
-    "build": "webpack  --progress --config ./static/build/webpack.prod.config.js && node ./scripts/copy.js",
+    "build": "webpack --progress --config ./static/build/webpack.prod.config.js && node ./scripts/copy.js",
     "server": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "egg-bin test",
@@ -57,6 +57,7 @@
     "supertest": "^3.0.0",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
+    "webpack-md5-hash": "^0.0.6",
     "webpack-merge": "^4.1.0",
     "xss": "^0.3.4"
   },

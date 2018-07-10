@@ -5,6 +5,8 @@ const sourcePath = path.join(__dirname, "./static/src");
 const outputPath = path.join(__dirname, "./../../app/view/public/");
 const rucksack = require("rucksack-css");
 const autoprefixer = require("autoprefixer");
+var WebpackMd5Hash = require('webpack-md5-hash');
+
 
 const postcssBasePlugins = [
   require("postcss-import")({
@@ -18,12 +20,12 @@ const postcssBasePlugins = [
 module.exports = {
   entry: {
     index: "./static/src/index.js",
-    vendor: ["react", "react-dom", "whatwg-fetch"]
   },
   output: {
     path: outputPath,
     publicPath: "/",
-    filename: "public/js/[name].js"
+    filename: "public/js/[name].js",
+    chunkFilename: "public/js/[chunkhash].[id].chunk.js"
   },
   node:{
     fs:'empty',
