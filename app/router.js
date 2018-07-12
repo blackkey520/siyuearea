@@ -18,6 +18,7 @@ module.exports = app => {
   app.get('/mobile/reserve', 'client.index');
 
   app.get('/callback', 'client.index');
+  app.get('/paypage','client.index');
   app.get('/accountslist', 'client.index');
   app.get('/memberlist', 'client.index');
   app.get('/productcard','client.index');
@@ -54,7 +55,8 @@ module.exports = app => {
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
   app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
-
+  app.get('/requestpayment/:openid/:money', 'pay.payment');
+  app.get('/paycallback', 'pay.paycallback')
   app.post('/user/authorize',  'user.authenticate');
   app.get('/user/authenticate',  'user.authenticate');
 };

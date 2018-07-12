@@ -15,3 +15,10 @@ export async function loadsingle(params) {
     method: "get"
   });
 }
+export async function paytest(params){
+  const url = `/api/wechat/getusr/${params.money}`;
+  return request({
+    url,
+    method: "get"
+  });
+}

@@ -82,6 +82,11 @@ const Routers = function({ history, app }) {
       models: () => [import("./models/member")],
       component: () => import("./routes/wechat/callback")
     },
+     {
+      path: "/paypage",
+      models: () => [import("./models/config")],
+      component: () => import("./routes/wechat/PayPage")
+    }, 
     {
       path: "/productcard",
       models: () => [

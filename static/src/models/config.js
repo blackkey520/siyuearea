@@ -1,4 +1,4 @@
-import { update,loadsingle } from "../services/config";
+import { update,loadsingle,paytest } from "../services/config";
 import { routerRedux } from "dva/router";
 export default {
   namespace: "config",
@@ -23,6 +23,11 @@ export default {
           }
         });
       }
+    },
+    * testpay({payload},{call,put})
+    {
+       const data = yield call(paytest, {money:payload.money});
+       debugger;
     },
     *saveconfig({ payload }, { call, put,select }) {
         let data = null;

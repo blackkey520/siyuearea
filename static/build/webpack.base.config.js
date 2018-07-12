@@ -49,7 +49,7 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
-          use: [
+          use: [  
             {
               loader: "css-loader",
               options: { sourceMap: true }

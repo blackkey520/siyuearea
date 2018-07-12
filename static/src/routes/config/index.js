@@ -101,6 +101,7 @@ class Config extends Component {
 						<Button type="primary" onClick={this.onSubmit.bind(this)}>
 							确认
 						</Button>
+						 
 					</div>
 
 					<Form>
