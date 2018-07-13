@@ -9,6 +9,7 @@ import SitMap from '../../../components/SitMap'
 import {DatePicker, ActivityIndicator} from 'antd-mobile';
 import {Toast} from 'antd-mobile';
 import 'antd-mobile/lib/date-picker/style/css';
+import 'antd-mobile/lib/toast/style/css';
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN';
 import 'antd-mobile/lib/activity-indicator/style/css';
 @connect(({ place,loading,member }) => ({
@@ -82,7 +83,7 @@ class Reserve extends React.Component {
                                 routerRedux.push({ pathname: `/mobile/order`, })
                               );
                             } else {
-                              Toast.info('预定失败', 1);
+                              Toast.info('您还有未完成的订单', 1);
                             }
                           }
                       }

@@ -13,7 +13,7 @@ export async function add(params) {
     data: params
   });
 }
-export async function querylist(page,pageSize,body) {
+export async function queryorderlist(page,pageSize,body) {
   return request({
     url: `/api/order/getorderlist?page=${page}&pageSize=${pageSize}`,
     method: "POST",

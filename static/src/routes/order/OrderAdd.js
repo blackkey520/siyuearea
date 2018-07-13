@@ -64,7 +64,7 @@ class OrderAdd extends Component {
 									message.success("保存成功");
 									this.goBack();
 								} else {
-									message.error("保存失败");
+									message.error("该用户还有未完成的订单");
 								}
 							}
 						}

@@ -20,7 +20,7 @@ class ResultPage extends React.Component {
       <div style={{backgroundColor:'#fff'}}> 
         <Result
             style={{paddingTop:170}}
-            img={<Icon type={this.props.match.params.suc==="true"?"check-circle":"cross-circle-o"}  style={this.props.match.params.suc==="true"?{ fill: '#1F90E6',width:60,height:60 }:{ fill: '#F13642',width:60,height:60 }} />}
+            img={<Icon type={this.props.match.params.suc==="true"?"check-circle":"cross-circle-o"}  style={this.props.match.params.suc==="true"?{ fill: '#1F90E6',width:60,height:60 }:{ fill: '#ffc600',width:60,height:60 }} />}
             title={this.props.match.params.tit}
             message={this.props.resultmsg}
         />

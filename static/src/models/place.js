@@ -1,5 +1,5 @@
 import {querylist, updateplace} from "../services/place";
-import {addorder} from "../services/order";
+import {addorder,queryorderlist} from "../services/order";
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
@@ -30,21 +30,31 @@ export default {
      *orderplace({ payload }, { call, put }) {
         let data = null;
         const callback = payload.callback;
-        const order={
-          pid:payload.place.pid,
-          ordercode:Math.random().toString(20).substr(2),
-          mid:payload.mid,
-          ostate:0,
-          otime:payload.orderdate,
-          pdesc:payload.desc
-        }
-        const result=yield call(addorder,order);
-        if(result.success)
-        {
-          payload.place.pstate=1;
-          data=yield call(updateplace,payload.place);
-        }
-        callback && callback(data);
+         const ordered = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:0});
+         const useed = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:1}); 
+         debugger;
+         if (ordered.data.record.length === 0 && useed.data.record.length === 0)
+         {
+           const order={
+            pid:payload.place.pid,
+            ordercode:Math.random().toString(20).substr(2),
+            mid:payload.mid,
+            ostate:0,
+            otime:payload.orderdate,
+            pdesc:payload.desc
+          }
+          debugger;
+          const result=yield call(addorder,order);
+          if(result.success)
+          {
+            payload.place.pstate=1;
+            data=yield call(updateplace,payload.place);
+          }
+          callback && callback(data);
+         }else{
+           callback && callback();
+         }
+        
     },
   },
 }

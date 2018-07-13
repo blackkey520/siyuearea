@@ -15,7 +15,7 @@ export default {
     loginuser:{},
     checkmember:{},
     memberlist:[],
-    resultmsg: '您还不是我们的会员，请到店体验吧！我们的位置：北京市海淀区北四环西路68号6层。',
+    resultmsg: '您还不是我们的会员，请到店体验吧！我们的位置：北京市海淀区北四环西路68号左岸工社6层。',
     pagination: {
       current: 1,
       pageSize: 10,
@@ -43,7 +43,9 @@ export default {
   },
   effects: {
     *getusrbyphone({payload},{call,out,put}){
-      const result = yield call(querylist, {phonenum:payload.phone});
+      const result = yield call(loadmemberbyphone, {
+        phonenum: payload.phone
+      });
       if(result.success&&result.data.record.length!==0)
       {
         yield put({

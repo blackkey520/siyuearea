@@ -11,7 +11,7 @@ class Login extends React.Component {
    constructor(props, context) {
        super(props, context);
        this.state = {
-           phone: 0
+           phone: 123
        }
    }
   render() {

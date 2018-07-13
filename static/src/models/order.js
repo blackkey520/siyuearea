@@ -1,4 +1,4 @@
-import {add, querylist, updateorder, queryrecordlist,updaterecord} from "../services/order";
+import {add, queryorderlist, updateorder, queryrecordlist,updaterecord} from "../services/order";
 import {loadmemeber,update} from "../services/member";
 import { updateplace } from "../services/place";
 import { addaccournt } from "../services/accournt";
@@ -242,7 +242,7 @@ export default {
       {
         param.ordercode=payload.ordercode;
       }
-      const data = yield call(querylist, payload.page,payload.pageSize,param);
+      const data = yield call(queryorderlist, payload.page, payload.pageSize, param);
       yield put({
         type: "loaddataSuccess",
         payload: {
@@ -253,7 +253,9 @@ export default {
       });
     },
      *getmobileorderlist({ payload }, { call, put }) {
-      const data = yield call(querylist, payload.page,payload.pageSize,{mid:payload.mid});
+      const data = yield call(queryorderlist, payload.page, payload.pageSize, {
+        mid: payload.mid
+      });
        const member=yield call(loadmemeber,{id:payload.mid});
       yield put({
         type: "loaddataMobileSuccess",
@@ -276,7 +278,7 @@ export default {
       let orderdetail={};
       let recordsdetail={};
       let memberdetail={};
-      const data = yield call(querylist, 1,10,{oid:payload.oid});
+      const data = yield call(queryorderlist, 1,10,{oid:payload.oid});
       const record=yield call(queryrecordlist,1,10,{oid:payload.oid});
       
       if(data.data.record.length!==0)
