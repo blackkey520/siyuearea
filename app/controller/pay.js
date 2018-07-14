@@ -18,7 +18,7 @@ class PayController extends Controller {
       var order = {
           body: '日卡会员',
           attach: '{"类型":"日卡会员"}',
-          out_trade_no: '肆阅空间' + (+new Date),
+          out_trade_no: 'siyuearea' + (+new Date),
           total_fee: ctx.params.money * 100,
           spbill_create_ip: '140.143.159.216',
           openid: ctx.params.openid,
