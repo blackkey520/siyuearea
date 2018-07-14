@@ -5,7 +5,7 @@ const Controller = require('egg').Controller;
 const middleware = require('../utils/wechat-pay').middleware;
 const Payment = require('../utils/wechat-pay').Payment;
 var initConfig = {
-    partnerKey: 'siyuekongjianhejingpingbjlanyue1',
+    partnerKey: 'wtP77z2jPt85GhXzFKio4mC0lk7fWEV4',
     appId: 'wx806d517c00b4e3db',
     mchId: '1507977561',
     notifyUrl: "http://www.bjlanyue.cn/paycallback"
