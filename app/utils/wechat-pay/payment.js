@@ -492,7 +492,7 @@ if (global.Promise) {
                 return new Promise((resolve, reject) => {
                     let handleResult = function (err, result) {
                         if (err) {
-                            reject(err)
+                            resolve(err)
                         } else {
                             resolve(result)
                         }

@@ -35,7 +35,12 @@ exports.cors = {
 exports.multipart = {
   fileExtensions: [".xls", ".doc", ".ppt", ".docx", ".xlsx", ".pptx"]
 };
-
+exports.view = {
+  defaultViewEngine: 'nunjucks',
+  mapping: {
+    '.tpl': 'nunjucks',
+  },
+};
 exports.oAuth2Server = {
   grants: ["password"],
   expires: 60

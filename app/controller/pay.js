@@ -1,4 +1,7 @@
-"use strict";
+
+'use strict';
+// app/controller/news.js
+const Controller = require('egg').Controller;
 const middleware = require('../utils/wechat-pay').middleware;
 const Payment = require('../utils/wechat-pay').Payment;
 var initConfig = {
@@ -8,11 +11,10 @@ var initConfig = {
     notifyUrl: "http://www.bjlanyue.cn/paycallback"
 };
 var payment = new Payment(initConfig);
-
-module.exports = app => {
-  class PayController extends app.Controller {
-    *payment() {
-      const ctx = this.ctx;
+class PayController extends Controller {
+  // 服务器渲染Controller
+  async payment() {
+    const ctx = this.ctx;
       var order = {
           body: '日卡会员',
           attach: '{"类型":"日卡会员"}',
@@ -22,32 +24,33 @@ module.exports = app => {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
-      yield payment.getBrandWCPayRequestParams(order, function (err, payargs) {
+      await payment.getBrandWCPayRequestParams(order, async function(err, payargs) {
           if (err) {
-                ctx.body=ctx.render('public/error.tpl', {
-                    err
-                })
+              console.log('====================================')
+              console.log(err)
+              console.log('====================================')
+                ctx.body = err.stack;
             } else {
-                ctx.body = ctx.render('public/pay.tpl', {
-                    appId: payargs.appId,
-                    timeStamp: payargs.timeStamp,
-                    nonceStr: payargs.nonceStr,
-                    package: payargs.package,
-                    signType: payargs.signType,
-                    paySign: payargs.paySign,
-                })
+
+                 ctx.body = {
+                     appId: payargs.appId,
+                     timeStamp: payargs.timeStamp,
+                     nonceStr: payargs.nonceStr,
+                     package: payargs.package,
+                     signType: payargs.signType,
+                     paySign: payargs.paySign,
+                 };
             } 
       });
-    }
-    * paycallback() {
-      const ctx = this.ctx;
-       middleware(initConfig).getNotify().done(function (message, req, res, next) {
-           ctx.body = ctx.render('public/result.tpl', {
+  }
+  async paycallback(){
+       const ctx = this.ctx;
+       middleware(initConfig).getNotify().done(async function (message, req, res, next) {
+           await this.ctx.render('result.tpl', {
                result: message
            })
        })
-      ctx.body = yield ctx.renderView("public/index.html");
-    }
   }
-  return PayController;
-};
+}
+
+module.exports = PayController;
