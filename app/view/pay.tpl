@@ -18,7 +18,7 @@
 
 <body>
  
-<button type="button" class="btn" onclick="goPay('<%= appId %>','<%= timeStamp %>', '<%= nonceStr %>', '<%= package %>', '<%= signType %>', '<%= paySign %>');">微信支付</button>
+<button type="button" class="btn" onclick="goPay('{{appId}}','{{timeStamp}}', '{{nonceStr}}', '{{package}}', '{{signType}}', '{{paySign}}');">微信支付</button>
  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
     function goPay(appId, timeStamp, nonceStr, package, signType, paySign) {

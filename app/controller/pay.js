@@ -24,24 +24,21 @@ class PayController extends Controller {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
-      await payment.getBrandWCPayRequestParams(order, async function(err, payargs) {
-          if (err) {
-              console.log('====================================')
-              console.log(err)
-              console.log('====================================')
-                ctx.body = err.stack;
-            } else {
-
-                 ctx.body = {
-                     appId: payargs.appId,
-                     timeStamp: payargs.timeStamp,
-                     nonceStr: payargs.nonceStr,
-                     package: payargs.package,
-                     signType: payargs.signType,
-                     paySign: payargs.paySign,
-                 };
-            } 
-      });
+      const payargs= await payment.getBrandWCPayRequestParams(order);
+      if (payargs.appId)
+      {
+        await ctx.render("pay.tpl", {
+            appId: payargs.appId,
+            timeStamp: payargs.timeStamp,
+            nonceStr: payargs.nonceStr,
+            package: payargs.package,
+            signType: payargs.signType,
+            paySign: payargs.paySign,
+        });
+      }
+      else{
+          ctx.body = payargs.message;
+      }
   }
   async paycallback(){
        const ctx = this.ctx;
