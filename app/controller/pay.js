@@ -19,7 +19,8 @@ class PayController extends Controller {
           body: ctx.params.ptype,
           attach: ctx.params.attach,
           out_trade_no: 'siyuearea' + (+new Date),
-          total_fee: ctx.params.money * 100,
+        //   total_fee: ctx.params.money * 100,
+          total_fee: 0.1 * 100,
           spbill_create_ip: '140.143.159.216',
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
