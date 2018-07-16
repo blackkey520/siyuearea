@@ -42,16 +42,15 @@ class MemberCard extends React.Component {
          <Grid data={data}
             columnNum={3}
             itemStyle={{ height: '80px'}}
-            onClick={_el => {
-              this.props.dispatch({
-                    type: "pay/paym",
-                    payload: {
-                        money: _el.money,
-                        openid: this.props.loginuser.member.memberopenid,
-                        ptype: '会员卡',
-                        attach: {type:2,money:_el.money,mtype:_el.type,title:_el.title}
-                    }
-                  });
+            onClick={_el => { 
+                  const attach = {
+                    type: 2,
+                    money: _el.money,
+                    mtype: _el.type,
+                    title: _el.title
+                  };
+                  const url=`http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员卡'}/${attach}`;
+                  window.open(url, "_self");
             }}
             renderItem={dataItem => {
               return(<div style={{height:'100%',width:'100%'}}>

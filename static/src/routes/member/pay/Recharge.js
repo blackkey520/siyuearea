@@ -43,20 +43,14 @@ class Recharge extends React.Component {
             columnNum={3}
             itemStyle={{ height: '80px'}}
             onClick={_el => {
-              this.props.dispatch({
-                type: "pay/paym",
-                payload: {
-                  money: _el.money,
-                  openid: this.props.loginuser.member.memberopenid,
-                  ptype: '充值',
-                  attach: {
-                    type: 1,
-                    money: _el.money,
-                    mtype: _el.title,
-                    title: _el.desc
-                  }
-                }
-              });
+              const attach = {
+                type: 1,
+                money: _el.money,
+                mtype: _el.title,
+                title: _el.desc
+              };
+              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'充值'}/${attach}`;
+              window.open(url, "_self");
             }}
             renderItem={dataItem => {
               if(dataItem.desc!=='')
