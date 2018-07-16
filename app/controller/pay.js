@@ -43,8 +43,8 @@ class PayController extends Controller {
       }
   }
   async paycallback(){
-       const ctx = this.ctx;
-       ctx.body = this.query;
+        
+       ctx.body = 'dsadasdadsa';
   }
 }
 
