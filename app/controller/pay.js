@@ -35,7 +35,7 @@ class PayController extends Controller {
             package: payargs.package,
             signType: payargs.signType,
             paySign: payargs.paySign,
-            attach:ctx.params.attach,
+            type: ctx.params.attach.type,
         });
       }
       else{
