@@ -49,7 +49,7 @@ class Recharge extends React.Component {
                 mtype: _el.title,
                 title: _el.desc
               };
-              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'充值'}/${attach}`;
+              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'充值'}/${JSON.stringify(attach)}`;
               window.open(url, "_self");
             }}
             renderItem={dataItem => {

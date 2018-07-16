@@ -17,7 +17,7 @@
 </head>
 
 <body>
- {{type}}
+ {{attach}}
 <button type="button" class="btn" onclick="goPay('{{appId}}','{{timeStamp}}', '{{nonceStr}}', '{{package}}', '{{signType}}', '{{paySign}}');">微信支付</button>
  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
@@ -31,7 +31,8 @@
             "paySign" : paySign
         }, function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok"){
-                alert('{{attach.type}}');
+                 var obj = eval('(' + '{{attach}}' + ')');
+                alert(obj.type);
               
             }else{
                 alert("支付失败，请重试");
