@@ -45,7 +45,7 @@ export async function getusrmsg(params) {
 }
 export async function paymoney(params){
   return request({
-    url: `/requestpayment/${params.openid}/${params.money}/${params.ptype}/${params.otype}`,
+    url: `/requestpayment/${params.openid}/${params.money}/${params.ptype}/${params.attach}`,
     method: "get",
   });
 }

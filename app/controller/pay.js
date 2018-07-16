@@ -24,6 +24,7 @@ class PayController extends Controller {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
+      debugger;
       const payargs= await payment.getBrandWCPayRequestParams(order);
       if (payargs.appId)
       {
