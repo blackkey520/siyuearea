@@ -43,13 +43,8 @@ class MemberCard extends React.Component {
             columnNum={3}
             itemStyle={{ height: '80px'}}
             onClick={_el => { 
-                  const attach = {
-                    type: 2,
-                    money: _el.money,
-                    mtype: _el.type,
-                    title: _el.title
-                  };
-                  const url=`http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员卡'}/${attach}`;
+                  const attach = "{type: 2,money: _el.money,mtype: _el.type,title: _el.title}";
+                  const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员卡'}/${attach}`;
                   window.open(url, "_self");
             }}
             renderItem={dataItem => {

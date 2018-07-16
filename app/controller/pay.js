@@ -15,6 +15,7 @@ class PayController extends Controller {
   // 服务器渲染Controller
   async payment() {
     const ctx = this.ctx;
+    debugger;
       var order = {
           body: ctx.params.ptype,
           attach: ctx.params.attach,
@@ -25,6 +26,7 @@ class PayController extends Controller {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
+      debugger;
       const payargs= await payment.getBrandWCPayRequestParams(order);
       if (payargs.appId)
       {

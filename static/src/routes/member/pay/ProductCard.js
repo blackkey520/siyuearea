@@ -22,12 +22,7 @@ class ProductCard extends React.Component {
     const row = (rowData, sectionID, rowID) => {
         return (
           <div key={rowID} onClick={()=>{
-              const attach = {
-                type: 3,
-                money: rowData.value,
-                mtype: rowData.pcid,
-                title: rowData.pcname
-              };
+              const attach = "{type: 3,money: rowData.value,mtype: rowData.pcid,title: rowData.pcname}";
               const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${rowData.value}/${'优惠卡'}/${attach}`;
               window.open(url, "_self");
             }} style={{ padding: '0 15px' }}>
