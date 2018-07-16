@@ -56,7 +56,7 @@ module.exports = app => {
   app.get('/api/wechat/getusr/:code','wechat.index');
   app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
   app.get('/requestpayment/:openid/:money/:ptype/:attach', 'pay.payment');
-  app.get('/paycallback', 'pay.paycallback')
+  app.get('/notify', 'pay.paycallback')
   app.post('/user/authorize',  'user.authenticate');
   app.get('/user/authenticate',  'user.authenticate');
 };

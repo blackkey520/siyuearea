@@ -8,7 +8,7 @@ var initConfig = {
     partnerKey: 'wtP77z2jPt85GhXzFKio4mC0lk7fWEV4',
     appId: 'wx806d517c00b4e3db',
     mchId: '1507977561',
-    notifyUrl: "http://" + this.host + "/paycallback"
+    notifyUrl: "http://" + this.host + "/notify/"
 };
 var payment = new Payment(initConfig);
 class PayController extends Controller {
@@ -25,7 +25,6 @@ class PayController extends Controller {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
-      debugger;
       const payargs= await payment.getBrandWCPayRequestParams(order);
       if (payargs.appId)
       {
@@ -36,6 +35,7 @@ class PayController extends Controller {
             package: payargs.package,
             signType: payargs.signType,
             paySign: payargs.paySign,
+            attach:ctx.params.attach,
         });
       }
       else{
