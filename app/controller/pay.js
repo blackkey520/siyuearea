@@ -8,7 +8,7 @@ var initConfig = {
     partnerKey: 'wtP77z2jPt85GhXzFKio4mC0lk7fWEV4',
     appId: 'wx806d517c00b4e3db',
     mchId: '1507977561',
-    notifyUrl: "http://www.bjlanyue.cn/paycallback"
+    notifyUrl: "/paycallback"
 };
 var payment = new Payment(initConfig);
 class PayController extends Controller {
@@ -16,8 +16,8 @@ class PayController extends Controller {
   async payment() {
     const ctx = this.ctx;
       var order = {
-          body: '日卡会员',
-          attach: '{"类型":"日卡会员"}',
+          body: ctx.params.ptype,
+          attach: ctx.params.attach,
           out_trade_no: 'siyuearea' + (+new Date),
           total_fee: ctx.params.money * 100,
           spbill_create_ip: '140.143.159.216',
@@ -42,11 +42,7 @@ class PayController extends Controller {
   }
   async paycallback(){
        const ctx = this.ctx;
-       middleware(initConfig).getNotify().done(async function (message, req, res, next) {
-           await this.ctx.render('result.tpl', {
-               result: message
-           })
-       })
+       ctx.body = this.query;
   }
 }
 

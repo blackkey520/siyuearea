@@ -42,7 +42,22 @@ class Recharge extends React.Component {
          <Grid data={data}
             columnNum={3}
             itemStyle={{ height: '80px'}}
-            onClick={_el => console.log(_el)}
+            onClick={_el => {
+              this.props.dispatch({
+                type: "pay/paym",
+                payload: {
+                  money: _el.money,
+                  openid: this.props.loginuser.member.memberopenid,
+                  ptype: '充值',
+                  attach: {
+                    type: 1,
+                    money: _el.money,
+                    mtype: _el.title,
+                    title: _el.desc
+                  }
+                }
+              });
+            }}
             renderItem={dataItem => {
               if(dataItem.desc!=='')
               {

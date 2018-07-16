@@ -22,7 +22,20 @@ class ProductCard extends React.Component {
     const row = (rowData, sectionID, rowID) => {
         return (
           <div key={rowID} onClick={()=>{
-                    
+                    this.props.dispatch({
+                      type: "pay/paym",
+                      payload: {
+                        money: rowData.value,
+                        openid: this.props.loginuser.member.memberopenid,
+                        ptype: '优惠卡',
+                        attach: {
+                          type: 3,
+                          money: rowData.value,
+                          mtype: rowData.pcid,
+                          title: rowData.pcname
+                        }
+                      }
+                    });
             }} style={{ padding: '0 15px' }}>
             <div style={{flexDirection:'row',padding: '15px 0',borderBottom: '2px solid #F6F6F6',backgroundColor:'#fff' }}>
               <div style={{ flexDirection:'column',width:'100%'}}>

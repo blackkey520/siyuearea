@@ -40,13 +40,17 @@ const Routers = function({ history, app }) {
     },
     {
       path: "/mobile/mine/pay/recharge",
-      models: () => [import("./models/member")],
+      models: () => [
+        import ("./models/pay"),
+        import ("./models/member")
+      ],
       component: () =>
         import ("./routes/member/pay/Recharge")
     },
     {
       path: "/mobile/mine/pay/productcard",
       models: () => [
+        import ("./models/pay"),
         import ("./models/member"),
         import ("./models/productcard")
       ],
@@ -56,6 +60,7 @@ const Routers = function({ history, app }) {
     {
       path: "/mobile/mine/pay/membercard",
       models: () => [
+        import ("./models/pay"),
         import ("./models/member"),
         import ("./models/config")
       ],

@@ -16,18 +16,22 @@ class MemberCard extends React.Component {
 	}
   render() { 
       const data = [{
+          type:1,
           title: '日卡',
           desc: this.props.checkconfig.dayvalue/24,
           money: this.props.checkconfig.dayvalue
       }, {
+         type: 2,
           title: '周卡',
           desc: this.props.checkconfig.weekvalue/(24*7),
           money: this.props.checkconfig.weekvalue
       }, {
+         type: 3,
           title: '月卡',
           desc: this.props.checkconfig.monthvalue/(24*7*4),
           money: this.props.checkconfig.monthvalue
       }, {
+         type: 4,
           title: '季卡',
           desc: this.props.checkconfig.sessionvalue/(24*7*4*3),
           money: this.props.checkconfig.sessionvalue
@@ -38,7 +42,17 @@ class MemberCard extends React.Component {
          <Grid data={data}
             columnNum={3}
             itemStyle={{ height: '80px'}}
-            onClick={_el => console.log(_el)}
+            onClick={_el => {
+              this.props.dispatch({
+                    type: "pay/paym",
+                    payload: {
+                        money: _el.money,
+                        openid: this.props.loginuser.member.memberopenid,
+                        ptype: '会员卡',
+                        attach: {type:2,money:_el.money,mtype:_el.type,title:_el.title}
+                    }
+                  });
+            }}
             renderItem={dataItem => {
               return(<div style={{height:'100%',width:'100%'}}>
                   <div style={{ color: '#888', fontSize: '25px'}}>
