@@ -31,9 +31,8 @@
             "paySign" : paySign
         }, function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok"){
-                 var obj = eval('(' + '{{attach}}' + ')');
+                 var obj = JSON.parse('{{attach}}');
                 alert(obj.type);
-              
             }else{
                 alert("支付失败，请重试");
             }
