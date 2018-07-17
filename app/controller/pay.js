@@ -18,7 +18,7 @@ class PayController extends Controller {
     debugger;
       var order = {
           body: ctx.params.ptype,
-          attach: ctx.params.attach,
+          attach: `${ctx.params.type}|${ctx.params.money}|${ctx.params.mtype}|${ctx.params.title}`,
           out_trade_no: 'siyuearea' + (+new Date),
         //   total_fee: ctx.params.money * 100,
           total_fee: 0.1 * 100,
@@ -26,7 +26,6 @@ class PayController extends Controller {
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
-      debugger;
       const payargs= await payment.getBrandWCPayRequestParams(order);
       if (payargs.appId)
       {
@@ -37,16 +36,24 @@ class PayController extends Controller {
             package: payargs.package,
             signType: payargs.signType,
             paySign: payargs.paySign,
-            attach: ctx.params.attach,
+            type: ctx.params.type,
+            mtype: ctx.params.mtype,
+            title: ctx.params.title,
         });
       }
       else{
           ctx.body = payargs.message;
       }
   }
+  async paytest() {
+      const ctx = this.ctx;
+      debugger;
+      await ctx.render("result.tpl", {
+          attach: ctx.params.attach,
+      });
+  }
   async paycallback(){
        const ctx = this.ctx;
-       ctx.body = 'dsadsadsa';
   }
 }
 

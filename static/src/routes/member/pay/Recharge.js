@@ -43,8 +43,7 @@ class Recharge extends React.Component {
             columnNum={3}
             itemStyle={{ height: '80px'}}
             onClick={_el => {
-              const attach = `{type: 1,money: ${_el.money},mtype:${ _el.title},title:${_el.desc}`;
-              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'充值'}/${attach}`;
+              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员充值'}/1/${_el.title}/${_el.desc}`;
               window.open(url, "_self");
             }}
             renderItem={dataItem => {

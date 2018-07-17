@@ -11,14 +11,34 @@
   <!-- set `maximum-scale` for some compatibility issues -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-  
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" href="/public/sercss/weui.css?version=2">
 </head>
 
 <body>
- {{attach}}
-<button type="button" class="btn" onclick="goPay('{{appId}}','{{timeStamp}}', '{{nonceStr}}', '{{package}}', '{{signType}}', '{{paySign}}');">微信支付</button>
+ <div class="page">
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">充值提醒</h2>
+            <p class="weui-msg__desc">您在肆阅空间的 {{ptype}} 消费 将要支付<a href="javascript:void(0);">{{money}}</a>元</p>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a href="#" onclick="goPay('{{appId}}','{{timeStamp}}', '{{nonceStr}}', '{{package}}', '{{signType}}', '{{paySign}}');" class="weui-btn weui-btn_primary">确定</a>
+            </p>
+        </div>
+        <div class="weui-msg__extra-area">
+            <div class="weui-footer">
+                <p class="weui-footer__links">
+                    <a href="javascript:void(0);" class="weui-footer__link">肆阅空间</a>
+                </p>
+                <p class="weui-footer__text">Copyright &copy; 2008-2016 bjlanyue</p>
+            </div>
+        </div>
+    </div>
+</div>
  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
     function goPay(appId, timeStamp, nonceStr, package, signType, paySign) {
@@ -31,8 +51,7 @@
             "paySign" : paySign
         }, function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok"){
-                 var obj = JSON.parse('{{attach}}');
-                alert(obj.type);
+                alert("{{type}}"+"|"+"{{mtype}}"+"|"+"{{title}}");
             }else{
                 alert("支付失败，请重试");
             }
