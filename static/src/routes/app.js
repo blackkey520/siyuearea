@@ -9,7 +9,8 @@ import { Router, Switch, Route, Redirect, routerRedux } from "dva/router";
 import "../components/skin.less";
 import Cookie from "../utils/js.cookie";
 import { withRouter } from "dva/router";
-
+import 'weui';
+import 'react-weui/build/packages/react-weui.css';
 const { Header, Bread, Footer, Sider, styles } = Layout;
 let loginPage = "";
 

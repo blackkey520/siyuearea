@@ -93,6 +93,12 @@ const Routers = function({ history, app }) {
       component: () => import("./routes/wechat/paypage")
     }, 
     {
+      path: "/mobile/payresult/:issuc/:openid/:money/:type/:mtype/:title",
+      models: () => [import("./models/pay")],
+      component: () =>
+        import ("./routes/member/pay/PayResult")
+    },
+    {
       path: "/productcard",
       models: () => [
         import ("./models/productcard")

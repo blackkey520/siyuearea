@@ -26,7 +26,7 @@
         </div>
         <div class="weui-msg__opr-area">
             <p class="weui-btn-area">
-                <a href="#" onclick="goPay('{{appId}}','{{timeStamp}}', '{{nonceStr}}', '{{package}}', '{{signType}}', '{{paySign}}');" class="weui-btn weui-btn_primary">确定</a>
+                <a href="#" onclick="test();" class="weui-btn weui-btn_primary">确定</a>
             </p>
         </div>
         <div class="weui-msg__extra-area">
@@ -39,7 +39,11 @@
         </div>
     </div>
 </div>
-  
+  <script type="text/javascript">
+    function test(){
+        window.open('http://'+window.location.host+'/mobile/payresult/true/345/123/2/3/月卡',"_self");
+    }
+  </script>
 </body>
 
 </html>

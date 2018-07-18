@@ -34,7 +34,7 @@
                 <p class="weui-footer__links">
                     <a href="javascript:void(0);" class="weui-footer__link">肆阅空间</a>
                 </p>
-                <p class="weui-footer__text">Copyright &copy; 2008-2016 bjlanyue</p>
+                <p class="weui-footer__text">Copyright &copy; 2018-2026 bjlanyue</p>
             </div>
         </div>
     </div>
@@ -51,9 +51,9 @@
             "paySign" : paySign
         }, function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok"){
-                alert("{{type}}"+"|"+"{{mtype}}"+"|"+"{{title}}");
+                window.open('http://'+window.location.host+'/mobile/payresult/true/{{openid}}/{{money}}/{{type}}/{{mtype}}/{{title}}',"_self");
             }else{
-                alert("支付失败，请重试");
+                window.open('http://'+window.location.host+'/mobile/payresult/false/{{openid}}/{{money}}/{{type}}/{{mtype}}/{{title}}',"_self");
             }
         });
     }

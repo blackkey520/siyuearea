@@ -16,7 +16,7 @@ module.exports = app => {
   app.get('/mobile/order', 'client.index');
   app.get('/mobile/order/:orderid', 'client.index');
   app.get('/mobile/reserve', 'client.index');
-
+  app.get('/mobile/payresult/:issuc/:openid/:money/:type/:mtype/:title', 'client.index');
   app.get('/callback', 'client.index');
   app.get('/mobile/paypage', 'client.index');
   app.get('/accountslist', 'client.index');

@@ -13,23 +13,30 @@ var initConfig = {
 var payment = new Payment(initConfig);
 class PayController extends Controller {
   // 服务器渲染Controller
-  async payment() {
+  * payment() {
     const ctx = this.ctx;
-    debugger;
+    const config = yield this.service.restql.index('Base_Config', {
+        page: 1,
+        pageSize: 1000,
+    }, {
+        cid: 1
+    });
+    const money = parseInt(ctx.params.money) * config.record[0].rechargedis;
       var order = {
           body: ctx.params.ptype,
           attach: `${ctx.params.type}|${ctx.params.money}|${ctx.params.mtype}|${ctx.params.title}`,
           out_trade_no: 'siyuearea' + (+new Date),
-        //   total_fee: ctx.params.money * 100,
+        //   total_fee: money * 100,
           total_fee: 0.1 * 100,
           spbill_create_ip: '140.143.159.216',
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
-      const payargs= await payment.getBrandWCPayRequestParams(order);
+      const payargs = yield payment.getBrandWCPayRequestParams(order);
       if (payargs.appId)
       {
-        await ctx.render("pay.tpl", {
+        yield ctx.render("pay.tpl", {
+            openid:ctx.params.openid,
             appId: payargs.appId,
             timeStamp: payargs.timeStamp,
             nonceStr: payargs.nonceStr,
@@ -45,10 +52,10 @@ class PayController extends Controller {
           ctx.body = payargs.message;
       }
   }
-  async paytest() {
+  * paytest() {
       const ctx = this.ctx;
       debugger;
-      await ctx.render("result.tpl", {
+      yield ctx.render("result.tpl", {
           attach: ctx.params.attach,
       });
   }

@@ -15,8 +15,8 @@ class Callback extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state={
-         phone: '',
-   sccode:''
+        phone: '',
+        sccode:''
     }
 	}
 
