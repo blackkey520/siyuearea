@@ -43,9 +43,11 @@ class PayController extends Controller {
             package: payargs.package,
             signType: payargs.signType,
             paySign: payargs.paySign,
+            money:ctx.params.money,
             type: ctx.params.type,
             mtype: ctx.params.mtype,
             title: ctx.params.title,
+            ptype: ctx.params.ptype
         });
       }
       else{
