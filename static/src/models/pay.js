@@ -40,7 +40,8 @@ export default {
         accournt.mid = checkmember.mid;
         accournt.adesc = payload.title;
         checkmember.mregisttime = moment().format('YYYY-MM-DD HH:mm:ss');
-        if (payload.type === 1) {
+         
+        if (payload.type === "1") {
           let rechargev = parseInt(payload.money);
           if (rechargev > 1000 && rechargev <= 2000) {
             rechargev = rechargev + 100;
@@ -57,7 +58,7 @@ export default {
           accournt.atype = 1;
           accournt.amoney = parseInt(payload.money) * config.data.rechargedis;
           accournt.asmoney = parseInt(payload.money) * config.data.rechargedis;
-        } else if (payload.type === 2) {
+        } else if (payload.type === "2") {
           //开卡的
           checkmember.mtype = parseInt(payload.mtype);
           accournt.atype = 2;

@@ -32,7 +32,7 @@ class PayResult extends React.Component {
   render() {
       if (this.props.isloading)
       {
-        return (<Toast icon="loading" show={this.props.isloading}>努力加载中</Toast>);
+        return (<Toast icon="loading" show={true}>努力加载中</Toast>);
       }else{
         return (
             <Msg
