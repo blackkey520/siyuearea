@@ -33,7 +33,7 @@ export default {
           id: 1
         });
         const config = consin.data;
-
+        debugger;
         const accournt = {};
         
         accournt.mid = checkmember.mid;
@@ -55,8 +55,8 @@ export default {
           checkmember.mtype = 0;
           checkmember.mmoney = parseInt(checkmember.mmoney) + rechargev;
           accournt.atype = 1;
-          accournt.amoney = parseInt(payload.money) * config.data.rechargedis;
-          accournt.asmoney = parseInt(payload.money) * config.data.rechargedis;
+          accournt.amoney = parseInt(payload.money) * config.rechargedis;
+          accournt.asmoney = parseInt(payload.money) * config.rechargedis;
         } else if (payload.type === "2") {
           //开卡的
           checkmember.mtype = parseInt(payload.mtype);
