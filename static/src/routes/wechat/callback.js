@@ -1,11 +1,19 @@
 import React from "react";
 import { request, config } from "../../utils";
 import { connect } from "dva";
-import {ActivityIndicator,List, InputItem} from 'antd-mobile';
-import 'antd-mobile/lib/activity-indicator/style/css';
-import { createForm } from 'rc-form';
-import 'antd-mobile/lib/list/style/css';
-import 'antd-mobile/lib/input-item/style/css';
+import {
+  Button,
+  CellsTitle,
+  CellBody,
+  CellFooter,
+  Form,
+  FormCell,
+  Input,
+  Toast
+} from 'react-weui';
+
+ 
+ 
 @connect(({ member,loading }) => ({
 	loading:loading.effects['member/getusrmsg'],
   loginuser: member.loginuser,
@@ -21,22 +29,16 @@ class Callback extends React.Component {
 	}
 
 	componentDidMount() {
-        const code=this.props.location.search.match(/\?code=(\S*)\&state=/)[1];
-        this.props.dispatch({
-                type: "member/getusrmsg",
-                payload: { code ,
-                routerid:this.props.location.search.match(/\&state=(\S*)/)[1]}
-            });
+      const code=this.props.location.search.match(/\?code=(\S*)\&state=/)[1];
+      this.props.dispatch({
+          type: "member/getusrmsg",
+          payload: { code ,
+          routerid:this.props.location.search.match(/\&state=(\S*)/)[1]}
+      });
 	}
   render() {
-    const { getFieldProps } = this.props.form;
     if(this.props.loading){
-      return(<div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:300}}> 
-         <ActivityIndicator
-         style={{width:'100%',textAlign:'center'}}
-                text="加载中"
-              />
-      </div>);
+      return(<Toast icon="loading" show={true}>努力加载中</Toast>);
     }
     if(this.props.mobilemsg!==''){
       return(<div style={{width:'100%',paddingLeft:'40%',paddingTop:'200px'}}> 
@@ -47,47 +49,38 @@ class Callback extends React.Component {
     {
       return (
         <div style={{width:'100%'}}> 
-          <div style={{width: '100%', backgroundColor:'#fff', textAlign: 'center',paddingTop:170}}>
-            你好，<span style={{fontWeight: 'bold'}}>
+          <div style={{marginTop:235}}>
+          <CellsTitle>你好，<span style={{fontWeight: 'bold'}}>
               {this.props.loginuser.userInfo?this.props.loginuser.userInfo.nickname:''}</span> 
-              为了让我们知道您是谁，输入电话号码来预定吧~</div>
-        <List>
-          <List.Item>
-            <InputItem
-            {...getFieldProps('phone')}
-            onChange = {(value)=>{
-              this.setState({phone:value});
-            }}
-            value={this.state.phone}
-            placeholder="手机号码"
-            clear
-          />
-          <div style={{width:'100%',paddingTop:30,textAlign:'center'}} >
-           <a onClick={()=>{
-              this.props.dispatch({
-                type: "member/register",
-                payload: {
-                   phone: this.state.phone,
-                   userInfo:this.props.loginuser.userInfo,
-                   routerid:this.props.location.search.match(/\&state=(\S*)/)[1]
-                }
-              });
-              }}>提交</a>
-              </div>
-          </List.Item>
-        </List>
+              为了让我们知道您是谁，输入电话号码来预定吧~</CellsTitle>
+            <Form>
+                <FormCell vcode>
+                    <CellBody>
+                        <Input onChange = {(e)=>{
+                        this.setState({phone:e.target.value});
+                      }} placeholder="请输入您的电话"/>
+                    </CellBody>
+                    <CellFooter>
+                        <Button onClick={()=>{
+                          this.props.dispatch({
+                            type: "member/register",
+                            payload: {
+                              phone: this.state.phone,
+                              userInfo:this.props.loginuser.userInfo,
+                              routerid:this.props.location.search.match(/\&state=(\S*)/)[1]
+                            }
+                          });}} type="vcode">确定</Button>
+                    </CellFooter>
+                </FormCell>
+            </Form>
+            </div>
         </div>
       );
     }
     return (
-      <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:300}}> 
-         <ActivityIndicator
-         style={{width:'100%',textAlign:'center'}}
-                text="加载中"
-              />
-      </div>
+      <Toast icon="loading" show={true}>努力加载中</Toast>
     );
   }
 }
 
-export default createForm()(Callback);
+export default Callback;

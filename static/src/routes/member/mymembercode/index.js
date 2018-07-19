@@ -1,11 +1,10 @@
 import React from "react";
-import styles from "./index.less";
-import { request, config } from "../../../utils";
 import { connect } from "dva";
-import {List} from 'antd-mobile';
-import moment from 'moment';
 import QRCode from 'qrcode';
-
+import {
+    Preview,
+    PreviewHeader, PreviewFooter, PreviewBody, PreviewItem, PreviewButton
+} from 'react-weui';
 @connect()
 class MyMemberCode extends React.Component {
 constructor(props, context) {
@@ -30,11 +29,17 @@ constructor(props, context) {
   }
   render() {    
     return (
-      <div style={{width:'100%',textAlign:'center',flex:'column'}}> 
-          <div style={{fontSize:17,paddingTop:20}}>我的会员码</div>
-          <div style={{fontSize:25,paddingTop:10}}>{this.props.match.params.memberid}</div>
-          <img src={this.state.url} style={{height:250,width:250,marginTop:30}}/>
-      </div>
+        <Preview>
+            <PreviewHeader>
+                <PreviewItem label="我的会员号码" value={this.props.match.params.memberid} />
+            </PreviewHeader>
+            <PreviewBody style={{textAlign:'center'}}>
+                <img src={this.state.url} style={{height:250,width:250}}/>
+            </PreviewBody>
+            <PreviewFooter>
+                <PreviewButton >二维码</PreviewButton>
+            </PreviewFooter>
+        </Preview>
     );
   }
 }

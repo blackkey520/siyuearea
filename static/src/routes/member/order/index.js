@@ -1,8 +1,6 @@
 import React from "react";
-import styles from "./index.less";
-import { request, config } from "../../../utils";
 import { connect } from "dva";
-import { SegmentedControl,ListView } from 'antd-mobile';
+import { ListView } from 'antd-mobile';
 import 'antd-mobile/lib/segmented-control/style/css';
 import 'antd-mobile/lib/list-view/style/css';
 import {ostate} from '../../../utils/enum';

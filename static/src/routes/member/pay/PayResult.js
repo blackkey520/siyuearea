@@ -13,7 +13,7 @@ import {
 
 @connect(({ pay,loading }) => ({
   paysuccess: pay.paysuccess,
-  isloading: loading['pay/payhandle']
+  isloading: loading.effects['pay/payhandle']
  }))
 class PayResult extends React.Component {
     componentWillMount(){

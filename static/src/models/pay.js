@@ -19,9 +19,8 @@ export default {
     *payhandle({payload},{call,put}){
       let data = null;
       let paysuccess=false;
-      
       //openid
-      if (payload.issuc)
+      if (payload.issuc==="true")
       {
         const userlist = yield call(querylist, {
           page:1,

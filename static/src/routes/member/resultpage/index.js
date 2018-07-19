@@ -1,10 +1,13 @@
 import React from "react";
-import styles from "./index.less";
-import { request, config } from "../../../utils";
-import { Result , Icon } from 'antd-mobile';
+import {
+  Msg,
+  Footer,
+  FooterLinks,
+  FooterLink,
+  FooterText,
+  Toast
+} from 'react-weui';
 import { connect } from "dva";
-import 'antd-mobile/lib/result/style/css';
-import 'antd-mobile/lib/icon/style/css';
 @connect(({ member }) => ({
 		resultmsg: member.resultmsg,
  }))
@@ -17,14 +20,21 @@ class ResultPage extends React.Component {
    }
   render() {
     return (
-      <div style={{backgroundColor:'#fff'}}> 
-        <Result
-            style={{paddingTop:170}}
-            img={<Icon type={this.props.match.params.suc==="true"?"check-circle":"cross-circle-o"}  style={this.props.match.params.suc==="true"?{ fill: '#1F90E6',width:60,height:60 }:{ fill: '#ffc600',width:60,height:60 }} />}
-            title={this.props.match.params.tit}
-            message={this.props.resultmsg}
-        />
-      </div>
+      <Msg
+        type={this.props.match.params.suc==="true"?"success":"warn"}
+        title={this.props.match.params.tit}
+        description = {this.props.resultmsg}
+        footer={()=>{
+            return(<Footer>
+            <FooterLinks>
+                <FooterLink href="#">肆阅空间</FooterLink>
+            </FooterLinks>
+            <FooterText>
+                Copyright © 2018-2026 bjlanyue
+            </FooterText>
+        </Footer>);
+        }}
+    /> 
     );
   }
 }
