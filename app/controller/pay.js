@@ -21,7 +21,12 @@ class PayController extends Controller {
     }, {
         cid: 1
     });
-    const money = parseInt(ctx.params.money) * config.record[0].rechargedis;
+    let money = ctx.params.money;
+    if (ctx.params.type==="1")
+    {
+        money = parseInt(ctx.params.money) * config.record[0].rechargedis;
+    }
+    
       var order = {
           body: ctx.params.ptype,
           attach: `${ctx.params.type}|${ctx.params.money}|${ctx.params.mtype}|${ctx.params.title}`,
