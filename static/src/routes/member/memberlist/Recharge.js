@@ -18,7 +18,7 @@ import {
 } from "antd";
 import { config } from "../../../utils/config";
 import moment from "moment";
-import { mtype,mstate,atype,astate} from '../../../utils/enum';
+import { mtype,atype,astate} from '../../../utils/enum';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
@@ -222,10 +222,14 @@ class Recharge extends Component {
 										cardtype: e.target.value
 									});
 								}} defaultValue="1">
-								<RadioButton value="1">日卡会员</RadioButton>
-								<RadioButton value="2">周卡会员</RadioButton>
-								<RadioButton value="3">月卡会员</RadioButton>
-								<RadioButton value="4">季卡会员</RadioButton>
+								{
+										mtype.map((item, key) => {
+											if(key!==0)
+											{
+												return (<RadioButton key={item} value={key}>{item}</RadioButton>)
+											}
+										})
+									}
 							</RadioGroup>
 							<br/>
 							<DatePicker style={{marginTop:10,width:170}} placeholder="选择生效时间(默认当天)" onChange={(date, dateString)=>{

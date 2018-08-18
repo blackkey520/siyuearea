@@ -27,12 +27,10 @@ export default {
     * testpay({payload},{call,put})
     {
        const data = yield call(paytest, {money:payload.money});
-       debugger;
     },
     *saveconfig({ payload }, { call, put,select }) {
         let data = null;
         const callback = payload.callback;
-        debugger;
         delete payload.callback;
         data = yield call(update, payload.param);
         callback && callback(data);

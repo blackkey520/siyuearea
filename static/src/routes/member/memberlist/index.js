@@ -1,6 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
-import { Table, Button, Modal, Switch,Menu, Dropdown,Icon,Input  } from "antd";
+import {
+	Table,
+	Button,
+	Modal,
+	InputNumber,
+	Menu,
+	Dropdown,
+	Icon,
+	Input,
+	message
+} from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import { mtype,mstate} from '../../../utils/enum';
@@ -18,7 +28,8 @@ class MemberList extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state={
-			record:null
+			record:null,
+			yqdays:1,
 		}
 	}
 	componentDidMount() {
@@ -58,9 +69,12 @@ class MemberList extends Component {
             title: '联系方式',
             dataIndex: 'phonenum',
             }, {
-            	title: '生效时间',
+            	title: '是否有效',
 				dataIndex: 'mregisttime',
-				render:text=><span>{moment(text).format('YYYY-MM-DD')}</span>,
+				render: (text, record, index) => {
+					const days = moment(record.mregisttime).diff(moment(), 'days', false);
+					return(<div>{moment(text).format('YYYY-MM-DD')}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
+				}
             }, {
             title: '会员状态',
 			dataIndex: 'mstate',
@@ -113,12 +127,45 @@ class MemberList extends Component {
 							   			pathname: `/memberlist/userecord/${this.state.record.mid}`
 							   		})
 							   	);
+							   } else if (e.key === "5") {
+								   const that=this;
+									Modal.warn({
+										title: '会员延期',
+										content: (
+											<div>为 <span style={{color:'red'}}>{record.mname}</span> 延期 <InputNumber value={this.state.yqdays} min={1} max={30} defaultValue={1} onChange={(value)=>{
+												this.setState({
+													yqdays:value
+												});
+											}} /> 天 </div>
+										),
+										okText:'确定',
+										onOk() { 
+											const hide = message.loading("正在保存...", 0);
+											that.props.dispatch({
+												type: "member/extendovertime",
+												payload: {
+													extenddays: that.state.yqdays,
+													param:record,
+													callback: data => {
+														hide();
+														if (data && data.success) {
+															that.loadTableData();
+															message.success("保存成功");
+														} else {
+															message.error("保存失败");
+														}
+													}
+												}
+											});
+										},
+									});
 							   }
 							}}>
 							<Menu.Item key ="1">充值/开卡</Menu.Item>
 							<Menu.Item key="2">编辑</Menu.Item>
 							<Menu.Item key="3">预定记录</Menu.Item>
 							<Menu.Item key="4">使用记录</Menu.Item>
+							<Menu.Item key="5">延期</Menu.Item>
 						</Menu>);
 					return (
 						<Dropdown onVisibleChange={()=>{

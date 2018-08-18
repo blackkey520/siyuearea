@@ -26,7 +26,43 @@ class PayController extends Controller {
     {
         money = parseInt(ctx.params.money) * config.record[0].rechargedis;
     }
-    
+    if(ctx.params.type==='2')
+    {
+        switch (ctx.params.mtype) {
+            case 1:
+                money = parseInt(ctx.params.money) * config.record[0].daydis
+                break;
+            case 2:
+                money = parseInt(ctx.params.money) * config.record[0].weekdis
+                break;
+            case 3:
+                money = parseInt(ctx.params.money) * config.record[0].monthdis
+                break;
+            case 4:
+                money = parseInt(ctx.params.money) * config.record[0].sessiondis
+                break;
+            case 5:
+                money = parseInt(ctx.params.money) * config.record[0].weekzmdis
+                break;
+            case 6:
+                money = parseInt(ctx.params.money) * config.record[0].monthzmdis
+                break;
+            case 7:
+                money = parseInt(ctx.params.money) * config.record[0].sessionzmdis
+                break;
+            case 8:
+                money = parseInt(ctx.params.money) * config.record[0].weekzydis
+                break;
+            case 9:
+                money = parseInt(ctx.params.money) * config.record[0].monthzydis
+                break;
+            case 10:
+                money = parseInt(ctx.params.money) * config.record[0].sessionzydis
+                break;
+            default:
+                break;
+        }
+    }
       var order = {
           body: ctx.params.ptype,
           attach: `${ctx.params.type}|${ctx.params.money}|${ctx.params.mtype}|${ctx.params.title}`,

@@ -7,8 +7,7 @@ import {
 	Form,
 	Button,
 	Spin,
-	Icon,
-	message,
+	Alert,
     Radio,
 	Modal,
 	Tabs,
@@ -88,7 +87,20 @@ class OrderForm extends Component {
 		const formItemLayout = {
 			labelCol: { span: 3 },
 			wrapperCol: { span: 12 }
-        };
+		};
+		let isdis = false;
+		let message = '';
+		const days = moment(this.props.memberdetail.mregisttime).diff(moment(), 'days', true);
+		if (days < 0) {
+			isdis = true;
+			if (this.props.orderdetail.ostate === 0) {
+				message = '会员卡已经过期过期，不能开台，请充值、开卡或者延期';
+			}
+		}
+		if (this.props.memberdetail.mstate === 2) {
+			isdis = true;
+			message = '会员已经停用，不能开台，请吧会员状态改为启用';
+		}
         if(this.props.formloading)
         {
             return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
@@ -97,31 +109,32 @@ class OrderForm extends Component {
         {
             return (
                  <Result
-                            type="error"
-                            title={'没有找到订单'}
-                            description={'该用户下未找到任何订单,点击返回按钮返回上一级,点击创建订单为该用户创建订单'}
-                            extra={''}
-                            actions={<div>
-                                <Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
-                                </Button>
-                                <Button type="primary" onClick={this.CreateOrder.bind(this)}>
-                                    创建订单
-                                </Button></div>}
-                        />
+					type="error"
+					title={'没有找到订单'}
+					description={'该用户下未找到任何订单,点击返回按钮返回上一级,点击创建订单为该用户创建订单'}
+					extra={''}
+					actions={<div>
+						<Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
+						</Button>
+						<Button type="primary" onClick={this.CreateOrder.bind(this)}>
+							创建订单
+						</Button></div>}
+				/>
             )
         }else if(this.props.errormsg==='err'){
             return (
                  <Result
-                            type="error"
-                            title={'订单信息发生错误'}
-                            description={'该用户下的订单发生异常，请联系程序开发人员，后台解决'}
-                            extra={''}
-                            actions={<div>
-                                <Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
-                                </Button></div>}
-                        />
+					type="error"
+					title={'订单信息发生错误'}
+					description={'该用户下的订单发生异常，请联系程序开发人员，后台解决'}
+					extra={''}
+					actions={<div>
+						<Button style={{ marginRight: 10 }} onClick={this.goBack.bind(this)}>返  回
+						</Button></div>}
+				/>
             )
         }else{
+			
             return (<div className="content-inner">
 					<div
 						style={{
@@ -135,7 +148,7 @@ class OrderForm extends Component {
 						</Button>
                         {
                             this.props.orderdetail.ostate===0
-                            ?<Button type="primary" onClick={this.CreateRecord.bind(this)}>
+                            ?<Button type="primary" disabled={isdis} onClick={this.CreateRecord.bind(this)}>
                                     开台
                                 </Button>:this.props.orderdetail.ostate===1?
                                 <Button type="primary" onClick={this.StopRecord.bind(this)}>
@@ -143,6 +156,7 @@ class OrderForm extends Component {
                                 </Button>:null
                         }
 					</div>
+					 
 					<Steps  current={this.props.orderdetail.ostate} >
 						<Step onClick={()=>{
 							this.setState({
@@ -166,6 +180,9 @@ class OrderForm extends Component {
 							}
 							}} title="订单完成" description={this.props.recordsdetail.etime?moment(this.props.recordsdetail.etime).format('YYYY-MM-DD HH:mm:ss'):''} />
 					</Steps>
+					{
+						message!==''?<Alert message={message} type="error" />:null
+					}
 					{
 						this.state.show===0?
 						<div  style={{paddingTop:50}}>

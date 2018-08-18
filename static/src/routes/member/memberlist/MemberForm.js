@@ -88,6 +88,7 @@ class MemberForm extends Component {
 	}
 
 	render() {
+		debugger;
 		const { getFieldDecorator } = this.props.form;
 
 		const formItemLayout = {
@@ -163,7 +164,7 @@ class MemberForm extends Component {
 						</FormItem>
 						<FormItem {...formItemLayout} label="会员类型">
 							{getFieldDecorator("mtype", {
-								initialValue: this.props.checkmember.status?this.props.checkmember.status:0
+								initialValue: this.props.checkmember.mtype ? this.props.checkmember.mtype : 0
 							})(<RadioGroup>
 									{
 										mtype.map((item, key) => {
@@ -186,7 +187,7 @@ class MemberForm extends Component {
 						<FormItem {...formItemLayout} label="会员余额(元)">
 							{getFieldDecorator("mmoney", {
 								initialValue: this.props.checkmember.mmoney?this.props.checkmember.mmoney:0,
-							})( <Input disabled  / > )
+							})( <Input  / > )
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="备注">
