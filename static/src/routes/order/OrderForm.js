@@ -11,7 +11,8 @@ import {
     Radio,
 	Modal,
 	Tabs,
-	Steps, Popover
+	Steps, Popover,
+	message
 } from "antd";
 
 const Step = Steps.Step;
