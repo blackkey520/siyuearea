@@ -102,6 +102,25 @@ class OrderForm extends Component {
 			isdis = true;
 			message = '会员已经停用，不能开台，请吧会员状态改为启用';
 		}
+		if (this.props.memberdetail.mtype === 5 || this.props.memberdetail.mtype === 6 || this.props.memberdetail.mtype === 7)
+		{
+			if (moment().format('d') === 6 || moment().format('d') === 0)
+			{
+
+			}else{
+				isdis = true;
+				message = '您的会员卡智能在周六和周日使用';
+			}
+		}
+		if (this.props.memberdetail.mtype === 8 || this.props.memberdetail.mtype === 9 || this.props.memberdetail.mtype === 10) {
+			if (moment().hour() >= 6 && moment().hour() <= 8) {
+
+			} else {
+				isdis = true;
+				message = '您的会员卡智能在六点到八点之间使用';
+			}
+		}
+		debugger;
         if(this.props.formloading)
         {
             return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
