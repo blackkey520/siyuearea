@@ -51,9 +51,9 @@
             "paySign" : paySign
         }, function(res){
             if(res.err_msg == "get_brand_wcpay_request:ok"){
-                window.open('http://'+window.location.host+'/mobile/payresult/true/{{openid}}/{{money}}/{{type}}/{{mtype}}/{{title}}',"_self");
+                window.open('http://'+window.location.host+'/mobile/payresult/true/{{openid}}/{{oldmoney}}/{{type}}/{{mtype}}/{{title}}',"_self");
             }else{
-                window.open('http://'+window.location.host+'/mobile/payresult/false/{{openid}}/{{money}}/{{type}}/{{mtype}}/{{title}}',"_self");
+                window.open('http://'+window.location.host+'/mobile/payresult/false/{{openid}}/{{oldmoney}}/{{type}}/{{mtype}}/{{title}}',"_self");
             }
         });
     }
