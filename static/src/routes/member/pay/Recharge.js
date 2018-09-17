@@ -35,15 +35,15 @@ class Recharge extends React.Component {
       money: 500
     }, {
       title: '1000',
-      desc: '充值立赠100元',
+      desc: '',
       money: 1000
     }, {
       title: '2000',
-      desc: '充值立减200元',
+      desc: '',
       money: 2000
     }, {
       title: '5000',
-      desc: '充值立减500元',
+      desc: '',
       money: 5000
     }];
     const openid = this.props.loginuser.member ? this.props.loginuser.member.memberopenid:'wu'

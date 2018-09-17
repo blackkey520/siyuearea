@@ -78,6 +78,8 @@ class Config extends Component {
 						monthzydis: parseInt(values.monthzydis) / 100,
 						sessionzydis: parseInt(values.sessionzydis) / 100,
 						rechargedis: parseInt(values.rechargedis) / 100,
+						rechargedisone: parseInt(values.rechargedisone) / 100,
+						rechargedistwo: parseInt(values.rechargedistwo) / 100,
 						overspan: 30
 					},
 					callback: data => {
@@ -467,7 +469,7 @@ class Config extends Component {
 						</Row>
                          <Row gutter={0}>
 							<Col span={10} push={1}>
-								<FormItem {...formItemLayout} labelCol={{span: 7}} label="充值折扣">
+								<FormItem {...formItemLayout} labelCol={{span: 7}} label="充值折扣(>1000)">
 									{getFieldDecorator("rechargedis", {
 										initialValue: this.props.checkconfig.rechargedis*100,
 									})( <InputNumber
@@ -480,7 +482,32 @@ class Config extends Component {
 								</FormItem>
 							</Col>
 							<Col span={10} push={1}>
-								 
+								 <FormItem {...formItemLayout} labelCol={{span: 7}} label="充值折扣(1000-500)">
+									{
+										getFieldDecorator("rechargedisone", {
+										initialValue: this.props.checkconfig.rechargedisone*100,
+									})( <InputNumber
+											min={0}
+											max={100}
+											formatter={value => `${value}%`}
+											parser={value => value.replace('%', '')}
+											/> )
+									}
+								</FormItem>
+							</Col>
+								<Col span={10} push={1}>
+								 <FormItem {...formItemLayout} labelCol={{span: 7}} label="充值折扣(<=500)">
+									{
+										getFieldDecorator("rechargedistwo", {
+										initialValue: this.props.checkconfig.rechargedistwo*100,
+									})( <InputNumber
+											min={0}
+											max={100}
+											formatter={value => `${value}%`}
+											parser={value => value.replace('%', '')}
+											/> )
+									}
+								</FormItem>
 							</Col>
 						</Row>
 					</Form> 

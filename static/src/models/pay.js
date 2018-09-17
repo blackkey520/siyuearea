@@ -52,15 +52,12 @@ export default {
           if (rechargev > 1000 && rechargev < 2000)
         {
           overdate = moment().add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
-          rechargev = rechargev+100;
         }
         if (rechargev >= 2000 && rechargev < 5000) {
            overdate = moment().add(5, 'month').format('YYYY-MM-DD HH:mm:ss');
-          rechargev = rechargev + 200;
         }
         if (rechargev > 5000) {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
-          rechargev = rechargev + 500;
         }
           //充值的
           checkmember.mtype = 0;
