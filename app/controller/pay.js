@@ -29,14 +29,14 @@ class PayController extends Controller {
         {
           money = money * config.record[0].rechargedistwo;
         }
-         if (money >= 500 && money < 1000) {
+         if (money > 500 && money <= 1000) {
            money = money * config.record[0].rechargedisone;
          }
-        if (money > 1000 && money < 2000)
+        if (money > 1000 && money <= 2000)
         {
           money = money * config.record[0].rechargedis;
         }
-        if (money >= 2000 && money < 5000) {
+        if (money > 2000 && money <= 5000) {
           money = money * config.record[0].rechargedis;
         }
         if (money > 5000) {
