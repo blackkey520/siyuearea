@@ -6,12 +6,13 @@ import moment from 'moment';
 import { connect } from "dva";
 import { routerRedux } from "dva/router";
 import SitMap from '../../../components/SitMap'
-import {DatePicker, ActivityIndicator} from 'antd-mobile';
+import {DatePicker, ActivityIndicator,NoticeBar} from 'antd-mobile';
 import {Toast} from 'antd-mobile';
 import 'antd-mobile/lib/date-picker/style/css';
 import 'antd-mobile/lib/toast/style/css';
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN';
 import 'antd-mobile/lib/activity-indicator/style/css';
+import 'antd-mobile/lib/notice-bar/style/css';
 @connect(({ place,loading,member }) => ({
 		placelist : place.placelist,
     placeloading : loading.effects['place/getplacelist'],
@@ -49,6 +50,12 @@ class Reserve extends React.Component {
     }
     return (
       <div> 
+         <NoticeBar >
+      温馨提示：
+      1. 肆阅会员卡仅限会员本人使用；
+      2. 充值成功即视为交易成功， 会员卡不予退换；
+      3. 最终解释权归肆阅空间所有。
+    </NoticeBar>
         <div style={{width:'100%',overflow:'auto'}}>
          	<SitMap ref={(r)=>this.placemap=r} sitemap={this.props.placelist}  /></div>
          <DatePicker

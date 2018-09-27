@@ -2,9 +2,10 @@ import React from "react";
 import styles from "./index.less";
 import { request, config } from "../../../utils";
 import { connect } from "dva";
-import {List} from 'antd-mobile';
+import {List,NoticeBar} from 'antd-mobile';
 import {mtype, mstate} from '../../../utils/enum';
 import 'antd-mobile/lib/list/style/css';
+import 'antd-mobile/lib/notice-bar/style/css';
 import {routerRedux} from "dva/router";
 import moment from 'moment';
 const Item = List.Item;
@@ -38,6 +39,12 @@ class Mine extends React.Component {
     }
     return (
       <div> 
+        <NoticeBar >
+      温馨提示：
+      1. 肆阅会员卡仅限会员本人使用；
+      2. 充值成功即视为交易成功， 会员卡不予退换；
+      3. 最终解释权归肆阅空间所有。
+    </NoticeBar>
          <List renderHeader={() => <div onClick={()=>{
             const that=this;
             this.props.dispatch(

@@ -1,8 +1,9 @@
 import React from "react";
 import { connect } from "dva";
-import { ListView } from 'antd-mobile';
+import { ListView,NoticeBar } from 'antd-mobile';
 import 'antd-mobile/lib/segmented-control/style/css';
 import 'antd-mobile/lib/list-view/style/css';
+import 'antd-mobile/lib/notice-bar/style/css';
 import {ostate} from '../../../utils/enum';
 import moment from 'moment';
 import { Icon } from 'antd'
@@ -80,6 +81,12 @@ class Order extends React.Component {
       };
     return (
       <div> 
+        <NoticeBar >
+      温馨提示：
+      1. 肆阅会员卡仅限会员本人使用；
+      2. 充值成功即视为交易成功， 会员卡不予退换；
+      3. 最终解释权归肆阅空间所有。
+    </NoticeBar>
         <ListView
           ref={el => this.lv = el}
           dataSource={ds.cloneWithRows(this.props.mobileorderlist)}
