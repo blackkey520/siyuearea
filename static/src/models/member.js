@@ -1,4 +1,4 @@
-import { register,querylist,loadmemeber,update,getusrmsg,loadmemberbyphone } from "../services/member";
+import { register,querylists,loadmemeber,update,getusrmsg,loadmemberbyphone } from "../services/member";
 import { addaccournt } from "../services/accournt";
 import { loadsingle } from "../services/config";
 import moment from 'moment';
@@ -116,7 +116,8 @@ export default {
         
     },
     *getmemberlist({ payload }, { call, put }) {
-      const data = yield call(querylist, payload);
+      const data = yield call(querylists, payload);
+      debugger;
       yield put({
         type: "loaddataSuccess",
         payload: {

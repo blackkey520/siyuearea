@@ -190,7 +190,7 @@ class MemberList extends Component {
 					}}
 				>
 				  <Search
-                    placeholder="请输入会员编号"
+                    placeholder="请输入会员编号/姓名/电话"
                     onSearch={(value) => {
                         this.loadTableData(1,10,value);
                     }}

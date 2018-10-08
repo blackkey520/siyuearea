@@ -31,7 +31,7 @@ const TabPane = Tabs.TabPane;
 	placelist : place.placelist,
         errormsg : order.errormsg,
         orderdetail : order.orderdetail,
-		recordsdetail:order.recordsdetail,
+		recorddetail:order.recorddetail,
 		memberdetail: order.memberdetail,
 		formloading: loading.effects['order/loadorder']
  }))
@@ -154,7 +154,6 @@ class OrderForm extends Component {
 				/>
             )
         }else{
-			
             return (<div className="content-inner">
 					<div
 						style={{
@@ -182,7 +181,7 @@ class OrderForm extends Component {
 							this.setState({
 								show:0
 							});
-							}} title="预定" description={this.props.orderdetail.mregisttime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')} />
+							}} title="预定" description={this.props.orderdetail.otime ? moment(this.props.orderdetail.otime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')} />
 						<Step onClick={()=>{
 							if(this.props.orderdetail.ostate>0)
 							{
@@ -190,7 +189,7 @@ class OrderForm extends Component {
 									show:1
 								});
 							}
-							}} title="到店使用" description={this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):''} />
+							}} title="到店使用" description={this.props.recorddetail.btime?moment(this.props.recorddetail.btime).format('YYYY-MM-DD HH:mm:ss'):''} />
 						<Step onClick={()=>{
 							if(this.props.orderdetail.ostate>0)
 							{
@@ -198,7 +197,7 @@ class OrderForm extends Component {
 									show:1
 								});
 							}
-							}} title="订单完成" description={this.props.recordsdetail.etime?moment(this.props.recordsdetail.etime).format('YYYY-MM-DD HH:mm:ss'):''} />
+							}} title="订单完成" description={this.props.recorddetail.etime?moment(this.props.recorddetail.etime).format('YYYY-MM-DD HH:mm:ss'):''} />
 					</Steps>
 					{
 						message!==''?<Alert message={message} type="error" />:null
@@ -215,7 +214,7 @@ class OrderForm extends Component {
 								</FormItem>
 								<FormItem {...formItemLayout} label="预定时间">
 									{getFieldDecorator("otime", {
-										initialValue: this.props.orderdetail.mregisttime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss'),
+										initialValue: this.props.orderdetail.otime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss'),
 									})( <Input disabled / > )
 									}
 								</FormItem>

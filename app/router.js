@@ -50,6 +50,8 @@ module.exports = app => {
   app.del('/api/table/:res', 'tableinfo.destroy');
   app.post('/api/accounts/getaccountslist', 'accounts.index');
   app.post('/api/member/getmemberlist', 'member.index');
+  
+  app.post('/api/member/findmemberlist', 'member.findlist');
   app.get('/api/member/getsinglemember/:id', 'member.single');
   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/order/getrecordlist', 'order.record');

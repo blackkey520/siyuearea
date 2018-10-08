@@ -15,7 +15,7 @@ export default {
   state: {
     usestate:0,
     orderdetail:{},
-    recordsdetail:{},
+    recorddetail:{},
     memberdetail:{},
     orderlist:[],
     selectedmobileorder:{},
@@ -276,7 +276,7 @@ export default {
           });
       let errormsg='';
       let orderdetail={};
-      let recordsdetail={};
+      let recorddetail={};
       let memberdetail={};
       const data = yield call(queryorderlist, 1,10,{oid:payload.oid});
       const record=yield call(queryrecordlist,1,10,{oid:payload.oid});
@@ -288,7 +288,7 @@ export default {
           { 
             if(record.data.record.length!==0)
             {
-                recordsdetail=record.data.record[0];
+                recorddetail=record.data.record[0];
             }else{
                if(data.data.record[0].ostate===1||data.data.record[0].ostate===2)
                {
@@ -309,7 +309,7 @@ export default {
             type: "updateState",
             payload: {
               orderdetail,
-              recordsdetail,
+              recorddetail,
               memberdetail,
               errormsg,
             }

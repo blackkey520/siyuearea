@@ -15,6 +15,13 @@ export async function querylist(params) {
     data: params
   });
 }
+export async function querylists(params) {
+  return request({
+    url: "/api/member/findmemberlist",
+    method: "POST",
+    data: params
+  });
+}
 export async function loadmemeber(params) {
   const id = params.id || 0;
   const url = `/api/member/getsinglemember/${id}`;
