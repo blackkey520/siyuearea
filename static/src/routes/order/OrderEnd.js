@@ -29,7 +29,7 @@ import SitMap from '../../components/SitMap';
 @connect(({ order,loading,place }) => ({
 		errormsg : order.errormsg,
         orderdetail : order.orderdetail,
-		recordsdetail:order.recordsdetail,
+		recorddetail:order.recorddetail,
 		memberdetail: order.memberdetail,
  }))
 class OrderEnd extends Component {
@@ -81,7 +81,7 @@ class OrderEnd extends Component {
 						money: values.money,
 						pdesc:values.pdesc,
 					},
-					record:{...this.props.recordsdetail},
+					record:{...this.props.recorddetail},
 					order:{...this.props.orderdetail},
 					callback: msg => {
 						hide();
@@ -171,6 +171,7 @@ class OrderEnd extends Component {
                         />
             )
         }else{
+			debugger;
             return (<div className="content-inner">
 				<div
 						style={{
@@ -189,7 +190,7 @@ class OrderEnd extends Component {
 					<Form style={{marginTop:15}}  	>
 						<FormItem {...formItemWiLayout} label="开始时间">
 							{getFieldDecorator("btime", {
-								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
+								initialValue: this.props.recorddetail.btime?moment(this.props.recorddetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
 							})( <Input disabled / > )
 							}
 						</FormItem>
@@ -203,12 +204,12 @@ class OrderEnd extends Component {
 						this.props.memberdetail.mtype === 0?<Form style={{marginTop:15}}  	>
 						<FormItem {...formItemWiLayout} label="收款金额(元)">
 							{getFieldDecorator("money", {
-								initialValue: GetMoney(moment(this.props.recordsdetail.btime), moment())
+								initialValue: GetMoney(moment(this.props.recorddetail.btime), moment())
 							})(<Input   / > )}
 						</FormItem>
 						<FormItem {...formItemWiLayout} label="持续时间(小时)">
 							{getFieldDecorator("timespan", {
-								initialValue: Math.ceil(moment().diff(moment(this.props.recordsdetail.btime),'hours',true)),
+								initialValue: Math.ceil(moment().diff(moment(this.props.recorddetail.btime),'hours',true)),
 							})( <Input disabled / > )
 							}
 						</FormItem>
@@ -229,7 +230,7 @@ class OrderEnd extends Component {
 					<Form style={{marginTop:15}}>
 						{this.props.memberdetail.mtype === 0?<FormItem {...formItemWiLayout} label="收款明细">
 							{getFieldDecorator("pdetail", {
-								initialValue: GetMoneyDetail(moment(this.props.recordsdetail.btime), moment()),
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment()),
 							})(
 								<Input
 									type="textarea"
@@ -239,7 +240,7 @@ class OrderEnd extends Component {
 						</FormItem>:null}
 						<FormItem {...formItemWiLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: this.props.recordsdetail.pdesc,
+								initialValue: this.props.recorddetail.pdesc,
 							})(
 								<Input
 									type="textarea"

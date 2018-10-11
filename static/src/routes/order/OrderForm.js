@@ -90,17 +90,17 @@ class OrderForm extends Component {
 			wrapperCol: { span: 12 }
 		};
 		let isdis = false;
-		let message = '';
+		let message = null;
 		const days = moment(this.props.memberdetail.mregisttime).diff(moment(), 'days', true);
 		if (days < 0) {
 			isdis = true;
 			if (this.props.orderdetail.ostate === 0) {
-				message = '会员卡已经过期过期，不能开台，请充值、开卡或者延期';
+				message =<Alert message={'会员卡已经过期过期，不能开台，请充值、开卡或者延期'} type="error" /> ;
 			}
 		}
 		if (this.props.memberdetail.mstate === 2) {
 			isdis = true;
-			message = '会员已经停用，不能开台，请吧会员状态改为启用';
+			message = <Alert message={'会员已经停用，不能开台，请吧会员状态改为启用'} type="error" />;
 		}
 		if (this.props.memberdetail.mtype === 5 || this.props.memberdetail.mtype === 6 || this.props.memberdetail.mtype === 7)
 		{
@@ -109,7 +109,7 @@ class OrderForm extends Component {
 
 			}else{
 				isdis = true;
-				message = '您的会员卡智能在周六和周日使用';
+				message = <Alert message={'您的会员卡只能在周六和周日使用'} type="error" />;
 			}
 		}
 		if (this.props.memberdetail.mtype === 8 || this.props.memberdetail.mtype === 9 || this.props.memberdetail.mtype === 10) {
@@ -117,10 +117,9 @@ class OrderForm extends Component {
 
 			} else {
 				isdis = true;
-				message = '您的会员卡智能在六点到八点之间使用';
+				message = <Alert message={'您的会员卡只能在六点到八点之间使用'} type="error" />;
 			}
 		}
-		debugger;
         if(this.props.formloading)
         {
             return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
@@ -200,7 +199,7 @@ class OrderForm extends Component {
 							}} title="订单完成" description={this.props.recorddetail.etime?moment(this.props.recorddetail.etime).format('YYYY-MM-DD HH:mm:ss'):''} />
 					</Steps>
 					{
-						message!==''?<Alert message={message} type="error" />:null
+						message
 					}
 					{
 						this.state.show===0?

@@ -26,23 +26,23 @@ const { getFieldDecorator } = this.props.form;
 			labelCol: { span: 3 },
 			wrapperCol: { span: 12 }
 		};
-		if(this.props.recordsdetail.rstate===0)
+		if(this.props.recorddetail.rstate===0)
 		{
 			return(<Form style={{paddingTop:50}}>
 						<FormItem {...formItemLayout} label="开始使用时间">
 							{getFieldDecorator("btime", {
-								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
+								initialValue: this.props.recorddetail.btime?moment(this.props.recorddetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
 							})( <Input disabled / > )
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="持续时间(小时)">
 							{
-								moment().diff(moment(this.props.recordsdetail.btime), 'hours',true)
+								moment().diff(moment(this.props.recorddetail.btime), 'hours',true)
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: this.props.recordsdetail.pdesc,
+								initialValue: this.props.recorddetail.pdesc,
 							})(
 								<Input
 									type="textarea"
@@ -55,40 +55,40 @@ const { getFieldDecorator } = this.props.form;
 		}else{
 			return (<Form style={{paddingTop:50}}>
 			<FormItem {...formItemLayout} label="消费方式">
-							{atype[this.props.recordsdetail.rstate]}
+							{atype[this.props.recorddetail.rstate]}
 						</FormItem>
 						<FormItem {...formItemLayout} label="开始使用时间">
 							{getFieldDecorator("btime", {
-								initialValue: this.props.recordsdetail.btime?moment(this.props.recordsdetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
+								initialValue: this.props.recorddetail.btime?moment(this.props.recorddetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//
 							})( <Input disabled / > )
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="结束使用时间">
 							{getFieldDecorator("etime", {
-								initialValue: this.props.recordsdetail.etime?moment(this.props.recordsdetail.etime).format('YYYY-MM-DD HH:mm:ss'):'',//
+								initialValue: this.props.recorddetail.etime?moment(this.props.recorddetail.etime).format('YYYY-MM-DD HH:mm:ss'):'',//
 							})(<Input disabled / > )}
 						</FormItem>
 						{
-							this.props.recordsdetail.rstate === 0 ? <div > < FormItem { ...formItemLayout
+							this.props.recorddetail.rstate === 0 ? <div > < FormItem { ...formItemLayout
 							}
 							label = "消费金额(元)" >
 							{getFieldDecorator("money", {
-								initialValue: this.props.recordsdetail.money
+								initialValue: this.props.recorddetail.money
 							})(<Input disabled / > )}
 						</FormItem><FormItem { ...formItemLayout
 							}
 							label = "使用明细" >
-							{GetMoneyDetail(moment(this.props.recordsdetail.btime), moment(this.props.recordsdetail.etime))}
+							{GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime))}
 						</FormItem></div>:null
 						}
 						<FormItem {...formItemLayout} label="持续时间(小时)">
 							{
-								Math.round(moment(this.props.recordsdetail.etime).diff(moment(this.props.recordsdetail.btime), 'hours', true))
+								Math.round(moment(this.props.recorddetail.etime).diff(moment(this.props.recorddetail.btime), 'hours', true))
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: this.props.recordsdetail.pdesc,
+								initialValue: this.props.recorddetail.pdesc,
 							})(
 								<Input
 									type="textarea"
