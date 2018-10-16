@@ -118,6 +118,7 @@ export default {
             }
           });
          let errormsg='';
+         debugger;
           let { memberdetail } = yield select(state => state.order);
             const accournt = {};
             accournt.mid = memberdetail.mid;
@@ -187,7 +188,7 @@ export default {
             const accourntdata = yield call(addaccournt, accournt);
             //更改订单状态和使用记录
             payload.order.ostate = 2;
-              payload.order.otime = moment(payload.otime).format('YYYY-MM-DD HH:mm:ss');
+              payload.order.otime = moment(payload.order.otime).format('YYYY-MM-DD HH:mm:ss');
               delete payload.order.pname;
               delete payload.order.mname;
               delete payload.order.btime;

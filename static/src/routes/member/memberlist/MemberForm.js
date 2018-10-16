@@ -88,7 +88,6 @@ class MemberForm extends Component {
 	}
 
 	render() {
-		debugger;
 		const { getFieldDecorator } = this.props.form;
 
 		const formItemLayout = {

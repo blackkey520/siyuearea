@@ -72,6 +72,7 @@ class OrderEnd extends Component {
 				return;
 			}
 			const hide = message.loading("正在保存...", 0);
+			debugger;
 			this.props.dispatch({
 				type: "order/finishrecord",
 				payload: {
@@ -79,7 +80,7 @@ class OrderEnd extends Component {
 						oid: this.props.match.params ? this.props.match.params.oid : null,
 						etime: values.etime,
 						money: values.money,
-						pdesc:values.pdesc,
+						pdesc: values.pdetail,
 					},
 					record:{...this.props.recorddetail},
 					order:{...this.props.orderdetail},
@@ -171,7 +172,6 @@ class OrderEnd extends Component {
                         />
             )
         }else{
-			debugger;
             return (<div className="content-inner">
 				<div
 						style={{

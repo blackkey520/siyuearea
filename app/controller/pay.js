@@ -116,7 +116,6 @@ class PayController extends Controller {
   }
   * paytest() {
       const ctx = this.ctx;
-      debugger;
       yield ctx.render("result.tpl", {
           attach: ctx.params.attach,
       });

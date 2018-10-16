@@ -80,6 +80,7 @@ class Reserve extends React.Component {
                     type: "place/orderplace",
                     payload: {
                         mid: this.props.loginuser.member.mid,
+                        mregisttime: this.props.loginuser.member.mregisttime,
                           place: selectitem,
                           desc:'',
                           orderdate:this.state.date.format('YYYY-MM-DD HH:mm:ss'),

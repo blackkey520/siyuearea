@@ -117,7 +117,6 @@ export default {
     },
     *getmemberlist({ payload }, { call, put }) {
       const data = yield call(querylists, payload);
-      debugger;
       yield put({
         type: "loaddataSuccess",
         payload: {

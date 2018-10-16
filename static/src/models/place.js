@@ -3,6 +3,7 @@ import {addorder,queryorderlist} from "../services/order";
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
+import {Toast} from 'antd-mobile';
 import moment from 'moment';
 
 export default {
@@ -30,9 +31,13 @@ export default {
      *orderplace({ payload }, { call, put }) {
         let data = null;
         const callback = payload.callback;
-         const ordered = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:0});
+        const days = moment(payload.mregisttime).diff(moment(), 'days', true);
+        if (days < 0) {
+          //过期了
+          Toast.info('您的会员已过期', 1);
+        }else{
+          const ordered = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:0});
          const useed = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:1}); 
-         debugger;
          if (ordered.data.record.length === 0 && useed.data.record.length === 0)
          {
            const order={
@@ -43,7 +48,6 @@ export default {
             otime:payload.orderdate,
             pdesc:payload.desc
           }
-          debugger;
           const result=yield call(addorder,order);
           if(result.success)
           {
@@ -54,6 +58,8 @@ export default {
          }else{
            callback && callback();
          }
+        }
+         
         
     },
   },
