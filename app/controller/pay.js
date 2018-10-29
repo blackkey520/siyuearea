@@ -80,7 +80,7 @@ class PayController extends Controller {
                 break;
         }
     }
-    money=money.toFixed(2);
+    money=money.toFixed(0);
       var order = {
           body: ctx.params.ptype,
           attach: `${ctx.params.type}|${ctx.params.money}|${ctx.params.mtype}|${ctx.params.title}`,
