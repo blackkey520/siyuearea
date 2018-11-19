@@ -224,22 +224,28 @@ export default {
            case 4:
              kkmoney = config.data.sessionvalue
              break;
-           case 5:
+            case 5:
+              kkmoney = config.data.hyearvalue
+            break;
+            case 6:
+              kkmoney = config.data.yearvalue
+            break;
+           case 7:
              kkmoney = config.data.weekzmvalue
              break;
-           case 6:
+           case 8:
              kkmoney = config.data.monthzmvalue
              break;
-           case 7:
+           case 9:
              kkmoney = config.data.sessionzmvalue
              break;
-           case 8:
+           case 10:
              kkmoney = config.data.weekzyvalue
              break;
-           case 9:
+           case 11:
              kkmoney = config.data.monthzyvalue
              break;
-           case 10:
+           case 12:
              kkmoney = config.data.sessionzyvalue
              break;
            default:
@@ -250,16 +256,22 @@ export default {
          {
            overdate = moment(payload.cardusedate).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
          }
-         if (payload.cardtype === 2 || payload.cardtype === 5 || payload.cardtype === 8)
+         if (payload.cardtype === 2 || payload.cardtype === 7 || payload.cardtype === 10)
          {
            overdate = moment(payload.cardusedate).add(7, 'days').format('YYYY-MM-DD HH:mm:ss');
          }
-         if (payload.cardtype === 3 || payload.cardtype === 6 || payload.cardtype === 9) {
+         if (payload.cardtype === 3 || payload.cardtype === 8 || payload.cardtype === 11) {
            overdate = moment(payload.cardusedate).add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
          }
-         if (payload.cardtype === 4 || payload.cardtype === 7 || payload.cardtype === 10) {
+         if (payload.cardtype === 4 || payload.cardtype === 9 || payload.cardtype === 12) {
            overdate = moment(payload.cardusedate).add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
          }
+          if (payload.cardtype === 5 ) {
+            overdate = moment(payload.cardusedate).add(6, 'month').format('YYYY-MM-DD HH:mm:ss');
+          }
+          if (payload.cardtype === 6) {
+            overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
+          }
         //开卡的
         checkmember.mregisttime = overdate;
         checkmember.mtype = parseInt(payload.cardtype);

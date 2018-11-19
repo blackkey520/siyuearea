@@ -61,10 +61,14 @@ class Config extends Component {
 						weekvalue: values.weekvalue,
 						monthvalue: values.monthvalue,
 						sessionvalue: values.sessionvalue,
+						hyearvalue: values.hyearvalue,
+						yearvalue: values.yearvalue,
 						daydis: parseInt(values.daydis) / 100,
 						weekdis: parseInt(values.weekdis) / 100,
 						monthdis: parseInt(values.monthdis) / 100,
 						sessiondis: parseInt(values.sessiondis) / 100,
+						hyeardis: parseInt(values.hyeardis) / 100,
+						yeardis: parseInt(values.yeardis) / 100,
 						weekzmvalue: values.weekzmvalue,
 						monthzmvalue: values.monthzmvalue,
 						sessionzmvalue: values.sessionzmvalue,
@@ -250,6 +254,76 @@ class Config extends Component {
 											{
 												required: true,
 												message: "请输入季会元折扣"
+											}
+										]
+									})(<InputNumber
+                                    min={0}
+                                    max={100}
+                                    formatter={value => `${value}%`}
+                                    parser={value => value.replace('%', '')}
+                                    /> )}
+								</FormItem>
+							</Col>
+						</Row>
+
+						<Row gutter={0}>
+							<Col span={10} push={1}>
+								<FormItem {...formItemLayout} labelCol={{span: 7}} label="半年会员价格">
+									{getFieldDecorator("hyearvalue", {
+										initialValue: this.props.checkconfig.hyearvalue,
+										rules: [
+											{
+												required: true,
+												message: "请输入半年会员价格"
+											}
+										]
+									})(<Input placeholder="请输入半年会员价格" />)}
+								</FormItem>
+							</Col>
+							<Col span={10} push={1}>
+								<FormItem {...formItemLayout} labelCol={{span: 7}}  label="半年会元折扣">
+									{
+										getFieldDecorator("hyeardis", {
+										initialValue: this.props.checkconfig.hyeardis * 100,
+										rules: [
+											{
+												required: true,
+												message: "请输入半年会元折扣"
+											}
+										]
+									})(<InputNumber
+                                    min={0}
+                                    max={100}
+                                    formatter={value => `${value}%`}
+                                    parser={value => value.replace('%', '')}
+                                    /> )}
+								</FormItem>
+							</Col>
+						</Row>
+
+						<Row gutter={0}>
+							<Col span={10} push={1}>
+								<FormItem {...formItemLayout} labelCol={{span: 7}} label="年会员价格">
+									{getFieldDecorator("yearvalue", {
+										initialValue: this.props.checkconfig.yearvalue,
+										rules: [
+											{
+												required: true,
+												message: "请输入年会员价格"
+											}
+										]
+									})(<Input placeholder="请输入年会员价格" />)}
+								</FormItem>
+							</Col>
+							<Col span={10} push={1}>
+								<FormItem {...formItemLayout} labelCol={{span: 7}}  label="年会元折扣">
+									{
+										getFieldDecorator("yeardis", {
+										initialValue: this.props.checkconfig.yeardis * 100,
+										rules: [
+											{
+												required: true,
+												message: "请输入年会元折扣"
 											}
 										]
 									})(<InputNumber

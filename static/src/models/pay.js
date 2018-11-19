@@ -71,15 +71,21 @@ export default {
            if (payload.cardtype === 1) {
              overdate = moment(payload.cardusedate).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
            }
-           if (payload.cardtype === 2 || payload.cardtype === 5 || payload.cardtype === 8) {
+           if (payload.cardtype === 2 || payload.cardtype === 7 || payload.cardtype === 10) {
              overdate = moment(payload.cardusedate).add(7, 'days').format('YYYY-MM-DD HH:mm:ss');
            }
-           if (payload.cardtype === 3 || payload.cardtype === 6 || payload.cardtype === 9) {
+           if (payload.cardtype === 3 || payload.cardtype === 8 || payload.cardtype === 11) {
              overdate = moment(payload.cardusedate).add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
            }
-           if (payload.cardtype === 4 || payload.cardtype === 7 || payload.cardtype === 10) {
+           if (payload.cardtype === 4 || payload.cardtype === 9 || payload.cardtype === 12) {
              overdate = moment(payload.cardusedate).add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
            }
+            if (payload.cardtype === 5) {
+              overdate = moment(payload.cardusedate).add(6, 'month').format('YYYY-MM-DD HH:mm:ss');
+            }
+            if (payload.cardtype === 6) {
+              overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
+            }
           //开卡的
           checkmember.mregisttime = overdate;
           checkmember.mtype = parseInt(payload.mtype);

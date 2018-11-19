@@ -44,6 +44,18 @@ class MemberCard extends React.Component {
           desc: this.props.checkconfig.sessionvalue/(24*7*4*3),
           money: this.props.checkconfig.sessionvalue
       }, {
+        type: 4,
+        title: '半年卡',
+        subtitle: '',
+        desc: this.props.checkconfig.hyearvalue / (24 * 7 * 4 * 3),
+        money: this.props.checkconfig.hyearvalue
+      }, {
+        type: 4,
+        title: '年卡',
+        subtitle: '',
+        desc: this.props.checkconfig.yearvalue / (24 * 7 * 4 * 3),
+        money: this.props.checkconfig.yearvalue
+      }, {
         type: 5,
         title: '周卡',
         subtitle: '周末',

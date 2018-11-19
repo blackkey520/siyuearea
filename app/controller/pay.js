@@ -59,21 +59,27 @@ class PayController extends Controller {
                 money = parseInt(ctx.params.money) * config.record[0].sessiondis
                 break;
             case '5':
-                money = parseInt(ctx.params.money) * config.record[0].weekzmdis
+                money = parseInt(ctx.params.money) * config.record[0].hyeardis
                 break;
             case '6':
-                money = parseInt(ctx.params.money) * config.record[0].monthzmdis
+                money = parseInt(ctx.params.money) * config.record[0].yeardis
                 break;
             case '7':
-                money = parseInt(ctx.params.money) * config.record[0].sessionzmdis
+                money = parseInt(ctx.params.money) * config.record[0].weekzmdis
                 break;
             case '8':
-                money = parseInt(ctx.params.money) * config.record[0].weekzydis
+                money = parseInt(ctx.params.money) * config.record[0].monthzmdis
                 break;
             case '9':
-                money = parseInt(ctx.params.money) * config.record[0].monthzydis
+                money = parseInt(ctx.params.money) * config.record[0].sessionzmdis
                 break;
             case '10':
+                money = parseInt(ctx.params.money) * config.record[0].weekzydis
+                break;
+            case '11':
+                money = parseInt(ctx.params.money) * config.record[0].monthzydis
+                break;
+            case '12':
                 money = parseInt(ctx.params.money) * config.record[0].sessionzydis
                 break;
             default:
