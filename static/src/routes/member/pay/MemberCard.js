@@ -44,49 +44,49 @@ class MemberCard extends React.Component {
           desc: this.props.checkconfig.sessionvalue/(24*7*4*3),
           money: this.props.checkconfig.sessionvalue
       }, {
-        type: 4,
+        type: 5,
         title: '半年卡',
         subtitle: '',
         desc: this.props.checkconfig.hyearvalue / (24 * 7 * 4 * 3),
         money: this.props.checkconfig.hyearvalue
       }, {
-        type: 4,
+        type: 6,
         title: '年卡',
         subtitle: '',
         desc: this.props.checkconfig.yearvalue / (24 * 7 * 4 * 3),
         money: this.props.checkconfig.yearvalue
       }, {
-        type: 5,
+        type: 7,
         title: '周卡',
         subtitle: '周末',
         desc: this.props.checkconfig.weekzmvalue / (24 * 7),
         money: this.props.checkconfig.weekzmvalue
       }, {
-        type: 6,
+        type: 8,
         title: '月卡',
         subtitle: '周末',
         desc: this.props.checkconfig.monthzmvalue / (24 * 7 * 4),
         money: this.props.checkconfig.monthzmvalue
       }, {
-        type: 7,
+        type: 9,
         title: '季卡',
         subtitle: '周末',
         desc: this.props.checkconfig.sessionzmvalue / (24 * 7 * 4 * 3),
         money: this.props.checkconfig.sessionzmvalue
       }, {
-        type: 8,
+        type: 10,
         title: '周卡',
         subtitle: '作业',
         desc: this.props.checkconfig.weekzyvalue / (24 * 7),
         money: this.props.checkconfig.weekzyvalue
       }, {
-        type: 9,
+        type: 11,
         title: '月卡',
         subtitle: '作业',
         desc: this.props.checkconfig.monthzyvalue / (24 * 7 * 4),
         money: this.props.checkconfig.monthzyvalue
       }, {
-        type: 10,
+        type: 12,
         title: '季卡',
         subtitle: '作业',
         desc: this.props.checkconfig.sessionzyvalue / (24 * 7 * 4 * 3),
