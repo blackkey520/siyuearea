@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
 import { routerRedux } from "dva/router";
 import { createForm } from 'rc-form';
+import moment from 'moment';
 import {
 	Input,
 	Form,
@@ -12,6 +13,7 @@ import {
 	message,
 	Radio,
 } from "antd";
+import { GetMoney,GetMoneyDetail } from '../../utils'
 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
@@ -123,7 +125,6 @@ class Config extends Component {
 						<Button type="primary" onClick={this.onSubmit.bind(this)}>
 							确认
 						</Button>
-						 
 					</div>
 
 					<Form >

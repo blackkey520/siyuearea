@@ -54,9 +54,9 @@ const moneyarray=[
 const GetMoney=(btime,etime)=>{
   let momey=0;
   const tarr=moneyarray.filter((item)=>{
-    return item.timeend >= btime.hour()
+    return item.timeend > btime.hour()
   }).filter((item)=>{
-    return item.timestart <= etime.hour()
+    return item.timestart < etime.hour()
   });
   if (tarr.length === 1) {
     const shours = etime.diff(btime, 'hours', true);
@@ -88,10 +88,11 @@ const GetMoney=(btime,etime)=>{
 }
 const GetMoneyDetail = (btime, etime) => {
   let rtnval='使用时间未超过半小时';
+  debugger;
   const tarr = moneyarray.filter((item) => {
-    return item.timeend >= btime.hour()
+    return item.timeend > btime.hour()
   }).filter((item) => {
-    return item.timestart <= etime.hour()
+    return item.timestart < etime.hour()
   });
   if(tarr.length===1)
   {
