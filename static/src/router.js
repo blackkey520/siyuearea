@@ -99,6 +99,11 @@ const Routers = function({ history, app }) {
         import ("./routes/member/pay/PayResult")
     },
     {
+      path: "/mobile/lights/:placeid",
+      models: () => [],
+      component: () => import("./routes/lights")
+    },
+    {
       path: "/productcard",
       models: () => [
         import ("./models/productcard")

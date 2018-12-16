@@ -30,6 +30,7 @@ class MemberList extends Component {
 		this.state={
 			record:null,
 			yqdays:1,
+			selectvalue:''
 		}
 	}
 	componentDidMount() {
@@ -52,7 +53,7 @@ class MemberList extends Component {
 	}
 
 	tableChange(pagination) {
-		this.loadTableData(pagination.current, pagination.pageSize);
+		this.loadTableData(pagination.current, pagination.pageSize, this.state.selectvalue);
 	}
 	render() {
 		 
@@ -132,7 +133,7 @@ class MemberList extends Component {
 									Modal.warn({
 										title: '会员延期',
 										content: (
-											<div>为 <span style={{color:'red'}}>{record.mname}</span> 延期 <InputNumber value={this.state.yqdays} min={1} max={30} defaultValue={1} onChange={(value)=>{
+											<div>为 <span style={{color:'red'}}>{record.mname}</span> 延期 <InputNumber value={this.state.yqdays} min={1} max={1000} defaultValue={1} onChange={(value)=>{
 												this.setState({
 													yqdays:value
 												});
@@ -149,7 +150,7 @@ class MemberList extends Component {
 													callback: data => {
 														hide();
 														if (data && data.success) {
-															that.loadTableData();
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, this.state.selectvalue);
 															message.success("保存成功");
 														} else {
 															message.error("保存失败");
@@ -193,6 +194,9 @@ class MemberList extends Component {
                     placeholder="请输入会员编号/姓名/电话"
                     onSearch={(value) => {
                         this.loadTableData(1,10,value);
+						this.setState({
+							selectvalue:value
+						});
                     }}
                     style={{ width: 200 }}
                     />
