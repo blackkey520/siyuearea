@@ -150,7 +150,7 @@ class MemberList extends Component {
 													callback: data => {
 														hide();
 														if (data && data.success) {
-															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, this.state.selectvalue);
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.state.selectvalue);
 															message.success("保存成功");
 														} else {
 															message.error("保存失败");
