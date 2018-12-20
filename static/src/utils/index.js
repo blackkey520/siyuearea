@@ -53,78 +53,142 @@ const moneyarray=[
 ]
 const GetMoney=(btime,etime)=>{
   let momey=0;
-  const tarr=moneyarray.filter((item)=>{
-    return item.timeend > btime.hour()
-  }).filter((item)=>{
-    return item.timestart < etime.hour()
-  });
-  if (tarr.length === 1) {
-    const shours = etime.diff(btime, 'hours', true);
-    if (shours > 0.5) {
-      momey = momey + Math.round(shours) * tarr[0].money;
-    }
-  } else {
-    for (let i = 0; i < tarr.length; i++) {
-      const t = tarr[i];
-      let begin;
-      let end;
-      if (i === tarr.length - 1) {
-        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-        end = etime;
-      } else if (i === 0) {
-        begin = btime;
-        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  let begintime = btime;
+  let baktime=btime;
+  while (begintime <= etime) {
+    const hitma = moneyarray.find((item) => {
+      return item.timestart <= begintime.hour() && item.timeend > begintime.hour()
+    })
+    //第一次
+    if (begintime === btime) {
+      if (moment(baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)).diff(begintime, 'minutes') >= 30) {
+        momey += hitma.money;
       } else {
-        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
-      }
-      const hours = end.diff(begin, 'hours', true);
-      if (hours > 0.5) {
-        momey = momey + Math.round(hours) * t.money;
+        //不足
       }
     }
+    //最后一次
+    else if (begintime.hours() === etime.hours()) {
+      if (etime.diff(begintime, 'minutes') >= 30) {
+        momey += hitma.money;
+      } else {
+        //不足
+      }
+    } else {
+      momey += hitma.money;
+    }
+    begintime = moment(begintime.format('YYYY-MM-DD HH:00:00')).add(1, 'hours');
   }
+  
+
+  // const tarr=moneyarray.filter((item)=>{
+  //   return item.timeend > btime.hour()
+  // }).filter((item)=>{
+  //   return item.timestart < etime.hour()
+  // });
+  // if (tarr.length === 1) {
+  //   const shours = etime.diff(btime, 'hours', true);
+  //   if (shours > 0.5) {
+  //     momey = momey + Math.round(shours) * tarr[0].money;
+  //   }
+  // } else {
+  //   for (let i = 0; i < tarr.length; i++) {
+  //     const t = tarr[i];
+  //     let begin;
+  //     let end;
+  //     if (i === tarr.length - 1) {
+  //       begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+  //       end = etime;
+  //     } else if (i === 0) {
+  //       begin = btime;
+  //       end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  //     } else {
+  //       begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+  //       end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  //     }
+  //     const hours = end.diff(begin, 'hours', true);
+  //     if (hours > 0.5) {
+  //       momey = momey + Math.round(hours) * t.money;
+  //     }
+  //   }
+  // }
   return momey;
 }
 const GetMoneyDetail = (btime, etime) => {
-  let rtnval='使用时间未超过半小时';
-  debugger;
-  const tarr = moneyarray.filter((item) => {
-    return item.timeend > btime.hour()
-  }).filter((item) => {
-    return item.timestart < etime.hour()
-  });
-  if(tarr.length===1)
-  {
-      const shours = etime.diff(btime, 'hours', true);
-      if (shours > 0.5) {
-        rtnval = `${btime.format('YYYY-MM-DD HH:mm:ss')}-${etime.format('YYYY-MM-DD HH:mm:ss')}[${Math.round(shours)}小时]（收费：${Math.round(shours) * tarr[0].money}）`;
-      }
-  }else{
-    rtnval = '';
-    for (let i = 0; i < tarr.length; i++) {
-      const t = tarr[i];
-      let begin;
-      let end;
-      if (i === tarr.length - 1) {
-        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-        end = etime;
-      } else if (i === 0) {
-        begin = btime;
-        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  let rtnval='';
+  let momey=0;
+  let begintime = btime;
+  let baktime=btime;
+  while (begintime <= etime) {
+    const hitma = moneyarray.find((item) => {
+      return item.timestart <= begintime.hour() && item.timeend > begintime.hour()
+    })
+    //第一次
+    if (begintime === btime) {
+      debugger;
+      if (moment(baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)).diff(begintime, 'minutes') >= 30) {
+        momey += hitma.money;
+        rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)}收费（${hitma.money}）；`;
       } else {
-        begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
-        end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
-      }
-      const hours = end.diff(begin, 'hours', true);
-      if (hours > 0.5) {
-        rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[${hours}小时]（收费：${Math.round(hours) * t.money}）`;
-      }else{
-        rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[不足小时]（收费：0）`;
+        //不足
+        rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)}-开始时间不满足收费条件不计费；`;
       }
     }
+    //最后一次
+    else if (begintime.hours() === etime.hours()) {
+      if (etime.diff(begintime, 'minutes') >= 30) {
+        momey += hitma.money;
+        rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${etime.format('YYYY-MM-DD HH:mm:ss')}收费（${hitma.money}）；`;
+      } else {
+        //不足
+        rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${etime.format('YYYY-MM-DD HH:mm:ss')}结束时间不满足收费条件不计费；`;
+      }
+    }else{
+      momey += hitma.money;
+      rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)}收费（${hitma.money}）；`;
+    }
+    begintime = moment(begintime.format('YYYY-MM-DD HH:00:00')).add(1, 'hours');
   }
-  return rtnval;
+
+
+
+  // debugger;
+  // const tarr = moneyarray.filter((item) => {
+  //   return item.timeend >= btime.hour()
+  // }).filter((item) => {
+  //   return item.timestart < etime.hour()
+  // });
+  // if(tarr.length===1)
+  // {
+  //     const shours = etime.diff(btime, 'hours', true);
+  //     if (shours > 0.5) {
+  //       rtnval = `${btime.format('YYYY-MM-DD HH:mm:ss')}-${etime.format('YYYY-MM-DD HH:mm:ss')}[${Math.round(shours)}小时]（收费：${Math.round(shours) * tarr[0].money}）`;
+  //     }
+  // }else{
+  //   rtnval = '';
+  //   for (let i = 0; i < tarr.length; i++) {
+  //     const t = tarr[i];
+  //     let begin;
+  //     let end;
+  //     if (i === tarr.length - 1) {
+  //       begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+  //       end = etime;
+  //     } else if (i === 0) {
+  //       begin = btime;
+  //       end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  //     } else {
+  //       begin = moment(moment().format(`YYYY-MM-DD ${t.timestart}:00:00`));
+  //       end = moment(moment().format(`YYYY-MM-DD ${t.timeend}:00:00`));
+  //     }
+  //     const hours = end.diff(begin, 'hours', true);
+  //     if (hours > 0.5) {
+  //       rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[${hours}小时]（收费：${Math.round(hours) * t.money}）`;
+  //     }else{
+  //       rtnval += `${begin.format('YYYY-MM-DD HH:mm:ss')}到${end.format('YYYY-MM-DD HH:mm:ss')}[不足小时]（收费：0）`;
+  //     }
+  //   }
+  // }
+  return rtnval + "总金额" + momey;
 }
 const MD5 = s => {
   function L(k, d) {

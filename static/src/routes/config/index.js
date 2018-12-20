@@ -115,6 +115,7 @@ class Config extends Component {
 		}
 		return (
 				<div className="content-inner">
+					 
 					<div
 						style={{
 							borderBottom: "1px solid #ddd",
