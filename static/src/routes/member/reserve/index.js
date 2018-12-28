@@ -6,13 +6,14 @@ import moment from 'moment';
 import { connect } from "dva";
 import { routerRedux } from "dva/router";
 import SitMap from '../../../components/SitMap'
-import {DatePicker, ActivityIndicator,NoticeBar} from 'antd-mobile';
+import { DatePicker, ActivityIndicator, NoticeBar, Button} from 'antd-mobile';
 import {Toast} from 'antd-mobile';
 import 'antd-mobile/lib/date-picker/style/css';
 import 'antd-mobile/lib/toast/style/css';
 import zhCN from 'antd-mobile/lib/date-picker/locale/zh_CN';
 import 'antd-mobile/lib/activity-indicator/style/css';
 import 'antd-mobile/lib/notice-bar/style/css';
+import 'antd-mobile/lib/button/style/css';
 @connect(({ place,loading,member }) => ({
 		placelist : place.placelist,
     placeloading : loading.effects['place/getplacelist'],
@@ -71,35 +72,35 @@ class Reserve extends React.Component {
         </DatePicker>
 
         <div style={{width:'100%',paddingTop:30,textAlign:'center'}} >
-           <a onClick={()=>{
-             let selectitem=this.placemap.getselectItem();
-              if(selectitem)
-              {	
-                const _that=this;
-                  this.props.dispatch({
-                    type: "place/orderplace",
-                    payload: {
-                        mid: this.props.loginuser.member.mid,
-                        mregisttime: this.props.loginuser.member.mregisttime,
-                          place: selectitem,
-                          desc:'',
-                          orderdate:this.state.date.format('YYYY-MM-DD HH:mm:ss'),
-                          callback: data => {
-                            if (data && data.success) {
-                              Toast.info('预定成功啦', 1);
-                              _that.props.dispatch(
-                                routerRedux.push({ pathname: `/mobile/order`, })
-                              );
-                            } else {
-                              Toast.info('您还有未完成的订单', 1);
-                            }
-                          }
-                      }
-                  });
-              }else{
-                Toast.info('选择一个工位吧', 1);
-              }
-              }}>预定</a>
+          
+          <Button onClick={() => {
+            let selectitem = this.placemap.getselectItem();
+            if (selectitem) {
+              const _that = this;
+              this.props.dispatch({
+                type: "place/orderplace",
+                payload: {
+                  mid: this.props.loginuser.member.mid,
+                  mregisttime: this.props.loginuser.member.mregisttime,
+                  place: selectitem,
+                  desc: '',
+                  orderdate: this.state.date.format('YYYY-MM-DD HH:mm:ss'),
+                  callback: data => {
+                    if (data && data.success) {
+                      Toast.info('预定成功啦', 1);
+                      _that.props.dispatch(
+                        routerRedux.push({ pathname: `/mobile/order`, })
+                      );
+                    } else {
+                      Toast.info('您还有未完成的订单', 1);
+                    }
+                  }
+                }
+              });
+            } else {
+              Toast.info('选择一个工位吧', 1);
+            }
+          }} type="primary">预定</Button>
               </div>
       </div>
     );
