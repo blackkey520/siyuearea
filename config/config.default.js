@@ -31,7 +31,6 @@ exports.notfound={
 exports.cors = {
   allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH"
 };
-
 exports.multipart = {
   fileExtensions: [".xls", ".doc", ".ppt", ".docx", ".xlsx", ".pptx"]
 };

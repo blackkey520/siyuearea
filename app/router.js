@@ -63,4 +63,5 @@ module.exports = app => {
   app.get('/paytest/:attach', 'pay.paytest');
   app.post('/user/authorize',  'user.authenticate');
   app.get('/user/authenticate',  'user.authenticate');
+  app.get('/socket/test','socketserver.openlight')
 };

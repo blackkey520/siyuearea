@@ -125,7 +125,6 @@ const GetMoneyDetail = (btime, etime) => {
     })
     //第一次
     if (begintime === btime) {
-      debugger;
       if (moment(baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)).diff(begintime, 'minutes') >= 30) {
         momey += hitma.money;
         rtnval += `${begintime.format('YYYY-MM-DD HH:mm:ss')}到${baktime.format(`YYYY-MM-DD ${begintime.hours()+1}:00:00`)}收费（${hitma.money}）；`;
