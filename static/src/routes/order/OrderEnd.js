@@ -72,7 +72,6 @@ class OrderEnd extends Component {
 				return;
 			}
 			const hide = message.loading("正在保存...", 0);
-			debugger;
 			this.props.dispatch({
 				type: "order/finishrecord",
 				payload: {
@@ -240,7 +239,7 @@ class OrderEnd extends Component {
 						</FormItem>:null}
 						<FormItem {...formItemWiLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: this.props.recorddetail.pdesc,
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime)),
 							})(
 								<Input
 									type="textarea"

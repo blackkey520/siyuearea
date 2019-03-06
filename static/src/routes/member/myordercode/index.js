@@ -4,6 +4,7 @@ import moment from 'moment';
 import QRCode from 'qrcode';
 import {atype} from '../../../utils/enum';
 import { GetMoneyDetail } from '../../../utils';
+import style from './index.less'
 import {
     Preview,
     PreviewHeader,
@@ -39,6 +40,32 @@ constructor(props, context) {
         url
     });
   }
+  renderorderdetail=()=>{
+      if (this.props.selectedmobileorder.ostate === 0 || this.props.selectedmobileorder.ostate === 3)
+      {
+        return(<PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />);
+      }
+      if (this.props.selectedmobileorder.rstate !== null && this.props.selectedmobileorder.rstate === 1)
+      {
+          return(<div><PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
+                </div>);
+      }
+      if (this.props.selectedmobileorder.rstate !== null && this.props.selectedmobileorder.rstate === 2)
+      {
+          return(<div>
+                <PreviewItem label="消费方式" value={atype[this.props.selectedmobileorder.rstate]} />
+                <PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="结束时间" value={moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
+                 <PreviewItem label="消费金额（元" value={this.props.selectedmobileorder.money} /> 
+                     <PreviewItem label="消费明细" value={GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))} /> }
+                </div>);
+      }
+ 
+  }
   render() {
     return (
         <Preview>
@@ -46,19 +73,14 @@ constructor(props, context) {
                 <PreviewItem label="订单号码" value={this.props.match.params.orderid} />
             </PreviewHeader>
             <PreviewBody style={{textAlign:'center'}}>
-                 <img src={this.state.url} style={{height:250,width:250}}/>
-                {this.props.selectedmobileorder.rstate===null?this.props.selectedmobileorder.ostate === 0||this.props.selectedmobileorder.ostate === 3?<PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />:this.props.selectedmobileorder.rstate === 0?<div><PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
-                <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
-                <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
-                </div>:<div>
-                <PreviewItem label="消费方式" value={atype[this.props.selectedmobileorder.rstate]} />
-                <PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
-                <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
-                <PreviewItem label="结束时间" value={moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')} />
-                <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
-                {this.props.selectedmobileorder.rstate===1?<PreviewItem label="消费金额（元" value={this.props.selectedmobileorder.money} />:null}
-                    {this.props.selectedmobileorder.rstate===1?<PreviewItem label="消费明细" value={GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))} />:null}
-                </div>:<PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />}
+               
+                    <img src={this.state.url} style={{height:250,width:250}}/>
+                    {
+                        this.renderorderdetail()
+                    }
+               
+                 
+                
             </PreviewBody>
             <PreviewFooter>
                 <PreviewButton>二维码</PreviewButton>

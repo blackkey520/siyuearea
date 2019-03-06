@@ -88,6 +88,7 @@ export default {
         delete payload.etime;
         delete payload.money;
         delete payload.rstate;
+        delete payload.rid;
         const result=yield call(updateorder,payload);
         if(result.success)
         {
@@ -118,7 +119,6 @@ export default {
             }
           });
          let errormsg='';
-         debugger;
           let { memberdetail } = yield select(state => state.order);
             const accournt = {};
             accournt.mid = memberdetail.mid;
@@ -142,12 +142,13 @@ export default {
                   delete memberdetail.isused;
                   delete memberdetail.pcdesc;
                   delete memberdetail.value;
+                  memberdetail.mrtime = moment(memberdetail.mrtime).format('YYYY-MM-DD HH:mm:ss');
                   const member = yield call(update, memberdetail);
                   accournt.atype = 1;
                   accournt.amoney = payload.param.money;
                   accournt.asmoney = payload.param.money;
                   accournt.adesc = '充值消费';
-                  payload.record.ostate=1;
+                  payload.record.ostate=2;
                 } else {
                   errormsg = 'outofmoney';
                 }
@@ -197,13 +198,14 @@ export default {
               delete payload.order.etime;
               delete payload.order.money;
               delete payload.order.rstate;
+              delete payload.order.rid;
               const result = yield call(updateorder, payload.order);
               
               if (result.success) {
                 payload.record.btime = moment(payload.record.btime).format('YYYY-MM-DD HH:mm:ss');
                 payload.record.etime = payload.param.etime;
                 payload.record.money = payload.param.money;
-                payload.record.pdesc = payload.param.pdesc;
+                payload.record.pdesc = '';
                 delete payload.record.pname;
                 delete payload.record.mname;
                 delete payload.record.rstate;

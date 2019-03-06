@@ -112,6 +112,7 @@ export default {
         delete checkmember.isused;
         delete checkmember.pcdesc;
         delete checkmember.value;
+        memberdetail.mrtime = moment(memberdetail.mrtime).format('YYYY-MM-DD HH:mm:ss');
         data = yield call(update, checkmember);
         //记账
         const accourntdata = yield call(addaccournt, accournt);

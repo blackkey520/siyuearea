@@ -82,6 +82,7 @@ export default {
           const mem = loaduser.data.record[0];
           mem.memberopenid = payload.userInfo.openid;
           mem.mregisttime = moment(mem.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+          mem.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
           result = yield call(update, mem);
            loginuser.member = mem;
           yield put({
@@ -287,7 +288,7 @@ export default {
         checkmember.mregisttime = moment(pcitem.etime).format('YYYY-MM-DD HH:mm:ss');
         accournt.atype = 3;
         accournt.amoney = pcitem.value;
-        accournt.asmoney = pcitem.value;
+        accournt.asmony = pcitem.value;
         accournt.adesc = pcitem.pcname;
       }
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -298,6 +299,7 @@ export default {
       delete checkmember.isused;
       delete checkmember.pcdesc;
       delete checkmember.value;
+      checkmember.mrtime = moment(checkmember.mrtime).format('YYYY-MM-DD HH:mm:ss');
       data = yield call(update, checkmember);
       //记账
       const accourntdata = yield call(addaccournt, accournt);
@@ -314,6 +316,7 @@ export default {
       delete payload.param.pcname;
       delete payload.param.value;
       payload.param.mregisttime = moment(payload.param.mregisttime).add(payload.extenddays, 'days').format('YYYY-MM-DD HH:mm:ss');
+      payload.param.mrtime = moment(payload.param.mrtime).format('YYYY-MM-DD HH:mm:ss');
       data = yield call(update, payload.param);
 			callback && callback(data);
 		},
@@ -327,14 +330,18 @@ export default {
         payload.param.mid = payload.param.id;
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
         delete payload.param.id;
+        payload.param.mrtime = moment(payload.param.mrtime).format('YYYY-MM-DD HH:mm:ss');
 				data = yield call(update, payload.param);
 			} else {
         payload.param.membercode = Math.random().toString(20).substr(2);
         payload.param.memberopenid = '-';
-         delete payload.param.id;
+        delete payload.param.id;
+ 
+        payload.param.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
+ 
 				data = yield call(register, payload.param);
       }
 			callback && callback(data);
-		}
+		} 
   },
 }

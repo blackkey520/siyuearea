@@ -57,8 +57,10 @@ module.exports = app => {
   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
+  app.get('/api/wechat/getusr/program/:code', 'wechat.program');
   app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
   app.get('/requestpayment/:openid/:money/:ptype/:type/:mtype/:title', 'pay.payment');
+  app.get('/requestpaymentprogram/:openid/:money/:ptype/:type/:mtype', 'pay.paymentprogram')
   app.get('/notify', 'pay.paycallback');
   app.get('/paytest/:attach', 'pay.paytest');
   app.post('/user/authorize',  'user.authenticate');

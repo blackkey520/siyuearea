@@ -71,7 +71,8 @@ class MemberForm extends Component {
 						mregisttime:values.mregisttime,
 						mtype:values.mtype,
 						mdesc:values.mdesc,
-						mmoney:values.mmoney
+						mmoney:values.mmoney,
+						mrtime:values.mrtime
 					},
 					callback: data => {
 						hide();
@@ -177,9 +178,16 @@ class MemberForm extends Component {
 								 cpd
 							 }
 						</FormItem>
-						<FormItem {...formItemLayout} label="注册时间">
+						<FormItem {...formItemLayout} label="到期时间">
 							{getFieldDecorator("mregisttime", {
 								initialValue: this.props.checkmember.mregisttime ? this.props.checkmember.mregisttime : moment().format('YYYY-MM-DD HH:mm:ss'),
+							})( <Input disabled / > )
+							}
+						</FormItem>
+						<FormItem {...formItemLayout} label="注册时间">
+							{
+								getFieldDecorator("mrtime", {
+								initialValue: this.props.checkmember.mrtime ? this.props.checkmember.mrtime : moment().format('YYYY-MM-DD HH:mm:ss'),
 							})( <Input disabled / > )
 							}
 						</FormItem>
