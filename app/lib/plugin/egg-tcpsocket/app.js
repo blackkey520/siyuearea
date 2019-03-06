@@ -6,7 +6,7 @@ module.exports = app => {
         ipaddress: '172.16.9.12'
     }]
     var server = net.createServer();
-    var HOST = '192.168.31.73'; //定义服务器地址
+    var HOST = '127.0.0.1'; //定义服务器地址
     // var HOST = '192.168.1.15'; //定义服务器地址
     var PORT = 3000; //定义端口号
     app.connectObj={};
