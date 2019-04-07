@@ -59,7 +59,45 @@ exports.program = function* () {
   this.body = response;
   this.status = 200;
 };
+exports.programregister = function* () {
+  const response = {
+    success: false,
+    message: "操作失败"
+  };
+  var code = this.params.code;
+  var phone = this.params.phone;
+  const rtnval = {};
 
+  var url = `https://api.weixin.qq.com/sns/jscode2session?appid=${'wxc762f1ccccc82daf'}&secret=${'6a41970b9017e11632c88ddb53ec9561'}&js_code=${code}&grant_type=authorization_code`;
+  var result = yield request(url, {
+    headers: {
+      accept: 'application/json'
+    }
+  });
+  
+  const memberlist = yield this.service.member.index({}, {
+    page: 1,
+    pageSize: 1
+  }, {
+    phonenum: phone
+  });
+  if (memberlist.record.length !== 0) {
+    rtnval.ismember = true;
+    const member=yield this.service.member.update({
+      openid: result.openid,
+      phone: phone
+    });
+    rtnval.member = member;
+  }else{
+    rtnval.ismember = false;
+  }
+  rtnval.openid = result.openid;
+  response.message = "操作成功";
+  response.success = true;
+  response.data = rtnval;
+  this.body = response;
+  this.status = 200;
+};
 
 exports.redirect=function*(){
   const client = new OAuth('wx806d517c00b4e3db', 'c463edb586c68158ea39679621ad5a40');//生产

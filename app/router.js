@@ -58,6 +58,7 @@ module.exports = app => {
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
   app.get('/api/wechat/getusr/program/:code', 'wechat.program');
+  app.get('/api/wechat/getusr/program/:code/:phone', 'wechat.programregister');
   app.get('/api/wechat/getqrcode/:qrstr','wechat.getqrcode');
   app.get('/requestpayment/:openid/:money/:ptype/:type/:mtype/:title', 'pay.payment');
   app.get('/requestpaymentprogram/:openid/:money/:ptype/:type/:mtype', 'pay.paymentprogram')
@@ -65,5 +66,6 @@ module.exports = app => {
   app.get('/paytest/:attach', 'pay.paytest');
   app.post('/user/authorize',  'user.authenticate');
   app.get('/user/authenticate',  'user.authenticate');
-  app.get('/socket/test','socketserver.openlight')
+  app.get('/socket/:pid/openlight','socketserver.openlight');
+  app.get('/socket/:pid/closelight', 'socketserver.closelight');
 };

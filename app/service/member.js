@@ -41,6 +41,12 @@ module.exports = app => {
       const record= yield this.app.mysql.query(recordsql);
       return record;
     }
+    *update(modal,query,condition={}){
+      const sql = `update Base_Member set memberprogramopenid = '${modal.openid}' where phonenum='${modal.phone}'`;
+      yield this.app.mysql.query(sql);
+      const record = yield this.app.mysql.query(`select * from Base_Member where memberprogramopenid='${modal.openid}'`);
+      return record[0];
+    }
     
   }
   return RestqlService;
