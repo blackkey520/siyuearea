@@ -3,7 +3,13 @@ var net = require('net') //引入网络模块
 module.exports = app => {
     const sockconfig = [{
         sockname: 'sock1',
-        ipaddress: '172.16.9.12'
+        ipaddress: '192.168.3.102'
+    }, {
+        sockname: 'sock2',
+        ipaddress: '192.168.3.100'
+    }, {
+        sockname: 'sock3',
+        ipaddress: '192.168.3.101'
     }]
     var server = net.createServer();
     var HOST = '127.0.0.1'; //定义服务器地址

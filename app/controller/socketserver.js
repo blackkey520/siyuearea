@@ -16,8 +16,10 @@ class SocketServerController extends Controller {
     });
     if (sock)
     {
+      let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x01, 0x00, 0x00, 0x45, 0x44]
+      openbuffer.splice(3, 0, sock.buffer);
       if (connectObj[sock.sockname] !== null)
-        connectObj[sock.sockname].write(new Buffer([0x48, 0x3a, 0x01, 0x70, 0x01, 0x01, 0x00, 0x00, 0x45, 0x44]));
+        connectObj[sock.sockname].write(new Buffer(openbuffer));
     }
     
     
@@ -30,10 +32,12 @@ class SocketServerController extends Controller {
     const sock = SockConfig.find((item) => {
       return item.pid === parseInt(this.ctx.params.openid)
     });
+    let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x00, 0x00, 0x00, 0x45, 0x44]
+    openbuffer.splice(3, 0, sock.buffer);
     if (sock)
     {
       if (connectObj[sock.sockname] !== null)
-        connectObj[sock.sockname].write(new Buffer([0x48, 0x3a, 0x01, 0x70, 0x01, 0x00, 0x00, 0x00, 0x45, 0x44]));
+        connectObj[sock.sockname].write(new Buffer(openbuffer));
     }
     
   }
