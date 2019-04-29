@@ -112,6 +112,14 @@ const Routers = function({ history, app }) {
         import ("./routes/productcard/index")
     },
     {
+      path: "/placemanager",
+      models: () => [
+        import("./models/place")
+      ],
+      component: () =>
+        import("./routes/lights/PlaceManager")
+    },
+    {
       path: "/config",
       models: () => [
         import ("./models/config")

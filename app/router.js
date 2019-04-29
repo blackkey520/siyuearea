@@ -22,6 +22,7 @@ module.exports = app => {
   app.get('/mobile/paypage', 'client.index');
   app.get('/accountslist', 'client.index');
   app.get('/memberlist', 'client.index');
+  app.get('/placemanager','client.index');
   app.get('/productcard','client.index');
   app.get('/productcard/create', 'client.index');
   app.get('/productcard/edit/:id', 'client.index');

@@ -1,4 +1,12 @@
-import {querylist, updateplace} from "../services/place";
+import {
+  querylist,
+  updateplace,
+  querysinglerecord,
+  addsinglerecord,
+  updatesinglerecord,
+  openlight,
+  closelight
+} from "../services/place";
 import {addorder,queryorderlist} from "../services/order";
 import { parse } from "qs";
 import { message } from "antd";
@@ -10,6 +18,8 @@ export default {
   namespace: "place",
   state: {
     placelist:[],
+    selectPlace:null,
+    selectRecord:null
   },
   reducers: {
     updateState(state,{payload}) {
@@ -26,6 +36,57 @@ export default {
             payload: {
                 placelist:result.data.record
             }
+        });
+    },
+    *placeload({ payload }, { call, put }) {
+        const {selectPlace} = payload;
+        let selectRecord=null;
+        if(selectPlace.pstate==4)
+        {
+            const record = yield call(querysinglerecord, {
+              pid: selectPlace.pid,
+              isfinish: 0
+            });
+            selectRecord = record.data.record[0];
+        }
+         yield put({
+           type: "updateState",
+           payload: {
+             selectPlace,
+             selectRecord
+           }
+         });
+    },
+    *placehandle({ payload }, { call, put,select }) {
+      
+        const { selectPlace,selectRecord } = yield select(state => state.place);
+        delete selectPlace.ptypen;
+        if (selectPlace.pstate == 0) {
+          yield call(addsinglerecord, {
+            pid: selectPlace.pid,
+            odrdate: moment().format('YYYY-MM-DD HH:mm:ss'),
+            odrtype: payload.values.odrtype,
+            isfinish:0,
+            odrdesc: payload.values.odrdesc || '',
+          });
+          selectPlace.pstate = 4;
+          
+          yield call(updateplace, selectPlace);
+          yield call(openlight,{pid:selectPlace.pid})
+          message.success("开台成功");
+        }else{
+          selectRecord.isfinish=1;
+          selectRecord.odrdate = moment(selectRecord.odrdate).format('YYYY-MM-DD HH:mm:ss');
+          selectRecord.odrdesc = payload.values.odrdesc || '';
+          yield call(updatesinglerecord, selectRecord);
+          selectPlace.pstate = 0;
+          yield call(updateplace, selectPlace);
+          yield call(closelight,{pid:selectPlace.pid})
+          message.success("离店成功");
+        }
+        yield put({
+          type: "getplacelist",
+          payload: {}
         });
     },
      *orderplace({ payload }, { call, put }) {

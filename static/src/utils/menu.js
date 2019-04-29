@@ -41,6 +41,11 @@ module.exports = [
     ]
   },
   {
+    key: "placemanager",
+    name: "座位管理", //模块
+    icon: "tablet",
+  },
+  {
     key: "orderlist",
     name: "订单信息", //模块
     icon: "bars",

@@ -204,7 +204,6 @@ class OrderForm extends Component {
 					{
 						this.state.show===0?
 						<div  style={{paddingTop:50}}>
-							<SitMap selectPid={this.props.orderdetail.pid} sitemap={this.props.placelist} style={{paddingLeft:170,paddingBottom:50}}/>
 							<Form>
 								<FormItem {...formItemLayout} label="订单状态">
 									{getFieldDecorator("ostate", {
