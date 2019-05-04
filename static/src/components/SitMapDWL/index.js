@@ -71,12 +71,12 @@ class SitMapDWL extends React.Component {
         </ul>
          <ul>
              <li   ><Icon style={{ fontSize: 50, color:'#fff'}} type="laptop" /></li>
-          <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(60)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(60)}}>H6</div><Icon style={{ fontSize: 50, color:this.findColor(60),marginLeft:0}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(62)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(62)}}>H5</div><Icon style={{ fontSize: 50, color:this.findColor(62),marginLeft:0}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(64)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(64)}}>H4</div><Icon style={{ fontSize: 50, color:this.findColor(64),marginLeft:0}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(66)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(66)}}>H3</div><Icon style={{ fontSize: 50, color:this.findColor(66),marginLeft:0}} type="laptop" /></li>
-             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(68)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(68)}}>H2</div><Icon style={{ fontSize: 50, color:this.findColor(68),marginLeft:0}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(70)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(70)}}>H1</div><Icon style={{ fontSize: 50, color:this.findColor(70),marginLeft:0}} type="laptop" /></li>
+          <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(60)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(60)}}>H1</div><Icon style={{ fontSize: 50, color:this.findColor(60),marginLeft:0}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(62)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(62)}}>H2</div><Icon style={{ fontSize: 50, color:this.findColor(62),marginLeft:0}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(64)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(64)}}>H3</div><Icon style={{ fontSize: 50, color:this.findColor(64),marginLeft:0}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(66)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(66)}}>H4</div><Icon style={{ fontSize: 50, color:this.findColor(66),marginLeft:0}} type="laptop" /></li>
+             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(68)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(68)}}>H5</div><Icon style={{ fontSize: 50, color:this.findColor(68),marginLeft:0}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(70)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(70)}}>H6</div><Icon style={{ fontSize: 50, color:this.findColor(70),marginLeft:0}} type="laptop" /></li>
         </ul>
              
         </div>

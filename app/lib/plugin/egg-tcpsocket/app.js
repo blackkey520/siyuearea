@@ -16,7 +16,11 @@ module.exports = app => {
         //监听数据接收事件
         socket.on('data', function (data) {
             let heartj=data.toString();
-            app.connectObj[heartj.split(';')[0]]=socket;
+            if(heartj.indexOf(';')!==-1)
+            {
+                app.connectObj[heartj.split(';')[0]] = socket;
+            }
+            
             
         });
         //监听连接断开事件
