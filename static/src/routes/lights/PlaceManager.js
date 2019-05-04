@@ -44,6 +44,7 @@ class PlaceManager extends Component {
         this.props.dispatch({ type: "place/getplacelist", payload: {  } });
 	}
 	placeClick=(placeid)=>{
+    debugger;
         let selectPlaces = this.props.placelist.find((item)=>{
             return item.pid == placeid
         });

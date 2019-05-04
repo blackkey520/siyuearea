@@ -3,7 +3,7 @@ exports.index = function*() {
   const response = { success: false, message: "操作失败" };
   var res = this.params.res;
   const tableList = yield this.service.tableinfo.index();
-  if (res && this.helper.inarray(tableList, res)) {
+  // if (res && this.helper.inarray(tableList, res)) {
     const qu={};
     qu.page=this.query.page;
     qu.pageSize=this.query.pageSize;
@@ -16,7 +16,7 @@ exports.index = function*() {
       response.success = true;
       response.data = result;
     }
-  }
+  // }
   this.body = response;
   this.status = 200;
 };
@@ -26,7 +26,7 @@ exports.show = function*() {
   var res = this.params.res;
   delete this.params.res;
   const tableList = yield this.service.tableinfo.index();
-  if (res && this.helper.inarray(tableList, res)) {
+  // if (res && this.helper.inarray(tableList, res)) {
     // 调用 service 获取数据
     const result = yield this.service.restql.show(res, this.params);
     const preOne = yield this.service.restql.preOne(res, this.params);
@@ -38,7 +38,7 @@ exports.show = function*() {
       response.success = true;
       response.data = result;
     }
-  }
+  // }
   this.body = response;
   this.status = 200;
 };
@@ -48,7 +48,7 @@ exports.create = function*() {
   const response = { success: false, message: "操作失败" };
   var res = this.params.res;
   const tableList = yield this.service.tableinfo.index();
-  if (res && this.helper.inarray(tableList, res)) {
+  // if (res && this.helper.inarray(tableList, res)) {
     const result = yield this.service.restql.create(res, this.request.body);
     if (result.affectedRows) {
       let returnBody = this.request.body;
@@ -57,7 +57,7 @@ exports.create = function*() {
       response.success = true;
       response.data = returnBody;
     }
-  }
+  // }
   this.body = response;
   this.status = 200;
 };
@@ -66,7 +66,7 @@ exports.update = function*() {
   const response = { success: false, message: "操作失败" };
   var res = this.params.res;
   const tableList = yield this.service.tableinfo.index();
-  if (res && this.helper.inarray(tableList, res)) {
+  // if (res && this.helper.inarray(tableList, res)) {
     const result = yield this.service.restql.update(
       res,
       this.params.id,
@@ -77,7 +77,7 @@ exports.update = function*() {
       response.success = true;
       response.data = result;
     }
-  }
+  // }
   this.body = response;
   this.status = 200;
 };
@@ -87,14 +87,14 @@ exports.destroy = function*() {
   const response = { success: false, message: "操作失败" };
   var res = this.params.res;
   const tableList = yield this.service.tableinfo.index();
-  if (res && this.helper.inarray(tableList, res)) {
+  // if (res && this.helper.inarray(tableList, res)) {
     const result = yield this.service.restql.destroy(res, this.params);
     if (result.affectedRows) {
       response.message = "操作成功";
       response.success = true;
       response.data = result.affectedRows; //删除的条数
     }
-  }
+  // }
   this.body = response;
   this.status = 200;
 };

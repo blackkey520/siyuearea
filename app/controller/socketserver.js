@@ -12,17 +12,21 @@ class SocketServerController extends Controller {
     console.log('openlight');
     console.log('====================================');
     const sock = SockConfig.find((item) => {
-      return item.pid === parseInt(this.ctx.params.openid)
+      return item.pid === parseInt(this.ctx.params.pid)
     });
     if (sock)
     {
-      let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x01, 0x00, 0x00, 0x45, 0x44]
-      openbuffer.splice(3, 0, sock.buffer);
+      // let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x01, 0x00, 0x00, 0x45, 0x44]
+      // openbuffer.splice(3, 0, sock.buffer);
       if (connectObj[sock.sockname] !== null)
-        connectObj[sock.sockname].write(new Buffer(openbuffer));
+        connectObj[sock.sockname].write(new Buffer(sock.openbuffer));
     }
     
     
+ 
+      const response = { success: true, message: "操作成功" };
+      this.ctx.body = response;
+      this.ctx.status = 200;
   }
   * closelight() {
      console.log('====================================');
@@ -30,16 +34,19 @@ class SocketServerController extends Controller {
      console.log('====================================');
     const {connectObj} = this.app;
     const sock = SockConfig.find((item) => {
-      return item.pid === parseInt(this.ctx.params.openid)
+      return item.pid === parseInt(this.ctx.params.pid)
     });
-    let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x00, 0x00, 0x00, 0x45, 0x44]
-    openbuffer.splice(3, 0, sock.buffer);
+    // let openbuffer = [0x48, 0x3a, 0x01, 0x70, 0x00, 0x00, 0x00, 0x45, 0x44]
+    // openbuffer.splice(3, 0, sock.buffer);
     if (sock)
     {
       if (connectObj[sock.sockname] !== null)
-        connectObj[sock.sockname].write(new Buffer(openbuffer));
+        // connectObj[sock.sockname].write(new Buffer(openbuffer));
+        connectObj[sock.sockname].write(new Buffer(sock.closebuffer));
     }
-    
+    const response = { success: true, message: "操作成功" };
+    this.ctx.body = response;
+    this.ctx.status = 200;
   }
 }
 

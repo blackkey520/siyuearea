@@ -59,26 +59,27 @@ export default {
     },
     *placehandle({ payload }, { call, put,select }) {
       
-        const { selectPlace,selectRecord } = yield select(state => state.place);
+        const place = yield select(state => state.place);
+        let selectPlace=place.selectPlace;
+        let selectRecord=place.selectRecord;
         delete selectPlace.ptypen;
         if (selectPlace.pstate == 0) {
-          yield call(addsinglerecord, {
-            pid: selectPlace.pid,
-            odrdate: moment().format('YYYY-MM-DD HH:mm:ss'),
-            odrtype: payload.values.odrtype,
-            isfinish:0,
-            odrdesc: payload.values.odrdesc || '',
-          });
+          // yield call(addsinglerecord, {
+          //   pid: selectPlace.pid,
+          //   odrdate: moment().format('YYYY-MM-DD HH:mm:ss'),
+          //   odrtype: payload.values.odrtype,
+          //   isfinish:0,
+          //   odrdesc: payload.values.odrdesc || '',
+          // });
           selectPlace.pstate = 4;
-          
           yield call(updateplace, selectPlace);
           yield call(openlight,{pid:selectPlace.pid})
           message.success("开台成功");
         }else{
-          selectRecord.isfinish=1;
-          selectRecord.odrdate = moment(selectRecord.odrdate).format('YYYY-MM-DD HH:mm:ss');
-          selectRecord.odrdesc = payload.values.odrdesc || '';
-          yield call(updatesinglerecord, selectRecord);
+          // selectRecord.isfinish=1;
+          // selectRecord.odrdate = moment(selectRecord.odrdate).format('YYYY-MM-DD HH:mm:ss');
+          // selectRecord.odrdesc = payload.values.odrdesc || '';
+          // yield call(updatesinglerecord, selectRecord);
           selectPlace.pstate = 0;
           yield call(updateplace, selectPlace);
           yield call(closelight,{pid:selectPlace.pid})

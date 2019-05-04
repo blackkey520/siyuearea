@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon } from 'antd';
 import styles from './index.less';
-import { Flex } from '_antd-mobile@2.2.1@antd-mobile';
  
 
 class SitMapDWL extends React.Component {
