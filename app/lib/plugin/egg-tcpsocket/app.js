@@ -18,7 +18,14 @@ module.exports = app => {
             let heartj=data.toString();
             if(heartj.indexOf(';')!==-1)
             {
-                app.connectObj[heartj.split(';')[0]] = socket;
+                const markhj = heartj.split(';')[0];
+                if(app.connectObj[markhj])
+                {
+                    // console.info();
+                }
+                else{
+                    app.connectObj[markhj] = socket;
+                }
             }
             
             
