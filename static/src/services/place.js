@@ -47,3 +47,11 @@ export async function closelight(params) {
     method: "get",
   });
 }
+ 
+export async function querytraillist(page, pageSize, body) {
+  return request({
+    url: `/api/trail/gettraillist?page=${page}&pageSize=${pageSize}`,
+    method: "POST",
+    data: body
+  });
+}

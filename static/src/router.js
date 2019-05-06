@@ -159,6 +159,14 @@ const Routers = function({ history, app }) {
         import ("./routes/order/index")
     },
     {
+      path: "/traillist",
+      models: () => [
+        import("./models/place")
+      ],
+      component: () =>
+        import("./routes/lights/TrialList")
+    },
+    {
       path: "/accountslist",
       models: () => [
         import ("./models/accournt")

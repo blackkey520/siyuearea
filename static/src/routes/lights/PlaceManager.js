@@ -43,8 +43,7 @@ class PlaceManager extends Component {
     componentDidMount() {
         this.props.dispatch({ type: "place/getplacelist", payload: {  } });
 	}
-	placeClick=(placeid)=>{
-    debugger;
+	placeClick=(placeid)=>{   
         let selectPlaces = this.props.placelist.find((item)=>{
             return item.pid == placeid
         });
@@ -134,7 +133,8 @@ class PlaceManager extends Component {
                 <Radio.Group>
                   <Radio value="0">试用</Radio>
                   <Radio value="1">大众点评</Radio>
-                  <Radio value="1">其他</Radio>
+                  <Radio value="2">美团</Radio>
+                  <Radio value="3">其他</Radio>
                 </Radio.Group>
               )}
             </Form.Item>

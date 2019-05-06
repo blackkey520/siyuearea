@@ -70,36 +70,29 @@ class MemberList extends Component {
             title: '联系方式',
             dataIndex: 'phonenum',
             }, {
-            	title: '是否有效',
+            	title: '到期时间',
 				dataIndex: 'mregisttime',
 				render: (text, record, index) => {
 					const days = moment(record.mregisttime).diff(moment(), 'days', false);
 					return(<div>{moment(text).format('YYYY-MM-DD')}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
 				}
             }, {
-            title: '会员状态',
-			dataIndex: 'mstate',
-			render:text=><span>{mstate[text]}</span>,
-            }, {
                 title: '会员类型',
 				dataIndex: 'mtype',
-				render:text=><span>{mtype[text]}</span>,
-            },{
-                title: '优惠卡',
 				render: (text, record, index) => {
-					const days = moment(record.etime).diff(moment(), 'days', false);
-					if(record.pcname!==null)
+					const days = moment(record.mregisttime).diff(moment(), 'days', false);
+					if(text==0)
 					{
-						return(<div>{record.pcname}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
-					}
-					else{
-						return(<div>无</div>);
+						return(<div>{'储值用户'}({<span style={{color:'red'}}>余额{record.mmoney}元</span>})</div>);
+					}else{
+						return(<div>{mtype[text]}</div>);
 					}
 				}
-            }, {
-                title: '卡内余额',
-                dataIndex: 'mmoney',
-            }, {
+            },  {
+            title: '备注',
+            dataIndex: 'mdesc',
+            width:300
+            },{
             	title: '操作',
             	render: (text, record, index) => { 
 					const menu=(<Menu record={record} onClick={(e)=>{

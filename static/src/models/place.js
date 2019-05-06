@@ -5,7 +5,8 @@ import {
   addsinglerecord,
   updatesinglerecord,
   openlight,
-  closelight
+  closelight,
+  querytraillist
 } from "../services/place";
 import {addorder,queryorderlist} from "../services/order";
 import { parse } from "qs";
@@ -19,7 +20,13 @@ export default {
   state: {
     placelist:[],
     selectPlace:null,
-    selectRecord:null
+    selectRecord:null,
+    traillist:[],
+    pagination: {
+      current: 1,
+      pageSize: 10,
+      total: 0
+    }
   },
   reducers: {
     updateState(state,{payload}) {
@@ -29,6 +36,21 @@ export default {
   subscriptions: {
   },
   effects: {
+    *gettraillist({ payload }, { call, put }) {
+        const param = payload.pm;
+        const data = yield call(querytraillist, payload.page, payload.pageSize, param);
+        yield put({
+          type: "updateState",
+          payload: {
+            traillist: data.data.record,
+            pagination: {
+              current: payload.page,
+              pageSize: payload.pageSize,
+              total: data.data.totalRecord || 0
+            }
+          }
+        });
+    },
     *getplacelist({ payload }, { call, put }) {
         const result = yield call(querylist, payload); 
         yield put({
@@ -41,7 +63,7 @@ export default {
     *placeload({ payload }, { call, put }) {
         const {selectPlace} = payload;
         let selectRecord=null;
-        if(selectPlace.pstate==4)
+        if(selectPlace.pstate==4) 
         {
             const record = yield call(querysinglerecord, {
               pid: selectPlace.pid,
@@ -64,22 +86,22 @@ export default {
         let selectRecord=place.selectRecord;
         delete selectPlace.ptypen;
         if (selectPlace.pstate == 0) {
-          // yield call(addsinglerecord, {
-          //   pid: selectPlace.pid,
-          //   odrdate: moment().format('YYYY-MM-DD HH:mm:ss'),
-          //   odrtype: payload.values.odrtype,
-          //   isfinish:0,
-          //   odrdesc: payload.values.odrdesc || '',
-          // });
+          yield call(addsinglerecord, {
+            pid: selectPlace.pid,
+            odrdate: moment().format('YYYY-MM-DD HH:mm:ss'),
+            odrtype: payload.values.odrtype,
+            isfinish:0,
+            odrdesc: payload.values.odrdesc || '',
+          });
           selectPlace.pstate = 4;
           yield call(updateplace, selectPlace);
           yield call(openlight,{pid:selectPlace.pid})
           message.success("开台成功");
         }else{
-          // selectRecord.isfinish=1;
-          // selectRecord.odrdate = moment(selectRecord.odrdate).format('YYYY-MM-DD HH:mm:ss');
-          // selectRecord.odrdesc = payload.values.odrdesc || '';
-          // yield call(updatesinglerecord, selectRecord);
+          selectRecord.isfinish=1;
+          selectRecord.odrdate = moment(selectRecord.odrdate).format('YYYY-MM-DD HH:mm:ss');
+          selectRecord.odrdesc = payload.values.odrdesc || '';
+          yield call(updatesinglerecord, selectRecord);
           selectPlace.pstate = 0;
           yield call(updateplace, selectPlace);
           yield call(closelight,{pid:selectPlace.pid})
