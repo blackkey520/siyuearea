@@ -104,7 +104,7 @@ class OrderForm extends Component {
 		}
 		if (this.props.memberdetail.mtype === 7 || this.props.memberdetail.mtype === 8 || this.props.memberdetail.mtype === 9)
 		{
-			if (moment().format('d') === 6 || moment().format('d') === 0)
+			if (moment().format('d') == 6 || moment().format('d') == 0)
 			{
 
 			}else{

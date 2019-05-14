@@ -154,9 +154,9 @@ export default {
         {
           overdate = moment().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
-         if (rechargev >= 500 && rechargev < 1000) {
+        if (rechargev >= 500 && rechargev < 1000) {
            overdate = moment().add(2, 'month').format('YYYY-MM-DD HH:mm:ss');
-         }
+        }
         if (rechargev > 1000 && rechargev < 2000)
         {
           overdate = moment().add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
@@ -308,16 +308,10 @@ export default {
     *extendovertime({ payload }, { call, put }) {
 			let data = null;
 			const callback = payload.callback;
-      delete payload.callback;
-      delete payload.param.btime;
-      delete payload.param.etime;
-      delete payload.param.isused;
-      delete payload.param.pcdesc;
-      delete payload.param.pcname;
-      delete payload.param.value;
-      payload.param.mregisttime = moment(payload.param.mregisttime).add(payload.extenddays, 'days').format('YYYY-MM-DD HH:mm:ss');
-      payload.param.mrtime = moment(payload.param.mrtime).format('YYYY-MM-DD HH:mm:ss');
-      data = yield call(update, payload.param);
+      data = yield call(update, {
+        mid: payload.param.mid,
+        mregisttime: moment(payload.param.mregisttime).add(payload.extenddays, 'days').format('YYYY-MM-DD HH:mm:ss')
+      });
 			callback && callback(data);
 		},
     *savemember({ payload }, { call, put }) {

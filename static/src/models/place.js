@@ -8,12 +8,22 @@ import {
   closelight,
   querytraillist
 } from "../services/place";
-import {addorder,queryorderlist} from "../services/order";
+import {
+  addorder,
+  queryorderlist,
+  updateorder,
+  queryrecordlist,
+  updaterecord
+} from "../services/order";
+import { addaccournt } from "../services/accournt";
+import {loadmemeber,update} from "../services/member";
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
 import {Toast} from 'antd-mobile';
 import moment from 'moment';
+import { GetMoney } from '../utils';
+import {mtype} from '../utils/enum';
 
 export default {
   namespace: "place",
@@ -22,6 +32,7 @@ export default {
     selectPlace:null,
     selectRecord:null,
     traillist:[],
+    akey:'1',
     pagination: {
       current: 1,
       pageSize: 10,
@@ -36,6 +47,58 @@ export default {
   subscriptions: {
   },
   effects: {
+    *manualcloselight({ payload }, { call, put }) {
+        const orderr = yield call(queryorderlist, 1,100,{pid:payload.selectPlace.pid});
+        const recordr=yield call(queryrecordlist,1,10,{pid:payload.selectPlace.pid});
+        const memberr=yield call(loadmemeber,{id:recordr.data.record[0].mid});
+        const money = GetMoney(moment(recordr.data.record[0].btime), moment());
+        const accournt = {};
+        const member = memberr.data;
+        const order = orderr.data.record[0];
+        const record = recordr.data.record[0];
+
+        accournt.mid = member.mid;
+        if (member.mtype === 0)
+        {
+          // if (member.mmoney >= money) {
+            accournt.atype = 1;
+            accournt.amoney = member.mmoney;
+            accournt.asmoney = money;
+            accournt.adesc = '人工-充值消费';
+            yield call(update, {
+              mid:member.mid,
+              mmoney: member.mmoney - money
+            });
+          // }
+        }else{
+          accournt.atype = 2;
+          accournt.amoney = 0;
+          accournt.asmoney = 0;
+          accournt.adesc = '人工-'+mtype[member.mtype];
+        }
+        accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+        accournt.astate = 1; 
+        yield call(addaccournt, accournt);
+        yield call(updateorder, {
+          oid:order.oid,
+          ostate:2
+        });
+        yield call(updaterecord, {
+          rid: record.rid,
+          ostate: 2,
+          money:money,
+          etime: moment().format('YYYY-MM-DD HH:mm:ss')
+        });
+        yield call(updateplace, {
+          pid: payload.selectPlace.pid,
+          pstate: 0
+        });
+        //getplacelist
+         yield put({
+           type: "getplacelist",
+           payload: {}
+         });
+    },
     *gettraillist({ payload }, { call, put }) {
         const param = payload.pm;
         const data = yield call(querytraillist, payload.page, payload.pageSize, param);

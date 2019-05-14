@@ -191,12 +191,12 @@ class MemberForm extends Component {
 							})( <Input disabled / > )
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="会员余额(元)">
+						{/* <FormItem {...formItemLayout} label="会员余额(元)">
 							{getFieldDecorator("mmoney", {
 								initialValue: this.props.checkmember.mmoney?this.props.checkmember.mmoney:0,
 							})( <Input  / > )
 							}
-						</FormItem>
+						</FormItem> */}
 						<FormItem {...formItemLayout} label="备注">
 							{getFieldDecorator("mdesc", {
 								initialValue: this.props.checkmember.mdesc,

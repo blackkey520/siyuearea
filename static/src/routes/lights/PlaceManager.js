@@ -24,11 +24,13 @@ const TabPane = Tabs.TabPane;
 import SitMapDWL from '../../components/SitMapDWL';
 import SitMap from '../../components/SitMap';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+const confirm = Modal.confirm;
 @connect(({ place,loading, }) => ({
 		placelist : place.placelist,
         placeloading : loading.effects['place/getplacelist'],
         selectPlace: place.selectPlace,
-        selectRecord: place.selectRecord
+        selectRecord: place.selectRecord,
+        akey: place.akey
  }))
 class PlaceManager extends Component {
 	static contextTypes = {
@@ -56,7 +58,28 @@ class PlaceManager extends Component {
             });
         }
         else{
+          if(selectPlaces.pstate==2){
+            const that=this;
+            confirm({
+              title: '请问您确定要关灯吗？',
+              content: null,
+              onOk() {
+                that.props.dispatch({
+                  type: "place/manualcloselight",
+                  payload: {
+                    selectPlace: selectPlaces
+                  }
+                });
+              },
+              okText :"确认",
+              cancelText :"取消",
+              onCancel() {
+                 
+              },
+            });
+          }else{
             message.error("请选择未使用、未预定的作为开台");
+          }
         }
     }
     handleOk = () => {
@@ -99,12 +122,28 @@ class PlaceManager extends Component {
 		return (
 				<div className="content-inner">
                     <Tabs
-                        defaultActiveKey="1"
+                        activeKey={this.props.akey}
+                        onChange={(activeKey)=>{
+                          this.props.dispatch({
+                            type: "place/updateState",
+                            payload: {
+                              akey: activeKey
+                            }
+                          });
+                        }}
                         tabPosition={'left'}
                         style={{ height: 500 }}
                         >
-                        <TabPane tab="中关村部" key="1"><SitMap ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
-                        <TabPane tab="大望路部" key="2"><SitMapDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
+                        <TabPane tab={
+                          <span><Icon onClick={()=>{
+                              this.props.dispatch({ type: "place/getplacelist", payload: {  } });
+                            }}  type="reload" />中关村部</span>
+                        } key="1"><SitMap ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
+                        <TabPane  tab={
+                          <span><Icon onClick={()=>{
+                              this.props.dispatch({ type: "place/getplacelist", payload: {  } });
+                            }} type="reload"/>大望路部</span>
+                        }  key="2"><SitMapDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
                          
                         </Tabs>
 					

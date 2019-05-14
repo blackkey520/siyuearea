@@ -2,7 +2,7 @@ import {add, queryorderlist, updateorder, queryrecordlist,updaterecord} from "..
 import {loadmemeber,update} from "../services/member";
 import { updateplace } from "../services/place";
 import { addaccournt } from "../services/accournt";
-
+import {mtype} from '../utils/enum';
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
@@ -134,21 +134,14 @@ export default {
               if (memberdetail.mtype===0)
               {
                 if (memberdetail.mmoney >= payload.param.money) {
-                  memberdetail.mmoney = memberdetail.mmoney - payload.param.money;
-                  memberdetail.mregisttime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
-                  delete memberdetail.pcname;
-                  delete memberdetail.btime;
-                  delete memberdetail.etime;
-                  delete memberdetail.isused;
-                  delete memberdetail.pcdesc;
-                  delete memberdetail.value;
-                  memberdetail.mrtime = moment(memberdetail.mrtime).format('YYYY-MM-DD HH:mm:ss');
-                  const member = yield call(update, memberdetail);
                   accournt.atype = 1;
-                  accournt.amoney = payload.param.money;
+                  accournt.amoney = memberdetail.mmoney;
                   accournt.asmoney = payload.param.money;
-                  accournt.adesc = '充值消费';
-                  payload.record.ostate=2;
+                  accournt.adesc = '人工-结束订单-充值消费';
+                  yield call(update, {
+                    mid: memberdetail.mid,
+                    mmoney: memberdetail.mmoney - payload.param.money
+                  });
                 } else {
                   errormsg = 'outofmoney';
                 }
@@ -176,11 +169,10 @@ export default {
                 accournt.atype = 2;
                 accournt.amoney = 0;
                 accournt.asmoney =0;
-                accournt.adesc = memberdetail.mtype===1?'日卡消费':memberdetail.mtype===2?'周卡消费':memberdetail.mtype===3?'月卡消费':'季卡消费';
-                payload.record.ostate = 2;
+                accournt.adesc = '人工-结束订单-' + mtype[memberdetail.mtype];
               }
             }
-          
+          payload.record.ostate = 2;
           accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
           accournt.astate = 1;
           if(errormsg==='')
@@ -188,28 +180,18 @@ export default {
             //记账
             const accourntdata = yield call(addaccournt, accournt);
             //更改订单状态和使用记录
-            payload.order.ostate = 2;
-              payload.order.otime = moment(payload.order.otime).format('YYYY-MM-DD HH:mm:ss');
-              delete payload.order.pname;
-              delete payload.order.mname;
-              delete payload.order.btime;
-              delete payload.order.discount;
-              delete payload.order.disid;
-              delete payload.order.etime;
-              delete payload.order.money;
-              delete payload.order.rstate;
-              delete payload.order.rid;
-              const result = yield call(updateorder, payload.order);
+              const result = yield call(updateorder, {
+                oid :payload.order.oid,
+                ostate: 2
+              });
               
               if (result.success) {
-                payload.record.btime = moment(payload.record.btime).format('YYYY-MM-DD HH:mm:ss');
-                payload.record.etime = payload.param.etime;
-                payload.record.money = payload.param.money;
-                payload.record.pdesc = '';
-                delete payload.record.pname;
-                delete payload.record.mname;
-                delete payload.record.rstate;
-                const dataurecord = yield call(updaterecord, payload.record);
+                const dataurecord = yield call(updaterecord, {
+                  rid: payload.record.rid,
+                  ostate: payload.record.ostate,
+                  money: payload.param.money,
+                  etime: moment().format('YYYY-MM-DD HH:mm:ss')
+                });
                 if (dataurecord.success) {
                   const data = yield call(updateplace, {
                     pid: payload.record.pid,
