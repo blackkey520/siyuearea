@@ -2,6 +2,6 @@ export const mtype = ['储值用户', '日卡会员', '周卡会员', '月卡会
 export const mstate=['正常','欠费','停用']
 export const ostate=['预定','正在使用','使用完成','过期']
 export const astate = ['收入', '消费']
-export const atype = ['普通','充值', '办卡', '优惠卡']
+export const atype = ['普通','充值', '办卡', '优惠卡','手动扣除']
 export const placetype = ['', '中关村部', '大望路部']
 export const odrtype=['试用','大众点评','美团','其他']

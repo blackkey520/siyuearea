@@ -30,7 +30,8 @@ class MemberList extends Component {
 		this.state={
 			record:null,
 			yqdays:1,
-			selectvalue:''
+			selectvalue:'',
+			kftext:0
 		}
 	}
 	componentDidMount() {
@@ -153,6 +154,38 @@ class MemberList extends Component {
 											});
 										},
 									});
+							   }else if (e.key === "6") {
+								   const that=this;
+									Modal.warn({
+										title: '会员扣费',
+										content: (
+											<div>为 <span style={{color:'red'}}>{record.mname}</span> 扣费 <InputNumber value={this.state.kftext} min={0} max={1000} defaultValue={0} onChange={(value)=>{
+												this.setState({
+													kftext: value
+												});
+											}} /> 元 </div>
+										),
+										okText:'确定',
+										onOk() { 
+											const hide = message.loading("正在保存...", 0);
+											that.props.dispatch({
+												type: "member/chargingmoney",
+												payload: {
+													kftext: that.state.kftext,
+													param:record,
+													callback: data => {
+														hide();
+														if (data && data.success) {
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.state.selectvalue);
+															message.success("保存成功");
+														} else {
+															message.error("保存失败");
+														}
+													}
+												}
+											});
+										},
+									});
 							   }
 							}}>
 							<Menu.Item key ="1">充值/开卡</Menu.Item>
@@ -160,6 +193,7 @@ class MemberList extends Component {
 							<Menu.Item key="3">预定记录</Menu.Item>
 							<Menu.Item key="4">使用记录</Menu.Item>
 							<Menu.Item key="5">延期</Menu.Item>
+							<Menu.Item key="6">扣钱</Menu.Item>
 						</Menu>);
 					return (
 						<Dropdown onVisibleChange={()=>{

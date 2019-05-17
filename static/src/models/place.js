@@ -63,7 +63,7 @@ export default {
           // if (member.mmoney >= money) {
             accournt.atype = 1;
             accournt.amoney = member.mmoney;
-            accournt.asmoney = money;
+            accournt.asmoney = member.mmoney-money;
             accournt.adesc = '人工-充值消费';
             yield call(update, {
               mid:member.mid,

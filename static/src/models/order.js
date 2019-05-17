@@ -73,23 +73,14 @@ export default {
           money:0,
           pdesc:payload.pdesc
         }
-          const callback = payload.callback;
-          let data={};
-            delete payload.callback;
-            delete payload.restate;
-        payload.ostate=1;
-        payload.otime=moment(payload.otime).format('YYYY-MM-DD HH:mm:ss');
-        payload.pdesc='';
-        delete payload.pname;
-        delete payload.mname;
-        delete payload.btime;
-        delete payload.discount;
-        delete payload.disid;
-        delete payload.etime;
-        delete payload.money;
-        delete payload.rstate;
-        delete payload.rid;
-        const result=yield call(updateorder,payload);
+        const callback = payload.callback;
+        let data={};
+        
+         
+        const result=yield call(updateorder,{
+          oid:payload.oid,
+          ostate:1
+        });
         if(result.success)
         {
           const resultadd = yield call(add, param);
@@ -136,7 +127,7 @@ export default {
                 if (memberdetail.mmoney >= payload.param.money) {
                   accournt.atype = 1;
                   accournt.amoney = memberdetail.mmoney;
-                  accournt.asmoney = payload.param.money;
+                  accournt.asmoney = memberdetail.mmoney - payload.param.money;
                   accournt.adesc = '人工-结束订单-充值消费';
                   yield call(update, {
                     mid: memberdetail.mid,

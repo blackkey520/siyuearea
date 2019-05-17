@@ -147,6 +147,9 @@ export default {
       const config = yield call(loadsingle, { id:1 });
       accournt.mid = checkmember.mid;
       let overdate = moment().format('YYYY-MM-DD HH:mm:ss');
+      let mmtype=checkmember.mtype;
+      let mmoney = checkmember.mmoney;
+      let mpd = checkmember.mpd;
       if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
@@ -168,50 +171,15 @@ export default {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
         //充值的
-        checkmember.mtype = 0;
-        checkmember.mregisttime = overdate;
-        checkmember.mmoney = parseInt(checkmember.mmoney) + rechargev;
+        mmtype = 0;
+        mmoney = parseInt(mmoney) + rechargev;
         accournt.atype=1;
-        accournt.amoney = parseInt(payload.rechargevalue);
-        accournt.asmoney = parseInt(payload.rechargevalue);
+        accournt.amoney = parseInt(mmoney);
+        accournt.asmoney = parseInt(payload.rechargevalue + mmoney);
         accournt.adesc ='会员充值';
       } else if (payload.rechargetype === "2") {
         let kkmoney=0;
-        // switch (payload.cardtype) {
-        //   case 1:
-        //     kkmoney = config.data.dayvalue * config.data.daydis
-        //     break;
-        //   case 2:
-        //     kkmoney = config.data.weekvalue * config.data.weekdis
-        //     break;
-        //   case 3:
-        //     kkmoney = config.data.monthvalue * config.data.monthdis
-        //     break;
-        //   case 4:
-        //     kkmoney = config.data.sessionvalue * config.data.sessiondis
-        //     break;
-        //   case 5:
-        //     kkmoney = config.data.weekzmvalue * config.data.weekzmdis
-        //     break;
-        //   case 6:
-        //     kkmoney = config.data.monthzmvalue * config.data.monthzmdis
-        //     break;
-        //   case 7:
-        //     kkmoney = config.data.sessionzmvalue * config.data.sessionzmdis
-        //     break;
-        //   case 8:
-        //     kkmoney = config.data.weekzyvalue * config.data.weekzydis
-        //     break;
-        //   case 9:
-        //     kkmoney = config.data.monthzyvalue * config.data.monthzydis
-        //     break;
-        //   case 10:
-        //     kkmoney = config.data.sessionzyvalue * config.data.sessionzydis
-        //     break;
-        //   default:
-        //     kkmoney = 0
-        //     break;
-        // }
+
          switch (payload.cardtype) {
            case 1:
              kkmoney = config.data.dayvalue
@@ -272,35 +240,33 @@ export default {
           }
           if (payload.cardtype === 6) {
             overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
-          }
-        //开卡的
-        checkmember.mregisttime = overdate;
-        checkmember.mtype = parseInt(payload.cardtype);
+          } 
+        //开卡的 
+        mmtype = parseInt(payload.cardtype);
         accournt.atype = 2;
-        accournt.amoney = kkmoney;
-        accournt.asmoney = kkmoney;
+        accournt.amoney = 0;
+        accournt.asmoney = 0;
         accournt.adesc = mtype[payload.cardtype];
       }else{
         const pcitem = productcardlist.find((item) => {
           return item.pcid === parseInt(payload.pctype)
         });
-        checkmember.mpd = pcitem.pcid;
-        checkmember.mregisttime = moment(pcitem.etime).format('YYYY-MM-DD HH:mm:ss');
+        mpd = pcitem.pcid;
+        overdate = moment(pcitem.etime).format('YYYY-MM-DD HH:mm:ss');
         accournt.atype = 3;
-        accournt.amoney = pcitem.value;
-        accournt.asmony = pcitem.value;
+        accournt.amoney = 0;
+        accournt.asmony = 0;
         accournt.adesc = pcitem.pcname;
       }
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
-      accournt.astate = 0;
-      delete checkmember.pcname;
-      delete checkmember.btime;
-      delete checkmember.etime;
-      delete checkmember.isused;
-      delete checkmember.pcdesc;
-      delete checkmember.value;
-      checkmember.mrtime = moment(checkmember.mrtime).format('YYYY-MM-DD HH:mm:ss');
-      data = yield call(update, checkmember);
+      accournt.astate = 0; 
+      data = yield call(update, {
+        mid:checkmember.mid,
+        mregisttime:overdate,
+        mtype: mmtype,
+        mmoney,
+        mpd
+      });
       //记账
       const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
@@ -313,7 +279,26 @@ export default {
         mregisttime: moment(payload.param.mregisttime).add(payload.extenddays, 'days').format('YYYY-MM-DD HH:mm:ss')
       });
 			callback && callback(data);
-		},
+    },
+    *chargingmoney({ payload }, { call, put }) {
+			let data = null;
+      const callback = payload.callback;
+       const accournt = {};
+       accournt.mid = payload.param.mid;
+       accournt.atype = 4;
+       accournt.astate = 1;
+       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+       accournt.amoney = payload.param.mmoney;
+       accournt.asmoney = payload.param.mmoney - payload.kftext;
+       accournt.adesc = '手动扣费';
+       const accourntdata = yield call(addaccournt, accournt);
+      data = yield call(update, {
+        mid: payload.param.mid,
+        mmoney: payload.param.mmoney - payload.kftext
+      });
+     
+			callback && callback(data);
+    },
     *savemember({ payload }, { call, put }) {
 			let data = null,
 				tableData = null;
