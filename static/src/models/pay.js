@@ -51,19 +51,19 @@ export default {
          if (rechargev >= 500 && rechargev < 1000) {
            overdate = moment().add(2, 'month').format('YYYY-MM-DD HH:mm:ss');
          }
-          if (rechargev > 1000 && rechargev < 2000)
+          if (rechargev >= 1000 && rechargev < 2000)
         {
           overdate = moment().add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
         if (rechargev >= 2000 && rechargev < 5000) {
            overdate = moment().add(5, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
-        if (rechargev > 5000) {
+        if (rechargev >= 5000) {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
         accournt.atype = 1;
-        accournt.amoney = mmoney;
-        accournt.asmoney = mmoney + parseInt(payload.money);
+        accournt.amoney = parseInt(mmoney);
+        accournt.asmoney = parseInt(mmoney) + parseInt(payload.money);
           //充值的
           mmtype = 0;
           mmoney = parseInt(mmoney) + rechargev;

@@ -148,7 +148,7 @@ export default {
       accournt.mid = checkmember.mid;
       let overdate = moment().format('YYYY-MM-DD HH:mm:ss');
       let mmtype=checkmember.mtype;
-      let mmoney = checkmember.mmoney;
+      let mmoney = checkmember.mmoney == null ? 0 : checkmember.mmoney;
       let mpd = checkmember.mpd;
       if (payload.rechargetype === "1")
       {
@@ -160,22 +160,22 @@ export default {
         if (rechargev >= 500 && rechargev < 1000) {
            overdate = moment().add(2, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
-        if (rechargev > 1000 && rechargev < 2000)
+        if (rechargev >= 1000 && rechargev < 2000)
         {
           overdate = moment().add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
         if (rechargev >= 2000 && rechargev < 5000) {
            overdate = moment().add(5, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
-        if (rechargev > 5000) {
+        if (rechargev >= 5000) {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
+         accournt.amoney = parseInt(mmoney);
+         accournt.asmoney = parseInt(payload.rechargevalue) + parseInt(mmoney);
         //充值的
         mmtype = 0;
         mmoney = parseInt(mmoney) + rechargev;
         accournt.atype=1;
-        accournt.amoney = parseInt(mmoney);
-        accournt.asmoney = parseInt(payload.rechargevalue + mmoney);
         accournt.adesc ='会员充值';
       } else if (payload.rechargetype === "2") {
         let kkmoney=0;
@@ -288,8 +288,8 @@ export default {
        accournt.atype = 4;
        accournt.astate = 1;
        accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
-       accournt.amoney = payload.param.mmoney;
-       accournt.asmoney = payload.param.mmoney - payload.kftext;
+       accournt.amoney = parseInt(payload.param.mmoney);
+       accournt.asmoney = parseInt(payload.param.mmoney) - parseInt(payload.kftext);
        accournt.adesc = '手动扣费';
        const accourntdata = yield call(addaccournt, accournt);
       data = yield call(update, {
@@ -315,7 +315,7 @@ export default {
         payload.param.membercode = Math.random().toString(20).substr(2);
         payload.param.memberopenid = '-';
         delete payload.param.id;
- 
+        payload.param.mmoney=0;
         payload.param.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
  
 				data = yield call(register, payload.param);

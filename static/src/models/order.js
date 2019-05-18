@@ -127,7 +127,7 @@ export default {
                 if (memberdetail.mmoney >= payload.param.money) {
                   accournt.atype = 1;
                   accournt.amoney = memberdetail.mmoney;
-                  accournt.asmoney = memberdetail.mmoney - payload.param.money;
+                  accournt.asmoney = parseInt(memberdetail.mmoney) - parseInt(payload.param.money);
                   accournt.adesc = '人工-结束订单-充值消费';
                   yield call(update, {
                     mid: memberdetail.mid,
