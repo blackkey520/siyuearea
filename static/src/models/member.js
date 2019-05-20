@@ -148,8 +148,10 @@ export default {
       accournt.mid = checkmember.mid;
       let overdate = moment().format('YYYY-MM-DD HH:mm:ss');
       let mmtype=checkmember.mtype;
+      debugger;
       let mmoney = checkmember.mmoney == null ? 0 : checkmember.mmoney;
       let mpd = checkmember.mpd;
+      debugger;
       if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
@@ -171,7 +173,7 @@ export default {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
         }
          accournt.amoney = parseInt(mmoney);
-         accournt.asmoney = parseInt(payload.rechargevalue) + parseInt(mmoney);
+         accournt.asmoney = rechargev + parseInt(mmoney);
         //充值的
         mmtype = 0;
         mmoney = parseInt(mmoney) + rechargev;
@@ -317,7 +319,7 @@ export default {
         delete payload.param.id;
         payload.param.mmoney=0;
         payload.param.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
- 
+        
 				data = yield call(register, payload.param);
       }
 			callback && callback(data);
