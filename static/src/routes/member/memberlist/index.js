@@ -190,7 +190,7 @@ class MemberList extends Component {
 							}}>
 							<Menu.Item key ="1">充值/开卡</Menu.Item>
 							<Menu.Item key="2">编辑</Menu.Item>
-							<Menu.Item key="3">预定记录</Menu.Item>
+							<Menu.Item key="3">预订记录</Menu.Item>
 							<Menu.Item key="4">使用记录</Menu.Item>
 							<Menu.Item key="5">延期</Menu.Item>
 							<Menu.Item key="6">扣钱</Menu.Item>

@@ -78,7 +78,7 @@ class PlaceManager extends Component {
               },
             });
           }else{
-            message.error("请选择未使用、未预定的作为开台");
+            message.error("请选择未使用、未预订的作为开台");
           }
         }
     }

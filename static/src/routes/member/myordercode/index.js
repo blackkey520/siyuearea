@@ -43,11 +43,11 @@ constructor(props, context) {
   renderorderdetail=()=>{
       if (this.props.selectedmobileorder.ostate === 0 || this.props.selectedmobileorder.ostate === 3)
       {
-        return(<PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />);
+        return(<PreviewItem label="预订时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />);
       }
       if (this.props.selectedmobileorder.rstate !== null && this.props.selectedmobileorder.rstate === 1)
       {
-          return(<div><PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
+          return(<div><PreviewItem label="预订时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
                 </div>);
@@ -56,7 +56,7 @@ constructor(props, context) {
       {
           return(<div>
                 <PreviewItem label="消费方式" value={atype[this.props.selectedmobileorder.rstate]} />
-                <PreviewItem label="预定时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
+                <PreviewItem label="预订时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="结束时间" value={moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />

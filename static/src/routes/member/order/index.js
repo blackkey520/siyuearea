@@ -71,10 +71,10 @@ class Order extends React.Component {
             
             <div style={{height:80,flexDirection:'row',padding: '15px 0',borderBottom: '2px solid #F6F6F6' }}>
               <div style={{ flexDirection:'column',width:'100%'}}>
-                <div style={{float:'left'}}>预定座位-{rowData.pname}</div>
+                <div style={{float:'left'}}>预订座位-{rowData.pname}</div>
                 <div style={{float:'right',fontSize:'13',color:rowData.ostate===0?'#e97330':rowData.ostate===1?'#f93533':rowData.ostate===2?'#108ee9':'grey'}}>{ostate[rowData.ostate]}</div>
               </div>
-              <div style={{marginTop:30}}><Icon type="clock-circle-o" />预定时间{moment(rowData.otime).format('YYYY-MM-DD HH:mm:ss')}</div>
+              <div style={{marginTop:30}}><Icon type="clock-circle-o" />预订时间{moment(rowData.otime).format('YYYY-MM-DD HH:mm:ss')}</div>
             </div>
           </div>
         );

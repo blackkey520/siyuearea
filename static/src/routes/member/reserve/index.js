@@ -66,9 +66,9 @@ class Reserve extends React.Component {
           title=""
           value={this.state.date.toDate()}
           onChange={v => this.setState({ date: moment(v) })}
-          extra="点击选择预定时间"
+          extra="点击选择订时间"
         >
-          <TimeComponent>请选择预定时间</TimeComponent>
+          <TimeComponent>请选择预订时间</TimeComponent>
         </DatePicker>
 
         <div style={{width:'100%',paddingTop:30,textAlign:'center'}} >
@@ -87,7 +87,7 @@ class Reserve extends React.Component {
                   orderdate: this.state.date.format('YYYY-MM-DD HH:mm:ss'),
                   callback: data => {
                     if (data && data.success) {
-                      Toast.info('预定成功啦', 1);
+                      Toast.info('预订成功啦', 1);
                       _that.props.dispatch(
                         routerRedux.push({ pathname: `/mobile/order`, })
                       );
@@ -100,7 +100,7 @@ class Reserve extends React.Component {
             } else {
               Toast.info('选择一个工位吧', 1);
             }
-          }} type="primary">预定</Button>
+          }} type="primary">预订</Button>
               </div>
       </div>
     );

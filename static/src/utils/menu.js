@@ -26,7 +26,7 @@ module.exports = [
       },
       {
         key: "orderrecord",
-        name: "预定记录",
+        name: "预订记录",
         icon: "setting",
         isMenuTab: false,
         clickable: false,

@@ -55,7 +55,7 @@ class SiteMap extends React.Component {
         <div style={{...this.props.style}}>
             <div style={{padding:10}}><Icon style={{marginLeft:15,fontSize: 15, color:'grey'}} type="minus-square" />
             可选<Icon style={{ marginLeft:15,fontSize: 15, color:'#e97330'}} type="minus-square" />
-            已经预定<Icon style={{ marginLeft:15,fontSize: 15, color:'#f93533'}} type="minus-square" />
+            已经预订<Icon style={{ marginLeft:15,fontSize: 15, color:'#f93533'}} type="minus-square" />
             正在使用<Icon style={{ marginLeft:15,fontSize: 15, color:'blue'}} type="minus-square" />
             试用</div>
     

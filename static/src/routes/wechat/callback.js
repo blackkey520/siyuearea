@@ -52,7 +52,7 @@ class Callback extends React.Component {
           <div style={{marginTop:235}}>
           <CellsTitle>你好，<span style={{fontWeight: 'bold'}}>
               {this.props.loginuser.userInfo?this.props.loginuser.userInfo.nickname:''}</span> 
-              为了让我们知道您是谁，输入电话号码来预定吧~</CellsTitle>
+              为了让我们知道您是谁，输入电话号码来预订吧~</CellsTitle>
             <Form>
                 <FormCell vcode>
                     <CellBody>

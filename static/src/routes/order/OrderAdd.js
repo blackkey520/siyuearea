@@ -70,7 +70,7 @@ class OrderAdd extends Component {
 						}
 					});
 		}else{
-			message.warning("请选择预定的工位");
+			message.warning("请选择预订的工位");
 		}
         
 	}
@@ -99,7 +99,7 @@ class OrderAdd extends Component {
 						<DatePicker
 							showTime
 							format="YYYY-MM-DD HH:mm:ss"
-							placeholder="请输入预定时间(不写则默认当前时间)"
+							placeholder="请输入预订时间(不写则默认当前时间)"
 							locale={locale} 
 							 style={{marginTop:20,width:300}}
 							onChange={(value, dateString)=>{

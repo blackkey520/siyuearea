@@ -51,7 +51,7 @@ class OrderList extends Component {
 		};
 		 
         const columns = [{
-            title: '预定工位',
+            title: '预订工位',
             dataIndex: 'pname',
             render: text => <a href="javascript:;">{text}</a>,
             }, {
@@ -62,7 +62,7 @@ class OrderList extends Component {
 			dataIndex: 'ostate',
 			render:text=><span>{ostate[text]}</span>,
             }, {
-                title: '预定时间',
+                title: '预订时间',
 				dataIndex: 'otime',
 				render: (text, record, index) => { 
 					return (

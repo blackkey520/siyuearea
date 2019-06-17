@@ -180,7 +180,7 @@ class OrderForm extends Component {
 							this.setState({
 								show:0
 							});
-							}} title="预定" description={this.props.orderdetail.otime ? moment(this.props.orderdetail.otime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')} />
+							}} title="预订" description={this.props.orderdetail.otime ? moment(this.props.orderdetail.otime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss')} />
 						<Step onClick={()=>{
 							if(this.props.orderdetail.ostate>0)
 							{
@@ -210,7 +210,7 @@ class OrderForm extends Component {
 										initialValue: ostate[this.props.orderdetail.ostate]
 									})(<Input disabled / > )}
 								</FormItem>
-								<FormItem {...formItemLayout} label="预定时间">
+								<FormItem {...formItemLayout} label="预订时间">
 									{getFieldDecorator("otime", {
 										initialValue: this.props.orderdetail.otime ? moment(this.props.orderdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss') : moment().format('YYYY-MM-DD HH:mm:ss'),
 									})( <Input disabled / > )

@@ -34,12 +34,12 @@ class UseRecord extends Component {
 			...this.props.pagination
 		};
 		 
-        const columns = [{
+         const columns = [{
             title: '会员名称',
             dataIndex: 'mname',
             render: text => <a href="javascript:;">{text}</a>,
             }, {
-                title: '入账类型',
+                title: '操作类型',
 				dataIndex: 'atype',
 				render:text=><span>{atype[text]}</span>,
             },{
@@ -47,8 +47,29 @@ class UseRecord extends Component {
 				dataIndex: 'astate',
 				render:text=><span>{astate[text]}</span>,
             },{
-            title: '入账金额',
+            title: '操作前金额',
             dataIndex: 'amoney',
+            render: (text, record, index) => {
+                if(record.atype==0||record.atype==1||record.atype==4)
+                {
+                    return (<div>{text}</div>)
+                }
+                else{
+                    return (<span>-</span>)
+                }
+            }
+            }, {
+                title: '操作后金额',
+                dataIndex: 'asmoney',
+                 render: (text, record, index) => {
+                if (record.atype == 0 || record.atype == 1 || record.atype == 4)
+                {
+                    return (<div>{text}</div>)
+                }
+                else{
+                    return (<span>-</span>)
+                }
+            }
             }, {
             title: '备注',
 			dataIndex: 'adesc',
