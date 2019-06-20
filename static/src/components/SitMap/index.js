@@ -93,7 +93,7 @@ class SiteMap extends React.Component {
         </ul>
         <br/>
             <ul>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(50)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(50)}}>D1</div><Icon style={{ fontSize: 50, color:this.findColor(50),marginLeft:0}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(25)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(25)}}>D1</div><Icon style={{ fontSize: 50, color:this.findColor(25),marginLeft:0}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(26)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(26)}}>D2</div><Icon style={{ fontSize: 50, color:this.findColor(26),marginLeft:0}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(27)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(27)}}>D3</div><Icon style={{ fontSize: 50, color:this.findColor(27),marginLeft:0}} type="laptop" /></li>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(28)}}><div style={{height:0,fontSize:20,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(28)}}>D4</div><Icon style={{ fontSize: 50, color:this.findColor(28),marginLeft:0}}  type="laptop" /></li>

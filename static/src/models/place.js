@@ -116,12 +116,14 @@ export default {
     },
     *getplacelist({ payload }, { call, put }) {
         const result = yield call(querylist, payload); 
+         
         yield put({
             type: "updateState",
             payload: {
                 placelist:result.data.record
             }
         });
+         
     },
     *placeload({ payload }, { call, put }) {
         const {selectPlace} = payload;
@@ -156,8 +158,10 @@ export default {
             isfinish:0,
             odrdesc: payload.values.odrdesc || '',
           });
-          selectPlace.pstate = 4;
-          yield call(updateplace, selectPlace);
+          yield call(updateplace, {
+            pid:selectPlace.pid,
+            pstate:4
+          });
           yield call(openlight,{pid:selectPlace.pid})
           message.success("开台成功");
         }else{
