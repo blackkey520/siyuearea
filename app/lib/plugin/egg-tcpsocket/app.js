@@ -19,18 +19,19 @@ module.exports = app => {
             if (heartj.indexOf(';') !== -1 && heartj.indexOf('SYKJ_')!==-1)
             {
                 const markhj = heartj.split(';')[0];
-                if(app.connectObj[markhj])
-                {
-                    // console.info();
-                }
-                else{
-                    app.connectObj[markhj] = socket;
-                }
+                app.connectObj[markhj] = socket;
+                // if(app.connectObj[markhj])
+                // {
+                    
+                // }
+                // else{
+                //     app.connectObj[markhj] = socket;
+                // }
             }
             
             
         });
-        //监听连接断开事件
+        // //监听连接断开事件
         // socket.on('end', function () {
         //      app.connectObj[sockc.sockname] = null;
         //     console.log('Client disconnected.');
