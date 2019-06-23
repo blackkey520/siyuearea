@@ -3,7 +3,10 @@ import { connect } from "dva";
 import { Table, Button, Modal, Switch,Menu, Dropdown,Icon,Input  } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
-import { ostate } from '../../utils/enum';
+import {
+	ostate,
+	placelist
+} from '../../utils/enum';
 const Search = Input.Search;
 
 @connect(({ order,loading }) => ({orderlist: order.orderlist,
@@ -51,6 +54,10 @@ class OrderList extends Component {
 		};
 		 
         const columns = [{
+            title: '预定地点',
+            dataIndex: 'storetype',
+            render: text => placelist[text],
+            },{
             title: '预订工位',
             dataIndex: 'pname',
             render: text => <a href="javascript:;">{text}</a>,

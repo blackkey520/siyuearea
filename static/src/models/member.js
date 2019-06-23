@@ -118,6 +118,7 @@ export default {
     },
     *getmemberlist({ payload }, { call, put }) {
       const data = yield call(querylists, payload);
+  
       yield put({
         type: "loaddataSuccess",
         payload: {
@@ -130,6 +131,8 @@ export default {
     *loadmember({ payload }, { call, put }) {
       const data = yield call(loadmemeber, payload);
       if (data && data.success) {
+        data.data.mregisttime = moment(data.data.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+        data.data.mrtime = moment(data.data.mrtime).format('YYYY-MM-DD HH:mm:ss');
         yield put({
           type: "updateState",
           payload: {
@@ -307,6 +310,7 @@ export default {
 			const callback = payload.callback;
       delete payload.callback;
       payload.param.mpd=0;
+      debugger;
 			if (payload.param.id) {
         payload.param.mid = payload.param.id;
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');

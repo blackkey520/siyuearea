@@ -78,6 +78,12 @@ class MemberList extends Component {
 					return(<div>{moment(text).format('YYYY-MM-DD')}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
 				}
             }, {
+            	title: '注册时间',
+				dataIndex: 'mrtime',
+				render: (text, record, index) => {
+					return(<div>{moment(text).format('YYYY-MM-DD hh:mm:ss')}</div>);
+				}
+            },{
                 title: '会员类型',
 				dataIndex: 'mtype',
 				render: (text, record, index) => {
