@@ -20,7 +20,7 @@ import {
 const Search = Input.Search;
 
 @connect(({ order,loading }) => ({orderlist: order.orderlist,
-	orderloading: loading.effects['member/getorderlist'],
+	orderloading: loading.effects['order/getorderlist'],
 	pagination: order.pagination,
 	pname: order.pname,
     storetype: order.storetype,
