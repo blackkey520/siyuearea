@@ -1,13 +1,23 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
-import { Table, Button, Modal, Switch,Menu, Dropdown,Icon  } from "antd";
+import {
+	Table,
+	Button,
+	Modal,
+	Switch,
+	Menu,
+	Dropdown,
+	Icon,
+	Radio
+} from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import { atype,astate } from '../../../utils/enum'; 
 
 @connect(({ accournt,loading }) => ({accourntlist: accournt.accourntlist,
 	accourntloading: loading.effects['accournt/getaccourntlistbymid'],
-	pagination: accournt.pagination
+	pagination: accournt.pagination,
+	atype: accournt.atype
  }))
 class UseRecord extends Component {
 	static contextTypes = {
@@ -43,10 +53,6 @@ class UseRecord extends Component {
 				dataIndex: 'atype',
 				render:text=><span>{atype[text]}</span>,
             },{
-                title: '账目类型',
-				dataIndex: 'astate',
-				render:text=><span>{astate[text]}</span>,
-            },{
             title: '操作前金额',
             dataIndex: 'amoney',
             render: (text, record, index) => {
@@ -74,7 +80,7 @@ class UseRecord extends Component {
             title: '备注',
 			dataIndex: 'adesc',
             }, {
-                title: '入账时间',
+                title: '操作时间',
 				dataIndex: 'atime',
 				render: (text, record, index) => { 
 					return (
@@ -99,6 +105,24 @@ class UseRecord extends Component {
 					>
 						返回
 					</Button> 
+						<Radio.Group style={{marginLeft:15}} onChange={(e)=>{
+					 
+						this.props.dispatch({
+							type: "accournt/updateState",
+							payload: {
+								atype: e.target.value
+							}
+						});
+						this.loadTableData(1, 10);
+						}} value={this.props.atype}>
+						<Radio.Button value={100}>{'全部'}</Radio.Button>
+						{
+							atype.map((item, key) => {
+								if(key!==0)
+									return(<Radio.Button key={key}  value={key}>{item}</Radio.Button>);
+							})
+						}
+      </Radio.Group>
 				</div>
 
 				<Table

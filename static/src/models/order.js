@@ -1,6 +1,10 @@
 import {add, queryorderlist, updateorder, queryrecordlist,updaterecord} from "../services/order";
 import {loadmemeber,update} from "../services/member";
-import { updateplace } from "../services/place";
+import {
+  updateplace,
+  closelight,
+  openlight
+} from "../services/place";
 import { addaccournt } from "../services/accournt";
 import {mtype} from '../utils/enum';
 import { parse } from "qs";
@@ -22,6 +26,9 @@ export default {
     mobileorderlist:[],
     mobilemember:{},
     errormsg:'',
+    pname:'',
+    storetype:100,
+    ostate:100,
     pagination: {
       current: 1,
       pageSize: 10,
@@ -86,6 +93,7 @@ export default {
           const resultadd = yield call(add, param);
           if(resultadd.success)
           {
+            yield call(openlight, accournt);
              data=yield call(updateplace,{pid:payload.pid,pstate:2});
           }else{
             data.success=false;
@@ -168,6 +176,7 @@ export default {
           accournt.astate = 1;
           if(errormsg==='')
           {
+            
             //记账
             const accourntdata = yield call(addaccournt, accournt);
             //更改订单状态和使用记录
@@ -189,6 +198,7 @@ export default {
                     pstate: 0
                   });
                   if (data.success) {
+                    yield call(closelight, accournt);
                     errormsg = 'success';
                   } else {
                     errormsg = 'faild';
@@ -208,15 +218,22 @@ export default {
         });
         payload.callback(errormsg)
     },
-    *getorderlist({ payload }, { call, put }) {
+    *getorderlist({ payload }, { call, put,select }) {
+      let { pname,storetype,ostate } = yield select(state => state.order);
       const param={};
       if(payload.mid)
       {
         param.mid=payload.mid;
       }
-      if(payload.ordercode)
+      if (pname && pname !== '')
       {
-        param.ordercode=payload.ordercode;
+        param.pname = pname;
+      }
+      if (storetype && storetype !== 100) {
+        param.storetype = storetype;
+      }
+      if (ostate && ostate !== 100) {
+        param.ostate = ostate;
       }
       const data = yield call(queryorderlist, payload.page, payload.pageSize, param);
       yield put({

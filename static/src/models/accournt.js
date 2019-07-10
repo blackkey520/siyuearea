@@ -8,6 +8,7 @@ export default {
   state: {
     accourntlist: [],
     errormsg:'',
+    atype:100,
     pagination: {
       current: 1,
       pageSize: 10,
@@ -34,9 +35,16 @@ export default {
   subscriptions: {
   },
   effects: {
-    *getaccourntlistbymid({ payload }, { call, put }) {
+    *getaccourntlistbymid({ payload }, { call, put,select }) {
       const param={};
+      let {
+        atype
+      } = yield select(state => state.accournt);
       param.mid = payload.mid;
+      if (atype!==100)
+      {
+        param.atype=atype;
+      }
       const data = yield call(querylist, payload.page,payload.pageSize,param);
       yield put({
         type: "loaddataSuccess",

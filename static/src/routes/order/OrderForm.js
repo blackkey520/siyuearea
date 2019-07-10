@@ -58,7 +58,7 @@ class OrderForm extends Component {
 	goBack() {
         this.props.dispatch(
 			routerRedux.push({
-				pathname: `/memberlist/orderrecord/${this.props.match.params.id}`
+				pathname: `/orderlist`
 			})
 		);
     }

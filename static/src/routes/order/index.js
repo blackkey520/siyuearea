@@ -1,6 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
-import { Table, Button, Modal, Switch,Menu, Dropdown,Icon,Input  } from "antd";
+import {
+	Table,
+	Button,
+	Modal,
+	Switch,
+	Menu,
+	Dropdown,
+	Icon,
+	Input,
+	Radio
+} from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import {
@@ -11,7 +21,10 @@ const Search = Input.Search;
 
 @connect(({ order,loading }) => ({orderlist: order.orderlist,
 	orderloading: loading.effects['member/getorderlist'],
-	pagination: order.pagination
+	pagination: order.pagination,
+	pname: order.pname,
+    storetype: order.storetype,
+    ostate: order.ostate,
  }))
 class OrderList extends Component {
 	static contextTypes = {
@@ -24,25 +37,24 @@ class OrderList extends Component {
 		}
 	}
 	componentDidMount() {
-		this.loadTableData();
+		this.loadTableData(1,10);
 	}
 
-	loadTableData(page = 1, pageSize = 10,ordercode='') {
-        if(ordercode!=='')
-        {
-            this.props.dispatch({
-                type: "order/getorderlist",
-                payload: { page, pageSize,ordercode }
-            });
-        }
-		else{
-             this.props.dispatch({
+	loadTableData(page = 1, pageSize = 10) {
+		 this.props.dispatch({
                 type: "order/getorderlist",
                 payload: { page, pageSize }
             });
-        }
+         
 	}
-
+	changeText=(e)=>{
+		this.props.dispatch({
+                type: "order/updateState",
+                payload: {
+                	pname: e.target.value
+                }
+            });
+	}
 	tableChange(pagination) {
 		this.loadTableData(pagination.current, pagination.pageSize);
 	}
@@ -103,9 +115,11 @@ class OrderList extends Component {
 					}}
 				>
                  <Search
-                    placeholder="请输入订单编号"
+                    placeholder="请输入座位编号"
+					value={this.props.pname}
+					onChange={this.changeText}
                     onSearch={(value) => {
-                        this.loadTableData(1,10,value);
+                        this.loadTableData(1, 10);
                     }}
                     style={{ width: 200 }}
                     />
@@ -121,7 +135,41 @@ class OrderList extends Component {
 					>
 						新增线下订单
 					</Button>  */}
-
+					<Radio.Group style={{marginLeft:15}} onChange={(e)=>{
+					 
+						this.props.dispatch({
+							type: "order/updateState",
+							payload: {
+								storetype: e.target.value
+							}
+						});
+						this.loadTableData(1, 10);
+						}} value={this.props.storetype}>
+						<Radio.Button value={100}>{'全部'}</Radio.Button>
+						{
+							placelist.map((item,key)=>{
+								if(key!==0)
+									return(<Radio.Button key={key}  value={key}>{item}</Radio.Button>);
+							})
+						}
+      </Radio.Group>
+	  <Radio.Group style={{marginLeft:15}} onChange={(e)=>{
+		  this.props.dispatch({
+							type: "order/updateState",
+							payload: {
+								ostate: e.target.value
+							}
+						});
+		  this.loadTableData(1, 10);
+						}} value={this.props.ostate}>
+						<Radio.Button value={100}>{'全部'}</Radio.Button>
+						{
+							ostate.map((item, key) => {
+								if(key!==0)
+									return(<Radio.Button key={key} value={key}>{item}</Radio.Button>);
+							})
+						}
+      </Radio.Group>
 				</div>
 
 				<Table

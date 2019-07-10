@@ -69,10 +69,6 @@ class AccourntList extends Component {
 				dataIndex: 'atype',
 				render:text=><span>{atype[text]}</span>,
             },{
-                title: '账目类型',
-				dataIndex: 'astate',
-				render:text=><span>{astate[text]}</span>,
-            },{
             title: '操作前金额',
             dataIndex: 'amoney',
             render: (text, record, index) => {

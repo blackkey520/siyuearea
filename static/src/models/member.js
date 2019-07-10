@@ -11,6 +11,7 @@ export default {
     loginuser:{},
     checkmember:{},
     memberlist:[],
+    searchval:'',
     resultmsg: '您还不是我们的会员，请到店体验吧！我们的位置：北京市海淀区北四环西路68号左岸工社6层。',
     pagination: {
       current: 1,
@@ -118,13 +119,14 @@ export default {
     },
     *getmemberlist({ payload }, { call, put }) {
       const data = yield call(querylists, payload);
-  
+      
       yield put({
         type: "loaddataSuccess",
         payload: {
           data,
           current: payload.page,
-          pageSize: payload.pageSize
+          pageSize: payload.pageSize,
+          searchval: payload.membercode
         }
       });
     },
@@ -283,6 +285,15 @@ export default {
         mid: payload.param.mid,
         mregisttime: moment(payload.param.mregisttime).add(payload.extenddays, 'days').format('YYYY-MM-DD HH:mm:ss')
       });
+        const accournt = {};
+        accournt.mid = payload.param.mid;
+        accournt.atype = 5;
+        accournt.astate = 0;
+        accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+        accournt.amoney = parseInt(payload.param.mmoney);
+        accournt.asmoney = parseInt(payload.param.mmoney);
+        accournt.adesc = `手动延期-${payload.extenddays}天`;
+        const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
     },
     *chargingmoney({ payload }, { call, put }) {

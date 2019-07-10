@@ -9,17 +9,22 @@ import {
 	Dropdown,
 	Icon,
 	Input,
-	message
+	message,
+	Form,
+	 Row,
+	 Col,
 } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import { mtype,mstate} from '../../../utils/enum';
+import { createForm } from 'rc-form';
 const Search = Input.Search;
 
  
 @connect(({ member,loading }) => ({memberlist: member.memberlist,
 	memberloading:loading.effects['member/getmemberlist'],
-	pagination: member.pagination
+	pagination: member.pagination,
+	searchval: member.searchval
  }))
 class MemberList extends Component {
 	static contextTypes = {
@@ -30,14 +35,14 @@ class MemberList extends Component {
 		this.state={
 			record:null,
 			yqdays:1,
-			selectvalue:'',
-			kftext:0
+			kftext:0,
+			visible:false
 		}
 	}
 	componentDidMount() {
-		this.loadTableData();
+		this.loadTableData(1,10, this.props.searchval);
 	}
-
+ 
 	loadTableData(page = 1, pageSize = 10,membercode='') {
 		 if(membercode!=='')
         {
@@ -54,19 +59,44 @@ class MemberList extends Component {
 	}
 
 	tableChange(pagination) {
-		this.loadTableData(pagination.current, pagination.pageSize, this.state.selectvalue);
+		this.loadTableData(pagination.current, pagination.pageSize, this.props.searchval);
 	}
+	  handleCancel = () => {
+	  	this.setState({
+	  		visible: false
+	  	});
+	  };
+
 	render() {
 		 
 		const pagination = {
 			showTotal: total => `共${total}条数据`,
 			...this.props.pagination
 		};
-		 
+		 const {
+		 	getFieldDecorator
+		 } = this.props.form;
+		 const formItemLayout = {
+		 	labelCol: {
+		 		span: 5
+		 	},
+		 	wrapperCol: {
+		 		span: 18
+		 	}
+		 };
+		  
         const columns = [{
             title: '会员名称',
             dataIndex: 'mname',
-            render: text => <a href="javascript:;">{text}</a>,
+            render: (text, record, index) => {
+					return(<a href="javascript:;" onClick={()=>{
+						debugger;
+				this.setState({
+					visible:true,
+					record
+				});
+				}}>{text}</a>);
+				},
             }, {
             title: '联系方式',
             dataIndex: 'phonenum',
@@ -150,7 +180,7 @@ class MemberList extends Component {
 													callback: data => {
 														hide();
 														if (data && data.success) {
-															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.state.selectvalue);
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.props.searchval);
 															message.success("保存成功");
 														} else {
 															message.error("保存失败");
@@ -182,7 +212,7 @@ class MemberList extends Component {
 													callback: data => {
 														hide();
 														if (data && data.success) {
-															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.state.selectvalue);
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.props.searchval);
 															message.success("保存成功");
 														} else {
 															message.error("保存失败");
@@ -225,11 +255,18 @@ class MemberList extends Component {
 				>
 				  <Search
                     placeholder="请输入会员编号/姓名/电话"
+					value={this.props.searchval}
+					onChange={e=>{
+						this.props.dispatch({
+							type: "member/updateState",
+							payload: {
+								searchval: e.target.value
+							}
+						});
+					}}
                     onSearch={(value) => {
                         this.loadTableData(1,10,value);
-						this.setState({
-							selectvalue:value
-						});
+						 
                     }}
                     style={{ width: 200 }}
                     />
@@ -255,9 +292,41 @@ class MemberList extends Component {
 					bordered
 					onChange={this.tableChange.bind(this)}
 				/>
+				<Modal
+          title="会员详情"
+		  visible={this.state.visible}
+          onCancel={this.handleCancel}
+          footer={null}
+        >
+		{
+			this.state.record!==null?<Form  onSubmit={this.handleSubmit}>
+        <Form.Item {...formItemLayout} label="会员姓名">
+          {
+          	this.state.record.mname
+          }
+        </Form.Item>
+          <Form.Item {...formItemLayout} label="到期时间">
+          {
+          	moment(this.state.record.mregisttime).format('YYYY-MM-DD hh:mm:ss')
+          }
+        </Form.Item>
+		<Form.Item {...formItemLayout} label="注册时间">
+          {
+          	moment(this.state.record.mrtime).format('YYYY-MM-DD hh:mm:ss')
+          }
+        </Form.Item>
+		<Form.Item  {...formItemLayout} label="会员类型">
+          {
+          	mtype[this.state.record.mtype]
+          }
+        </Form.Item>
+      </Form>:null
+		}
+         
+        </Modal>
 			</div>
 		);
 	}
 }
 
-export default MemberList;
+export default createForm()(MemberList);

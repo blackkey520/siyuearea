@@ -17,7 +17,9 @@ module.exports = app => {
       +" from Base_Order as t1 inner join Base_Place as t2 on t1.pid=t2.pid inner join Base_Member as t3 on t1.mid=t3.mid  left join  "
 			+" Base_Record as t4 on t4.oid=t1.oid) as t5 " 
       + conditionstr + " order by otime desc limit " + offset + "," + query.pageSize;
-      const totalsql = "select count(*) as total from Base_Order" + conditionstr;
+      const totalsql = "select count(*) as total from (select t1.oid,t1.ordercode,t1.pid,t2.pdesc as 'storetype',t2.pname,t1.mid,t3.mname,t1.ostate,t4.ostate as rstate,t1.otime,t1.pdesc,t4.btime,t4.etime,t4.money,t4.disid,t4.discount,t4.rid" +
+        " from Base_Order as t1 inner join Base_Place as t2 on t1.pid=t2.pid inner join Base_Member as t3 on t1.mid=t3.mid  left join  " +
+        " Base_Record as t4 on t4.oid=t1.oid) as t5 " + conditionstr;
       const record= yield this.app.mysql.query(recordsql);
       const totalRecord = yield this.app.mysql.query(totalsql);
       return { record, totalRecord: totalRecord[0].total };
