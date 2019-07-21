@@ -184,7 +184,7 @@ class MemberForm extends Component {
 						<FormItem {...formItemLayout} label="会员类型">
 							{getFieldDecorator("mtype", {
 								initialValue: this.props.checkmember.mtype ? this.props.checkmember.mtype : 0
-							})(<RadioGroup>
+							})(<RadioGroup disabled>
 									{
 										mtype.map((item, key) => {
 											return (<RadioButton key={item} value={key}>{item}</RadioButton>)
@@ -200,7 +200,7 @@ class MemberForm extends Component {
 						<FormItem {...formItemLayout} label="到期时间">
 							{getFieldDecorator("mregisttime", {
 								initialValue: this.props.checkmember.mregisttime ? this.props.checkmember.mregisttime : moment().format('YYYY-MM-DD HH:mm:ss'),
-							})( <Input / > )
+							})( <Input disabled / > )
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="注册时间">
@@ -213,7 +213,7 @@ class MemberForm extends Component {
 						<FormItem {...formItemLayout} label="会员余额(元)">
 							{getFieldDecorator("mmoney", {
 								initialValue: this.props.checkmember.mmoney?this.props.checkmember.mmoney:0,
-							})( <Input / > )
+							})( <Input disabled / > )
 							}
 						</FormItem>
 						<FormItem {...formItemLayout} label="备注">

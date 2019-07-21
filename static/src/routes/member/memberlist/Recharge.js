@@ -259,7 +259,7 @@ class Recharge extends Component {
 								});
 							}}/>
 						</TabPane>
-						<TabPane tab="优惠卡" key="3">
+						{/* <TabPane tab="优惠卡" key="3">
 							
 							<Select
 								style={{ width: 200 }}
@@ -278,7 +278,7 @@ class Recharge extends Component {
 									})
 								}
 							</Select>
-							</TabPane>
+							</TabPane> */}
 					</Tabs>		
 						<div
 					style={{

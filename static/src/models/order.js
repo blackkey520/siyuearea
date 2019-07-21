@@ -93,7 +93,7 @@ export default {
           const resultadd = yield call(add, param);
           if(resultadd.success)
           {
-            yield call(openlight, accournt);
+            yield call(openlight, payload);
              data=yield call(updateplace,{pid:payload.pid,pstate:2});
           }else{
             data.success=false;
@@ -124,7 +124,7 @@ export default {
             const days = moment(memberdetail.etime).diff(moment(), 'days', false);
             if (memberdetail.pcname != null && days>0)
             {
-               accournt.atype = 3;
+               accournt.atype = 6;
                accournt.amoney = 0;
                accournt.asmoney = 0;
                accournt.adesc = memberdetail.pcname;
@@ -133,7 +133,7 @@ export default {
               if (memberdetail.mtype===0)
               {
                 if (memberdetail.mmoney >= payload.param.money) {
-                  accournt.atype = 1;
+                  accournt.atype = 6;
                   accournt.amoney = memberdetail.mmoney;
                   accournt.asmoney = parseInt(memberdetail.mmoney) - parseInt(payload.param.money);
                   accournt.adesc = '人工-结束订单-充值消费';
@@ -165,7 +165,7 @@ export default {
                 {
                   errormsg = 'outofcardtime';
                 }
-                accournt.atype = 2;
+                accournt.atype = 6;
                 accournt.amoney = 0;
                 accournt.asmoney =0;
                 accournt.adesc = '人工-结束订单-' + mtype[memberdetail.mtype];
@@ -198,7 +198,7 @@ export default {
                     pstate: 0
                   });
                   if (data.success) {
-                    yield call(closelight, accournt);
+                    yield call(closelight, payload.record);
                     errormsg = 'success';
                   } else {
                     errormsg = 'faild';

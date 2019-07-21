@@ -61,7 +61,7 @@ export default {
         if (member.mtype === 0)
         {
           // if (member.mmoney >= money) {
-            accournt.atype = 1;
+            accournt.atype = 6;
             accournt.amoney = parseInt(member.mmoney);
             accournt.asmoney = parseInt(member.mmoney) - parseInt(money);
             accournt.adesc = '人工-充值消费';
@@ -71,7 +71,7 @@ export default {
             });
           // }
         }else{
-          accournt.atype = 2;
+          accournt.atype = 6;
           accournt.amoney = 0;
           accournt.asmoney = 0;
           accournt.adesc = '人工-'+mtype[member.mtype];

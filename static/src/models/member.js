@@ -153,10 +153,8 @@ export default {
       accournt.mid = checkmember.mid;
       let overdate = moment().format('YYYY-MM-DD HH:mm:ss');
       let mmtype=checkmember.mtype;
-      debugger;
       let mmoney = checkmember.mmoney == null ? 0 : checkmember.mmoney;
       let mpd = checkmember.mpd;
-      debugger;
       if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
@@ -267,6 +265,7 @@ export default {
       }
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
       accournt.astate = 0; 
+      overdate = moment(overdate).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
       data = yield call(update, {
         mid:checkmember.mid,
         mregisttime:overdate,
@@ -292,7 +291,7 @@ export default {
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
         accournt.amoney = parseInt(payload.param.mmoney);
         accournt.asmoney = parseInt(payload.param.mmoney);
-        accournt.adesc = `手动延期-${payload.extenddays}天`;
+        accournt.adesc = `手动延期：${payload.extenddays}天-->说明：${payload.yqdesc}`;
         const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
     },

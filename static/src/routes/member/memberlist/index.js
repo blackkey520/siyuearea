@@ -11,15 +11,20 @@ import {
 	Input,
 	message,
 	Form,
+	Calendar,
 	 Row,
 	 Col,
 } from "antd";
 import moment from "moment";
+
+
 import { routerRedux } from "dva/router";
 import { mtype,mstate} from '../../../utils/enum';
 import { createForm } from 'rc-form';
 const Search = Input.Search;
-
+const TextArea = Input.TextArea;
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
  
 @connect(({ member,loading }) => ({memberlist: member.memberlist,
 	memberloading:loading.effects['member/getmemberlist'],
@@ -34,7 +39,9 @@ class MemberList extends Component {
 		super(props, context);
 		this.state={
 			record:null,
-			yqdays:1,
+			yqdays:0,
+			yqdate:moment(),
+			yqdesc:'',
 			kftext:0,
 			visible:false
 		}
@@ -90,11 +97,7 @@ class MemberList extends Component {
             dataIndex: 'mname',
             render: (text, record, index) => {
 					return(<a href="javascript:;" onClick={()=>{
-						debugger;
-				this.setState({
-					visible:true,
-					record
-				});
+						 
 				}}>{text}</a>);
 				},
             }, {
@@ -113,7 +116,7 @@ class MemberList extends Component {
 				render: (text, record, index) => {
 					return(<div>{moment(text).format('YYYY-MM-DD hh:mm:ss')}</div>);
 				}
-            },{
+            }, {
                 title: '会员类型',
 				dataIndex: 'mtype',
 				render: (text, record, index) => {
@@ -159,40 +162,13 @@ class MemberList extends Component {
 							   		})
 							   	);
 							   } else if (e.key === "5") {
-								   const that=this;
-									Modal.warn({
-										title: '会员延期',
-										content: (
-											<div>为 <span style={{color:'red'}}>{record.mname}</span> 延期 <InputNumber value={this.state.yqdays} min={1} max={1000} defaultValue={1} onChange={(value)=>{
-												this.setState({
-													yqdays:value
-												});
-											}} /> 天 </div>
-										),
-										okText:'确定',
-										onOk() { 
-											const hide = message.loading("正在保存...", 0);
-											that.props.dispatch({
-												type: "member/extendovertime",
-												payload: {
-													extenddays: that.state.yqdays,
-													param:record,
-													callback: data => {
-														hide();
-														if (data && data.success) {
-															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.props.searchval);
-															message.success("保存成功");
-														} else {
-															message.error("保存失败");
-														}
-													}
-												}
-											});
-										},
-									});
+								   this.setState({
+								   	visible: true
+								   });
+								   
 							   }else if (e.key === "6") {
 								   const that=this;
-									Modal.warn({
+									Modal.confirm({
 										title: '会员扣费',
 										content: (
 											<div>为 <span style={{color:'red'}}>{record.mname}</span> 扣费 <InputNumber value={this.state.kftext} min={0} max={1000} defaultValue={0} onChange={(value)=>{
@@ -202,6 +178,7 @@ class MemberList extends Component {
 											}} /> 元 </div>
 										),
 										okText:'确定',
+										cancelText: '取消',
 										onOk() { 
 											const hide = message.loading("正在保存...", 0);
 											that.props.dispatch({
@@ -234,7 +211,8 @@ class MemberList extends Component {
 					return (
 						<Dropdown onVisibleChange={()=>{
 								this.setState({
-									record
+									record,
+									yqdate:moment(record.mregisttime),
 								});
 							}} overlay={menu}>
 							<Button style={{ marginLeft: 8 }}>
@@ -293,35 +271,68 @@ class MemberList extends Component {
 					onChange={this.tableChange.bind(this)}
 				/>
 				<Modal
-          title="会员详情"
+          title="会员延期"
 		  visible={this.state.visible}
           onCancel={this.handleCancel}
-          footer={null}
+		  onOk={()=>{ 
+			  if (this.state.yqdesc==='')
+			  {
+				  message.error("必须填写延期说明");
+				  return;
+			  }
+			   if (this.state.yqdays === 0) {
+			   	message.error("请选择延期时间");
+			   	return;
+			   }
+			  const hide = message.loading("正在保存...", 0);
+			  this.props.dispatch({
+			  	type: "member/extendovertime",
+			  	payload: {
+			  		extenddays: this.state.yqdays,
+					yqdesc: this.state.yqdesc,
+			  		param: this.state.record,
+			  		callback: data => {
+			  			hide();
+			  			if (data && data.success) {
+			  				this.loadTableData(this.props.pagination.current, this.props.pagination.pageSize, this.props.searchval);
+			  				message.success("保存成功");
+			  			} else {
+			  				message.error("保存失败");
+			  			}
+						this.setState({
+							yqdays:0,
+							yqdate:moment(),
+							yqdesc:'',
+							visible:false,
+						});
+			  		}
+			  	}
+			  });
+		  }} 
         >
-		{
-			this.state.record!==null?<Form  onSubmit={this.handleSubmit}>
-        <Form.Item {...formItemLayout} label="会员姓名">
-          {
-          	this.state.record.mname
-          }
-        </Form.Item>
-          <Form.Item {...formItemLayout} label="到期时间">
-          {
-          	moment(this.state.record.mregisttime).format('YYYY-MM-DD hh:mm:ss')
-          }
-        </Form.Item>
-		<Form.Item {...formItemLayout} label="注册时间">
-          {
-          	moment(this.state.record.mrtime).format('YYYY-MM-DD hh:mm:ss')
-          }
-        </Form.Item>
-		<Form.Item  {...formItemLayout} label="会员类型">
-          {
-          	mtype[this.state.record.mtype]
-          }
-        </Form.Item>
-      </Form>:null
-		}
+		   {
+			   this.state.record!=null?<div><div>到期时间<span style={{color:'red'}}>{moment(this.state.record.mregisttime).format('YYYY-MM-DD HH:mm:ss')}</span>,为 <span style={{color:'red'}}>{this.state.record.mname}</span> 延期  {this.state.yqdays} 天 ,延期后时间<span style={{color:'red'}}>{this.state.yqdate.format('YYYY-MM-DD HH:mm:ss')}</span></div> 
+											<Calendar value = {
+												this.state.yqdate
+											}
+											fullscreen = {
+												false
+											}
+											onChange = {value => {
+												const yqdays = value.diff(this.state.record.mregisttime, 'days');
+									 
+													this.setState({
+														yqdays,
+														yqdate:value,
+														visible:true
+													});
+                  								}
+													} /><TextArea placeholder="请输入延期说明" value={this.state.yqdesc} onChange={(e)=>{
+														this.setState({
+															yqdesc:e.target.value
+														});
+														}} rows={4} /></div>:null
+		   }
          
         </Modal>
 			</div>
