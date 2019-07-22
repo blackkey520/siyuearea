@@ -96,9 +96,13 @@ class MemberList extends Component {
             title: '会员名称',
             dataIndex: 'mname',
             render: (text, record, index) => {
-					return(<a href="javascript:;" onClick={()=>{
-						 
-				}}>{text}</a>);
+				if(record.mstate!==0)
+				{
+					return(<div><span>{text}</span><span style={{color:'red'}}>（{record.mstate==2?'停用':'欠费'}）</span></div>);
+				}else{
+
+				}
+					return(<span>{text}</span>);
 				},
             }, {
             title: '联系方式',
@@ -312,12 +316,8 @@ class MemberList extends Component {
         >
 		   {
 			   this.state.record!=null?<div><div>到期时间<span style={{color:'red'}}>{moment(this.state.record.mregisttime).format('YYYY-MM-DD HH:mm:ss')}</span>,为 <span style={{color:'red'}}>{this.state.record.mname}</span> 延期  {this.state.yqdays} 天 ,延期后时间<span style={{color:'red'}}>{this.state.yqdate.format('YYYY-MM-DD HH:mm:ss')}</span></div> 
-											<Calendar value = {
-												this.state.yqdate
-											}
-											fullscreen = {
-												false
-											}
+											<Calendar  
+											fullscreen = {false}
 											onChange = {value => {
 												const yqdays = value.diff(this.state.record.mregisttime, 'days');
 									 
