@@ -82,14 +82,26 @@ exports.programregister = function* () {
     phonenum: phone
   });
   if (memberlist.record.length !== 0) {
-    rtnval.ismember = true;
-    const member=yield this.service.member.update({
-      openid: result.openid,
-      phone: phone
-    });
-    rtnval.member = member;
+    const mpoi = memberlist.record[0].memberprogramopenid;
+     
+    if (mpoi !== '')
+    {
+      rtnval.ismember = false;
+      rtnval.msg = '此电话已经被绑定';
+      rtnval.submsg = '请联系我们的前台，检查您的会员状态';
+    }
+    else{
+      const member = yield this.service.member.update({
+        openid: result.openid,
+        phone: phone
+      });
+      rtnval.ismember = true;
+      rtnval.member = member;
+    }
   }else{
     rtnval.ismember = false;
+    rtnval.msg='我们找不到您的会员信息';
+    rtnval.submsg = '请联系我们的前台，成为我们的会员';
   }
   rtnval.openid = result.openid;
   response.message = "操作成功";

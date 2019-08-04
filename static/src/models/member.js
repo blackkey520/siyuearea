@@ -4,6 +4,7 @@ import { loadsingle } from "../services/config";
 import moment from 'moment';
 import { routerRedux } from "dva/router";
 import {mtype} from '../utils/enum';
+import { message } from "_antd@2.13.14@antd";
 export default {
   namespace: "member",
   state: {
@@ -320,7 +321,6 @@ export default {
 			const callback = payload.callback;
       delete payload.callback;
       payload.param.mpd=0;
-      debugger;
 			if (payload.param.id) {
         payload.param.mid = payload.param.id;
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
@@ -332,9 +332,18 @@ export default {
         payload.param.memberopenid = '-';
         delete payload.param.id;
         payload.param.mmoney=0;
+        payload.param.memberprogramopenid='';
         payload.param.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
-        
-				data = yield call(register, payload.param);
+          const membercheck = yield call(loadmemberbyphone, {
+            phonenum: payload.param.phonenum
+          }); 
+        if (membercheck.data.record.length !== 0)
+        {
+            message.error('电话号码已存在')
+        }
+				else{
+          data = yield call(register, payload.param);
+        }
       }
 			callback && callback(data);
 		} 
