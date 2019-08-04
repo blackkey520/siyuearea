@@ -48,8 +48,8 @@ export default {
   },
   effects: {
     *manualcloselight({ payload }, { call, put }) {
-        const orderr = yield call(queryorderlist, 1,100,{pid:payload.selectPlace.pid});
-        const recordr=yield call(queryrecordlist,1,10,{pid:payload.selectPlace.pid});
+        const orderr = yield call(queryorderlist, 1,2,{pid:payload.selectPlace.pid});
+        const recordr=yield call(queryrecordlist,1,2,{pid:payload.selectPlace.pid});
         const memberr=yield call(loadmemeber,{id:recordr.data.record[0].mid});
         const money = GetMoney(moment(recordr.data.record[0].btime), moment());
         const accournt = {};
@@ -93,6 +93,7 @@ export default {
           pid: payload.selectPlace.pid,
           pstate: 0
         });
+        yield call(closelight, payload.selectPlace);
         //getplacelist
          yield put({
            type: "getplacelist",
