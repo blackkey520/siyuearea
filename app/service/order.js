@@ -4,12 +4,18 @@ module.exports = app => {
       const offset = (parseInt(query.page) - 1) * parseInt(query.pageSize);
       let conditionstr = "";
       let memberCondition = " 1=1 ";
+      let orderCondition=" 1=1 ";
       if (JSON.stringify(condition) != "{}") {
         conditionstr = " where ";
         for (const key in condition) {
           if (key != 'mid')
           {
-            conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
+           
+            if(key!='oid'){
+               conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
+            }else{
+              orderCondition = orderCondition + ` and oid='${condition[key]}'`;
+            }
           }else{
             memberCondition = memberCondition +` and mid='${condition[key]}'`;
           }
@@ -21,12 +27,12 @@ module.exports = app => {
       }
        
        const recordsql = `select * from (select t1.oid,t1.ordercode,t1.pid,t2.pdesc as 'storetype',t2.pname,t1.mid,t3.mname,t1.ostate,t4.ostate 
-       as rstate,t1.otime,t1.pdesc,t4.btime,t4.etime,t4.money,t4.disid,t4.discount,t4.rid from Base_Order as 
+       as rstate,t1.otime,t1.pdesc,t4.btime,t4.etime,t4.money,t4.disid,t4.discount,t4.rid from ( select * from Base_Order where ${orderCondition}) as 
        t1 inner join Base_Place as t2 on t1.pid=t2.pid inner join (select * from Base_Member where ${memberCondition} ) 
        as t3 on t1.mid=t3.mid  left join    Base_Record as t4 on t4.oid=t1.oid) as t5 ${conditionstr} order by otime desc limit ${offset},${query.pageSize}`;
- 
+      console.log(recordsql);
       const totalsql = `select * from (select t1.oid,t1.ordercode,t1.pid,t2.pdesc as 'storetype',t2.pname,t1.mid,t3.mname,t1.ostate,t4.ostate 
-       as rstate,t1.otime,t1.pdesc,t4.btime,t4.etime,t4.money,t4.disid,t4.discount,t4.rid from Base_Order as 
+       as rstate,t1.otime,t1.pdesc,t4.btime,t4.etime,t4.money,t4.disid,t4.discount,t4.rid from ( select * from Base_Order where ${orderCondition}) as 
        t1 inner join Base_Place as t2 on t1.pid=t2.pid inner join (select * from Base_Member where ${memberCondition} ) 
        as t3 on t1.mid=t3.mid  left join    Base_Record as t4 on t4.oid=t1.oid) as t5 ${conditionstr} `;
       const record= yield this.app.mysql.query(recordsql);
