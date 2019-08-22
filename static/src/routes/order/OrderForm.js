@@ -104,13 +104,13 @@ class OrderForm extends Component {
 		}
 		if (this.props.memberdetail.mtype === 7 || this.props.memberdetail.mtype === 8 || this.props.memberdetail.mtype === 9)
 		{
-			if (moment().format('d') == 6 || moment().format('d') == 0)
-			{
+			// if (moment().format('d') == 6 || moment().format('d') == 0)
+			// {
 
-			}else{
-				isdis = true;
-				message = <Alert message={'您的会员卡只能在周六和周日使用'} type="error" />;
-			}
+			// }else{
+			// 	isdis = true;
+			// 	message = <Alert message={'您的会员卡只能在周六和周日使用'} type="error" />;
+			// }
 		}
 		if (this.props.memberdetail.mtype === 10 || this.props.memberdetail.mtype === 11|| this.props.memberdetail.mtype === 12) {
 			if (moment().hour() >= 6 && moment().hour() <= 8) {

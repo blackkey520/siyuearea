@@ -55,6 +55,7 @@ module.exports = app => {
   
   app.post('/api/member/findmemberlist', 'member.findlist');
   app.get('/api/member/getsinglemember/:id', 'member.single');
+  app.post('/api/order/getordercount','order.count');
   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/trail/gettraillist','trail.index');
   app.post('/api/order/getrecordlist', 'order.record');

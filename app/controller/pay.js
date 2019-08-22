@@ -32,23 +32,22 @@ class PayController extends Controller {
     if (ctx.params.type==="1")
     {
         money = parseInt(ctx.params.money)
-        if (money <= 500)
-        {
-          money = money * config.record[0].rechargedistwo;
-        }
-         if (money > 500 && money <= 1000) {
-           money = money * config.record[0].rechargedisone;
+        
+         if (money == 500 || money == 1000) {
+           money = money * 0.8;
          }
-        if (money > 1000 && money <= 2000)
-        {
-          money = money * config.record[0].rechargedis;
-        }
-        if (money > 2000 && money <= 5000) {
-          money = money * config.record[0].rechargedis;
-        }
-        if (money > 5000) {
-          money = money * config.record[0].rechargedis;
-        }
+          if (money == 1500 || money == 2000) {
+              money = money * 0.75;
+          }
+          if (money == 2500 || money == 3000) {
+              money = money * 0.7;
+          }
+          if (money == 3500 || money == 4000) {
+              money = money * 0.65;
+          }
+          if (money == 4500 || money == 5000) {
+              money = money * 0.6;
+          }
     }
     if(ctx.params.type==='2')
     {
