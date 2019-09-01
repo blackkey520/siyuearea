@@ -9,7 +9,8 @@ import {
 	Dropdown,
 	Icon,
 	Input,
-	Radio
+	Radio,
+	DatePicker
 } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
@@ -18,13 +19,16 @@ import {
 	placelist
 } from '../../utils/enum';
 const Search = Input.Search;
+const {  RangePicker } = DatePicker;
 
 @connect(({ order,loading }) => ({orderlist: order.orderlist,
 	orderloading: loading.effects['order/getorderlist'],
 	pagination: order.pagination,
 	pname: order.pname,
     storetype: order.storetype,
-    ostate: order.ostate,
+	ostate: order.ostate,
+	btime:order.btime,
+	etime:order.etime
  }))
 class OrderList extends Component {
 	static contextTypes = {
@@ -152,6 +156,17 @@ class OrderList extends Component {
 									return(<Radio.Button key={key}  value={key}>{item}</Radio.Button>);
 							})
 						}
+						<RangePicker style={{marginLeft:15}} value={[this.props.btime,this.props.etime]} onChange={(date, dateString)=>{
+						 
+						this.props.dispatch({
+							type: "order/updateState",
+							payload: {
+								btime: date[0],
+								etime:date[1]
+							}
+						});
+						this.loadTableData(1, 10);
+							}} />
       </Radio.Group>
 	  <Radio.Group style={{marginLeft:15}} onChange={(e)=>{
 		  this.props.dispatch({

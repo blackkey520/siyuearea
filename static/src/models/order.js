@@ -29,6 +29,8 @@ export default {
     pname:'',
     storetype:100,
     ostate:100,
+    btime:moment().add(-7,'days'),
+    etime:moment(),
     pagination: {
       current: 1,
       pageSize: 10,
@@ -219,7 +221,7 @@ export default {
         payload.callback(errormsg)
     },
     *getorderlist({ payload }, { call, put,select }) {
-      let { pname,storetype,ostate } = yield select(state => state.order);
+      let { pname,storetype,ostate,btime,etime } = yield select(state => state.order);
       const param={};
       if(payload.mid)
       {
@@ -235,6 +237,8 @@ export default {
       if (ostate && ostate !== 100) {
         param.ostate = ostate;
       }
+      param.btime = btime.format('YYYY-MM-DD HH:mm:ss');
+      param.etime = etime.format('YYYY-MM-DD HH:mm:ss');
       const data = yield call(queryorderlist, payload.page, payload.pageSize, param);
       yield put({
         type: "loaddataSuccess",

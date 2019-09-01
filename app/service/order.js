@@ -16,7 +16,25 @@ module.exports = app => {
             if(key!='oid'){
                if(key!='pid')
                {
-                  conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
+                 if(key!='pname')
+                 {
+                     if (key != 'mname') {
+                       if (key != 'btime') {
+                         if (key != 'etime') {
+                           conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
+                         } else {
+                           orderCondition = orderCondition + ` and otime<='${condition[key]}'`;
+                         }
+                       } else {
+                         orderCondition = orderCondition + ` and otime>='${condition[key]}'`;
+                       }
+                     } else {
+                       memberCondition = memberCondition + `and mname='${condition[key]}'`;
+                     }
+                 }  
+                else{
+                  placeCondition = placeCondition + `and pname='${condition[key]}'`;
+                }
                }else{
                   placeCondition = placeCondition + `and pid='${condition[key]}'`;
                }
