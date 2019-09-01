@@ -29,7 +29,7 @@ export default {
     pname:'',
     storetype:100,
     ostate:100,
-    btime:moment().add(-7,'days'),
+    btime:moment().add(-3,'days'),
     etime:moment(),
     pagination: {
       current: 1,
