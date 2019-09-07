@@ -159,22 +159,21 @@ export default {
       if (payload.rechargetype === "1")
       {
         let rechargev = parseInt(payload.rechargevalue);
-        if(rechargev<=500)
+        if (rechargev <= 1000) {
+           overdate = moment().add(4, 'month').format('YYYY-MM-DD 00:00:00');
+        }
+        if (rechargev == 1500 && rechargev == 2000)
         {
-          overdate = moment().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+          overdate = moment().add(6, 'month').format('YYYY-MM-DD 00:00:00');
         }
-        if (rechargev >= 500 && rechargev < 1000) {
-           overdate = moment().add(2, 'month').format('YYYY-MM-DD HH:mm:ss');
+        if (rechargev == 2500 && rechargev == 3000) {
+           overdate = moment().add(8, 'month').format('YYYY-MM-DD 00:00:00');
         }
-        if (rechargev >= 1000 && rechargev < 2000)
-        {
-          overdate = moment().add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
+        if (rechargev == 3500 && rechargev == 4000) {
+          overdate = moment().add(10, 'month').format('YYYY-MM-DD 00:00:00');
         }
-        if (rechargev >= 2000 && rechargev < 5000) {
-           overdate = moment().add(5, 'month').format('YYYY-MM-DD HH:mm:ss');
-        }
-        if (rechargev >= 5000) {
-           overdate = moment().add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
+        if (rechargev == 4500 && rechargev == 5000) {
+           overdate = moment().add(12, 'month').format('YYYY-MM-DD 00:00:00');
         }
          accournt.amoney = parseInt(mmoney);
          accournt.asmoney = rechargev + parseInt(mmoney);
@@ -229,23 +228,23 @@ export default {
          }
          if (payload.cardtype===1)
          {
-           overdate = moment(payload.cardusedate).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+           overdate = moment(payload.cardusedate).add(1, 'days').format('YYYY-MM-DD 00:00:00');
          }
          if (payload.cardtype === 2 || payload.cardtype === 7 || payload.cardtype === 10)
          {
-           overdate = moment(payload.cardusedate).add(7, 'days').format('YYYY-MM-DD HH:mm:ss');
+           overdate = moment(payload.cardusedate).add(7, 'days').format('YYYY-MM-DD 00:00:00');
          }
          if (payload.cardtype === 3 || payload.cardtype === 8 || payload.cardtype === 11) {
-           overdate = moment(payload.cardusedate).add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+           overdate = moment(payload.cardusedate).add(1, 'month').format('YYYY-MM-DD 00:00:00');
          }
          if (payload.cardtype === 4 || payload.cardtype === 9 || payload.cardtype === 12) {
-           overdate = moment(payload.cardusedate).add(3, 'month').format('YYYY-MM-DD HH:mm:ss');
+           overdate = moment(payload.cardusedate).add(3, 'month').format('YYYY-MM-DD 00:00:00');
          }
           if (payload.cardtype === 5 ) {
-            overdate = moment(payload.cardusedate).add(6, 'month').format('YYYY-MM-DD HH:mm:ss');
+            overdate = moment(payload.cardusedate).add(6, 'month').format('YYYY-MM-DD 00:00:00');
           }
           if (payload.cardtype === 6) {
-            overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD HH:mm:ss');
+            overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD 00:00:00');
           } 
         //开卡的 
         mmtype = parseInt(payload.cardtype);
@@ -266,7 +265,7 @@ export default {
       }
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
       accournt.astate = 0; 
-      overdate = moment(overdate).add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+      overdate = moment(overdate).add(1, 'days').format('YYYY-MM-DD 00:00:00');
       data = yield call(update, {
         mid:checkmember.mid,
         mregisttime:overdate,
