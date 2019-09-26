@@ -29,8 +29,8 @@ export default {
     pname:'',
     storetype:100,
     ostate:100,
-    btime:moment().add(-3,'days'),
-    etime:moment(),
+    btime: moment(moment().add(-3, 'days').format('YYYY-MM-DD 00:00:00')),
+    etime: moment(moment().format('YYYY-MM-DD 23:59:59')),
     pagination: {
       current: 1,
       pageSize: 10,

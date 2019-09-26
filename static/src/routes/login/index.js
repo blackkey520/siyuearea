@@ -69,10 +69,6 @@ const login = ({
               登录
             </Button>
           </Row>
-          <p>
-            <span>账号：admin</span>
-            <span>密码：123</span>
-          </p>
         </form>
       </div>
     </div>
