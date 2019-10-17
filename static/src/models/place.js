@@ -56,7 +56,6 @@ export default {
         const member = memberr.data;
         const order = orderr.data.record[0];
         const record = recordr.data.record[0];
-
         accournt.mid = member.mid;
         if (member.mtype === 0)
         {
@@ -64,7 +63,7 @@ export default {
             accournt.atype = 3;
             accournt.amoney = parseInt(member.mmoney);
             accournt.asmoney = parseInt(member.mmoney) - parseInt(money);
-           accournt.adesc = `人工结束订单->充值消费 ${payload.param.money} 元`;
+           accournt.adesc = `人工结束订单->充值消费 ${money} 元`;
             yield call(update, {
               mid:member.mid,
               mmoney: member.mmoney - money
@@ -74,7 +73,7 @@ export default {
           accournt.atype = 3;
           accournt.amoney = 0;
           accournt.asmoney = 0;
-           accournt.adesc = `人工结束订单-> ${ mtype[memberdetail.mtype]}会员卡消费`;
+           accournt.adesc = `人工结束订单-> ${ mtype[member.mtype]}会员卡消费`;
         }
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
         accournt.astate = 1; 
