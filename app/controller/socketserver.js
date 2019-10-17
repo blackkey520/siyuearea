@@ -60,6 +60,38 @@ class SocketServerController extends Controller {
     this.ctx.body = response;
     this.ctx.status = 200;
   }
+  * openlocker() {
+    try {
+      const {
+        connectObj
+      } = this.app;
+      const lockerid=this.ctx.params.lockerid;
+       console.log('====================================');
+        console.log(`openlocker->${lockerid}`);
+       console.log('====================================');
+    } catch (err) {
+       
+    }
+      const response = { success: true, message: "操作成功" };
+      this.ctx.body = response;
+      this.ctx.status = 200;
+  }
+  * opendoor() {
+    try {
+      const {
+        connectObj
+      } = this.app;
+      const doorid=this.ctx.params.doorid;
+       console.log('====================================');
+       console.log(`opendoor->${doorid}`);
+       console.log('====================================');
+    } catch (err) {
+       
+    }
+      const response = { success: true, message: "操作成功" };
+      this.ctx.body = response;
+      this.ctx.status = 200;
+  }
 }
 
 module.exports = SocketServerController;

@@ -16,7 +16,7 @@ import {
 	 Col,
 } from "antd";
 import moment from "moment";
-
+import LockerSel from '../../locker/LockerSel';
 
 import { routerRedux } from "dva/router";
 import { mtype,mstate} from '../../../utils/enum';
@@ -43,7 +43,8 @@ class MemberList extends Component {
 			yqdate:moment(),
 			yqdesc:'',
 			kftext:0,
-			visible:false
+			visible:false,
+			lockervisible:false
 		}
 	}
 	componentDidMount() {
@@ -73,7 +74,11 @@ class MemberList extends Component {
 	  		visible: false
 	  	});
 	  };
-
+	  handleLockerCancel=()=>{
+		  this.setState({
+			  lockervisible:false
+		  })
+	  }
 	render() {
 		 
 		const pagination = {
@@ -112,7 +117,13 @@ class MemberList extends Component {
 				dataIndex: 'mregisttime',
 				render: (text, record, index) => {
 					const days = moment(record.mregisttime).diff(moment(), 'days', false);
-					return(<div>{moment(text).format('YYYY-MM-DD')}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
+					if (record.mstate == 2)
+					{
+						return(<div><span style={{color:'red'}}>停用</span></div>);
+					}else{
+						return(<div>{moment(text).format('YYYY-MM-DD')}({days>0?<span style={{color:'red'}}>剩余{days}天</span>:<span style={{color:'red'}}>过期</span>})</div>);
+					}
+					
 				}
             }, {
             	title: '注册时间',
@@ -170,7 +181,38 @@ class MemberList extends Component {
 								   	visible: true
 								   });
 								   
-							   }else if (e.key === "6") {
+							   }else if(e.key==="7"){
+								   this.setState({
+									   lockervisible:true
+								   });
+							   }else if(e.key==="8"){
+								   const that = this;
+								    const type=record.mstate==2&&record.pausemark!=null?'恢复':'暂停';
+								    Modal.confirm({
+										title: <div>确定为 <span style={{color:'red'}}>{record.mname}</span> {type}会员吗？ </div>,
+										okText:'确定',
+										cancelText: '取消',
+										onOk() { 
+											const hide = message.loading("正在保存...", 0);
+											that.props.dispatch({
+												type: "member/memberpause",
+												payload: {
+													param:record,
+													callback: data => {
+														hide();
+														if (data && data.success) {
+															that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.props.searchval);
+															message.success("保存成功");
+														} else {
+															message.error("保存失败");
+														}
+													}
+												}
+											});
+										},
+									});
+							   }
+							   else if (e.key === "6") {
 								   const that=this;
 									Modal.confirm({
 										title: '会员扣费',
@@ -211,6 +253,8 @@ class MemberList extends Component {
 							<Menu.Item key="4">使用记录</Menu.Item>
 							<Menu.Item key="5">延期</Menu.Item>
 							<Menu.Item key="6">扣钱</Menu.Item>
+							<Menu.Item key="7">分配储物柜</Menu.Item>
+							<Menu.Item key="8">{record.mstate==2&&record.pausemark!=null?'恢复':'暂停'}</Menu.Item>
 						</Menu>);
 					return (
 						<Dropdown onVisibleChange={()=>{
@@ -274,6 +318,26 @@ class MemberList extends Component {
 					bordered
 					onChange={this.tableChange.bind(this)}
 				/>
+				<Modal
+          title="分配储物柜"
+		  width = "1000"
+		  footer={null}
+		  visible={this.state.lockervisible}
+          onCancel={this.handleLockerCancel}
+		  >
+		  	<LockerSel member ={this.state.record} SelectChange={(record)=>{
+				  	this.props.dispatch({
+				  		type: "locker/assignedlocker",
+				  		payload: {
+				  			lockerdetail: record,
+							memberdetail:this.state.record
+				  		}
+				  	});
+				  this.setState({
+					  lockervisible:false
+				  });
+				  }} />
+		  </Modal>
 				<Modal
           title="会员延期"
 		  visible={this.state.visible}

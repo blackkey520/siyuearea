@@ -61,20 +61,20 @@ export default {
         if (member.mtype === 0)
         {
           // if (member.mmoney >= money) {
-            accournt.atype = 6;
+            accournt.atype = 3;
             accournt.amoney = parseInt(member.mmoney);
             accournt.asmoney = parseInt(member.mmoney) - parseInt(money);
-            accournt.adesc = '人工-充值消费';
+           accournt.adesc = `人工结束订单->充值消费 ${payload.param.money} 元`;
             yield call(update, {
               mid:member.mid,
               mmoney: member.mmoney - money
             });
           // }
         }else{
-          accournt.atype = 6;
+          accournt.atype = 3;
           accournt.amoney = 0;
           accournt.asmoney = 0;
-          accournt.adesc = '人工-'+mtype[member.mtype];
+           accournt.adesc = `人工结束订单-> ${ mtype[memberdetail.mtype]}会员卡消费`;
         }
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
         accournt.astate = 1; 
@@ -150,7 +150,7 @@ export default {
         const place = yield select(state => state.place);
         let selectPlace=place.selectPlace;
         let selectRecord=place.selectRecord;
-        delete selectPlace.ptypen;
+        delete selectPlace.pdescn;
         if (selectPlace.pstate == 0) {
           yield call(addsinglerecord, {
             pid: selectPlace.pid,

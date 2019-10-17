@@ -124,21 +124,14 @@ export default {
             const accournt = {};
             accournt.mid = memberdetail.mid;
             const days = moment(memberdetail.etime).diff(moment(), 'days', false);
-            if (memberdetail.pcname != null && days>0)
-            {
-               accournt.atype = 6;
-               accournt.amoney = 0;
-               accournt.asmoney = 0;
-               accournt.adesc = memberdetail.pcname;
-               payload.record.ostate = 3;
-            }else{
+             
               if (memberdetail.mtype===0)
               {
                 if (memberdetail.mmoney >= payload.param.money) {
-                  accournt.atype = 6;
+                  accournt.atype = 3;
                   accournt.amoney = memberdetail.mmoney;
                   accournt.asmoney = parseInt(memberdetail.mmoney) - parseInt(payload.param.money);
-                  accournt.adesc = '人工-结束订单-充值消费';
+                  accournt.adesc = `人工结束订单->充值消费 ${payload.param.money} 元`;
                   yield call(update, {
                     mid: memberdetail.mid,
                     mmoney: memberdetail.mmoney - payload.param.money
@@ -167,12 +160,11 @@ export default {
                 {
                   errormsg = 'outofcardtime';
                 }
-                accournt.atype = 6;
+                accournt.atype = 3;
                 accournt.amoney = 0;
                 accournt.asmoney =0;
-                accournt.adesc = '人工-结束订单-' + mtype[memberdetail.mtype];
-              }
-            }
+                 accournt.adesc = `人工结束订单-> ${ mtype[memberdetail.mtype]}会员卡消费`;
+              } 
           payload.record.ostate = 2;
           accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
           accournt.astate = 1;

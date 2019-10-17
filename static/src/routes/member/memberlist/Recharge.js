@@ -120,39 +120,27 @@ class Recharge extends Component {
                 title: '操作类型',
 				dataIndex: 'atype',
 				render:text=><span>{atype[text]}</span>,
-            },{
-                title: '账目类型',
-				dataIndex: 'astate',
-				render:text=><span>{astate[text]}</span>,
-            },{
+            } ,{
             title: '操作前金额',
             dataIndex: 'amoney',
             render: (text, record, index) => {
-                if(record.atype==0||record.atype==1||record.atype==4)
-                {
+                
                     return (<div>{text}</div>)
-                }
-                else{
-                    return (<span>-</span>)
-                }
+                 
             }
             }, {
                 title: '操作后金额',
                 dataIndex: 'asmoney',
                  render: (text, record, index) => {
-                if (record.atype == 0 || record.atype == 1 || record.atype == 4)
-                {
+                 
                     return (<div>{text}</div>)
-                }
-                else{
-                    return (<span>-</span>)
-                }
+                 
             }
             }, {
             title: '备注',
 			dataIndex: 'adesc',
             }, {
-                title: '入账时间',
+                title: '操作时间',
 				dataIndex: 'atime',
 				render: (text, record, index) => { 
 					return (
@@ -220,7 +208,9 @@ class Recharge extends Component {
 								placement="topLeft"
 								overlayClassName="numeric-input"
 							>
-								<Input
+								会员余额：<span style={{color:'red'}}>{this.props.checkmember.mmoney}</span>元
+								<br />
+								充值金额：<Input
 								value={this.state.rechargevalue}
 								style={{width:200}}
 								onChange={(e)=>{
@@ -234,7 +224,7 @@ class Recharge extends Component {
 								}}
 								placeholder="输入金额"
 								maxLength="25"
-								/>
+								/>元
 							</Tooltip>
 						</TabPane>
 						<TabPane tab="储值卡" key="2">

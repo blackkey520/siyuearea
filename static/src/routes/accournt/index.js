@@ -72,31 +72,23 @@ class AccourntList extends Component {
             title: '操作前金额',
             dataIndex: 'amoney',
             render: (text, record, index) => {
-                if(record.atype==0||record.atype==1||record.atype==4)
-                {
+               
                     return (<div>{text}</div>)
-                }
-                else{
-                    return (<span>-</span>)
-                }
+                 
             }
             }, {
                 title: '操作后金额',
                 dataIndex: 'asmoney',
                  render: (text, record, index) => {
-                if (record.atype == 0 || record.atype == 1 || record.atype == 4)
-                {
+                
                     return (<div>{text}</div>)
-                }
-                else{
-                    return (<span>-</span>)
-                }
+                 
             }
             }, {
             title: '备注',
 			dataIndex: 'adesc',
             }, {
-                title: '入账时间',
+                title: '操作时间',
 				dataIndex: 'atime',
 				render: (text, record, index) => { 
 					return (

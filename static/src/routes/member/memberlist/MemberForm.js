@@ -10,6 +10,7 @@ import {
 	Icon,
 	message,
 	Radio,
+	Switch
 } from "antd";
 import { config } from "../../../utils/config";
 import moment from "moment";
@@ -77,7 +78,8 @@ class MemberForm extends Component {
 						mdesc:values.mdesc,
 						mmoney:values.mmoney,
 						mrtime:values.mrtime,
-						registplace: values.registplace
+						registplace: values.registplace,
+						highauthority: values.highauthority?1:0
 					},
 					callback: data => {
 						hide();
@@ -153,6 +155,14 @@ class MemberForm extends Component {
 									}
 								]
 							})(<Input placeholder="请输入电话号码" />)}
+						</FormItem>
+						<FormItem {...formItemLayout} label="轻奢区权限">
+							{getFieldDecorator("highauthority", {
+								initialValue: this.props.checkmember.highauthority==1 ? true : false,
+								valuePropName:'checked',
+							})(
+								 <Switch checkedChildren="开" unCheckedChildren="关"   />
+							)}
 						</FormItem>
 						<FormItem {...formItemLayout} label="会员状态">
 							{getFieldDecorator("mstate", {

@@ -21,6 +21,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
 const TabPane = Tabs.TabPane;
+import SiteMapSDWL from '../../components/SiteMapSDWL';
 import SitMapDWL from '../../components/SitMapDWL';
 import SitMap from '../../components/SitMap';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
@@ -51,7 +52,8 @@ class PlaceManager extends Component {
         });
         if (selectPlaces.pstate == 0 || selectPlaces.pstate == 4)
         {
-            selectPlaces.ptypen = placetype[selectPlaces.ptype];
+            // selectPlaces.ptypen = placetype[selectPlaces.ptype];
+            selectPlaces.pdescn = placetype[selectPlaces.pdesc];
             this.props.dispatch({ type: "place/placeload", payload: {selectPlace:selectPlaces} });
             this.setState({
                 visible: true
@@ -137,15 +139,21 @@ class PlaceManager extends Component {
                         <TabPane tab={
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
-                            }}  type="reload" />中关村部</span>
+                            }}  type="reload" />中关村</span>
                         } key="1"><SitMap ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
                         <TabPane  tab={
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
-                            }} type="reload"/>大望路部</span>
+                            }} type="reload"/>大望路</span>
                         }  key="2"><SitMapDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
+                          <TabPane  tab={
+                          <span><Icon onClick={()=>{
+                              this.props.dispatch({ type: "place/getplacelist", payload: {  } });
+                            }} type="reload"/>大望路(自助)</span>
+                        }  key="3"><SiteMapSDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
                          
                         </Tabs>
+                        
 					
 						  <Modal
           visible={this.state.visible}
@@ -161,7 +169,7 @@ class PlaceManager extends Component {
             <Form.Item label="座位信息">
               <div>
                   {
-                      this.props.selectPlace != null ? `${this.props.selectPlace.ptypen}-${this.props.selectPlace.parea}-${this.props.selectPlace.pname}` : ''
+                      this.props.selectPlace != null ? `${this.props.selectPlace.pdescn}-${this.props.selectPlace.parea}-${this.props.selectPlace.pname}` : ''
                   }
               </div>
             </Form.Item>

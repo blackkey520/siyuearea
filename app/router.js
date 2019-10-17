@@ -57,6 +57,8 @@ module.exports = app => {
   app.get('/api/member/getsinglemember/:id', 'member.single');
   app.post('/api/order/getordercount','order.count');
   app.post('/api/order/getorderlist', 'order.index');
+  app.post('/api/locker/getlockerlist', 'locker.index');
+
   app.post('/api/trail/gettraillist','trail.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
@@ -71,4 +73,6 @@ module.exports = app => {
   app.get('/user/authenticate',  'user.authenticate');
   app.get('/socket/:pid/openlight','socketserver.openlight');
   app.get('/socket/:pid/closelight', 'socketserver.closelight');
+  app.get('/socket/:lockerid/openlocker', 'socketserver.openlocker');
+  app.get('/socket/:doorid/opendoor', 'socketserver.opendoor');
 };

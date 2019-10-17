@@ -45,6 +45,11 @@ module.exports = [
     name: "座位管理", //模块
     icon: "tablet",
   },
+  {
+    key: "lockermanager",
+    name: "储物柜管理", //模块
+    icon: "lock",
+  },
     {
       key: "traillist",
       name: "试用记录", //模块
@@ -77,7 +82,7 @@ module.exports = [
   },
   {
     key: "accountslist",
-    name: "账目信息",
+    name: "操作记录",
     icon: "api",
   },
   {

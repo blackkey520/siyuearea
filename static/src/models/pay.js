@@ -90,7 +90,7 @@ export default {
             }
           //开卡的
           mmtype = parseInt(payload.mtype);
-          accournt.atype = 2;
+          accournt.atype = 1;
           accournt.amoney = 0;
           accournt.asmoney = 0;
           accournt.adesc = mtype[payload.mtype];
@@ -100,7 +100,7 @@ export default {
           });
           mpd = payload.mtype;
           overdate = moment(pcitem.etime).format('YYYY-MM-DD HH:mm:ss');
-          accournt.atype = 3;
+          accournt.atype = 1;
           accournt.amoney = 0;
           accournt.asmoney = 0;
           accournt.adesc = pcitem.pcname;

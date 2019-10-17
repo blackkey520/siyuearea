@@ -54,9 +54,7 @@ const { getFieldDecorator } = this.props.form;
 					</Form>)
 		}else{
 			return (<Form style={{paddingTop:50}}>
-			<FormItem {...formItemLayout} label="消费方式">
-							{atype[this.props.recorddetail.rstate]}
-						</FormItem>
+		 
 						<FormItem {...formItemLayout} label="开始使用时间">
 							{getFieldDecorator("btime", {
 								initialValue: this.props.recorddetail.btime?moment(this.props.recorddetail.btime).format('YYYY-MM-DD HH:mm:ss'):'',//

@@ -55,7 +55,6 @@ constructor(props, context) {
       if (this.props.selectedmobileorder.rstate !== null && this.props.selectedmobileorder.rstate === 2)
       {
           return(<div>
-                <PreviewItem label="消费方式" value={atype[this.props.selectedmobileorder.rstate]} />
                 <PreviewItem label="预订时间" value={moment(this.props.selectedmobileorder.otime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="结束时间" value={moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')} />

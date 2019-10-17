@@ -181,7 +181,7 @@ export default {
         mmtype = 0;
         mmoney = parseInt(mmoney) + rechargev;
         accournt.atype=1;
-        accournt.adesc ='会员充值';
+        accournt.adesc = `人工会员充值->${rechargev}元`;
       } else if (payload.rechargetype === "2") {
         let kkmoney=0;
 
@@ -248,21 +248,11 @@ export default {
           } 
         //开卡的 
         mmtype = parseInt(payload.cardtype);
-        accournt.atype = 2;
+        accournt.atype = 1;
         accournt.amoney = 0;
         accournt.asmoney = 0;
-        accournt.adesc = mtype[payload.cardtype];
-      }else{
-        const pcitem = productcardlist.find((item) => {
-          return item.pcid === parseInt(payload.pctype)
-        });
-        mpd = pcitem.pcid;
-        overdate = moment(pcitem.etime).format('YYYY-MM-DD HH:mm:ss');
-        accournt.atype = 3;
-        accournt.amoney = 0;
-        accournt.asmony = 0;
-        accournt.adesc = pcitem.pcname;
-      }
+        accournt.adesc = `人工会员开卡->${mtype[payload.cardtype]}`;
+      } 
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
       accournt.astate = 0; 
       overdate = moment(overdate).add(1, 'days').format('YYYY-MM-DD 00:00:00');
@@ -277,6 +267,35 @@ export default {
       const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
     },
+    *memberpause({ payload }, { call, put }) {
+			let data = null;
+      const callback = payload.callback;
+       const accournt = {};
+       accournt.mid = payload.param.mid;
+       accournt.atype = 1;
+       accournt.astate = 0;
+       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+      if (payload.param.mstate == 2)
+      {
+         data = yield call(update, {
+           mid: payload.param.mid,
+           mstate: 0,
+           pausemark: null,
+           mregisttime: moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')
+         });
+         accournt.adesc = `人工会员恢复->为用户恢复${payload.param.pausemark}天，恢复后时间 ${moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')}`;
+      }else{
+        const aaa= moment(payload.param.mregisttime);
+         data = yield call(update, {
+           mid: payload.param.mid,
+           mstate: 2,
+           pausemark: moment(payload.param.mregisttime).diff(moment(), 'days', false)
+         });
+         accournt.adesc = `人工会员暂停->为用户暂停，会员剩余 ${moment(payload.param.mregisttime).diff(moment(), 'days', false)} 天`;
+      }
+      yield call(addaccournt, accournt);
+			callback && callback(data);
+    },
     *extendovertime({ payload }, { call, put }) {
 			let data = null;
 			const callback = payload.callback;
@@ -286,12 +305,12 @@ export default {
       });
         const accournt = {};
         accournt.mid = payload.param.mid;
-        accournt.atype = 5;
+        accournt.atype = 1;
         accournt.astate = 0;
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
         accournt.amoney = parseInt(payload.param.mmoney);
         accournt.asmoney = parseInt(payload.param.mmoney);
-        accournt.adesc = `手动延期：${payload.extenddays}天-->说明：${payload.yqdesc}`;
+        accournt.adesc = `人工延期：->${payload.extenddays}天，说明：${payload.yqdesc}`;
         const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
     },
@@ -300,12 +319,12 @@ export default {
       const callback = payload.callback;
        const accournt = {};
        accournt.mid = payload.param.mid;
-       accournt.atype = 4;
+       accournt.atype = 1;
        accournt.astate = 1;
        accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
        accournt.amoney = parseInt(payload.param.mmoney);
        accournt.asmoney = parseInt(payload.param.mmoney) - parseInt(payload.kftext);
-       accournt.adesc = '手动扣费';
+       accournt.adesc = `人工扣费：->${payload.kftext}元`;
        const accourntdata = yield call(addaccournt, accournt);
       data = yield call(update, {
         mid: payload.param.mid,

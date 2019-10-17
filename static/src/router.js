@@ -120,6 +120,14 @@ const Routers = function({ history, app }) {
         import("./routes/lights/PlaceManager")
     },
     {
+      path: "/lockermanager",
+      models: () => [
+        import("./models/locker")
+      ],
+      component: () =>
+        import("./routes/locker/index")
+    },
+    {
       path: "/config",
       models: () => [
         import ("./models/config")
@@ -145,7 +153,8 @@ const Routers = function({ history, app }) {
     {
       path: "/memberlist",
       models: () => [
-        import ("./models/member")
+        import ("./models/member"),
+        import("./models/locker")
       ],
       component: () =>
         import ("./routes/member/memberlist/index")
