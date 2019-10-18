@@ -2,8 +2,8 @@ var net = require('net') //引入网络模块
 
 module.exports = app => {
     var server = net.createServer();
-    // var HOST = '172.21.0.13'; //定义服务器地址
-    var HOST = '127.0.0.1'; //定义服务器地址
+    var HOST = '172.21.0.13'; //定义服务器地址
+    // var HOST = '127.0.0.1'; //定义服务器地址
     var PORT = 8001; //定义端口号
     app.connectObj={};
     //监听连接事件
