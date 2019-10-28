@@ -281,7 +281,7 @@ export default {
            mid: payload.param.mid,
            mstate: 0,
            pausemark: null,
-           mregisttime: moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')
+           mregisttime: moment().add((payload.param.pausemark+1),'days').format('YYYY-MM-DD HH:mm:ss')
          });
          accournt.adesc = `人工会员恢复->为用户恢复${payload.param.pausemark}天，恢复后时间 ${moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')}`;
       }else{

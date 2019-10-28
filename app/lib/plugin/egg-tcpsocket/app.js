@@ -5,7 +5,26 @@ module.exports = app => {
     var HOST = '172.21.0.13'; //定义服务器地址
     // var HOST = '127.0.0.1'; //定义服务器地址
     var PORT = 8001; //定义端口号
+
+   
+
+
     app.connectObj={};
+
+
+
+    //创建一个tcp客户端
+    // let doorclient = new net.Socket();
+    // doorclient.connect({
+    //     host: '148.70.229.108',
+    //     port: 60006
+    // });
+
+    //设置连接保持
+    // doorclient.setKeepAlive(true, 3000);
+
+    // app.connectObj['doorClient'] = doorclient;
+    // debugger;
     //监听连接事件
     server.on('connection', function (socket) {
         var client = socket.remoteAddress + ':' + socket.remotePort;

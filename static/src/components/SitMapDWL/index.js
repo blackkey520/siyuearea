@@ -80,7 +80,7 @@ class SitMapDWL extends React.Component {
         </ul>
              
         </div>
-        深度阅读区
+        深度阅读标准区
           <div className={styles.sitplace2} style={{display:'flex',flexDirection:'row',marginTop:10}}>
         <ul>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(71)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(71)}}>F1</div><Icon style={{ fontSize: 45, color:this.findColor(71)}} type="laptop" /></li>

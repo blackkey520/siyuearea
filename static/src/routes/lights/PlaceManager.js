@@ -149,7 +149,7 @@ class PlaceManager extends Component {
                           <TabPane  tab={
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
-                            }} type="reload"/>大望路(自助)</span>
+                            }} type="reload"/>001号馆</span>
                         }  key="3"><SiteMapSDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
                          
                         </Tabs>

@@ -58,7 +58,7 @@ class SiteMap extends React.Component {
             已经预订<Icon style={{ marginLeft:15,fontSize: 15, color:'#f93533'}} type="minus-square" />
             正在使用<Icon style={{ marginLeft:15,fontSize: 15, color:'blue'}} type="minus-square" />
             试用</div>
-    深度阅读区
+    深度阅读标准区
     <div className={styles.sitplace} >
         <ul>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(107)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(107)}}>A1</div><Icon style={{ fontSize: 45, color:this.findColor(107)}} type="laptop" /></li>
@@ -106,17 +106,17 @@ class SiteMap extends React.Component {
         深度阅读轻奢区
     <div className={styles.sitplace} >
         <ul>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(137)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(137)}}>E1</div><Icon style={{ fontSize: 45, color:this.findColor(137)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(138)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(138)}}>E2</div><Icon style={{ fontSize: 45, color:this.findColor(138)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(139)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(139)}}>E3</div><Icon style={{ fontSize: 45, color:this.findColor(139)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(140)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(140)}}>E4</div><Icon style={{ fontSize: 45, color:this.findColor(140)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(137)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(137)}}>L1</div><Icon style={{ fontSize: 45, color:this.findColor(137)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(138)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(138)}}>L2</div><Icon style={{ fontSize: 45, color:this.findColor(138)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(139)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(139)}}>L3</div><Icon style={{ fontSize: 45, color:this.findColor(139)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(140)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(140)}}>L4</div><Icon style={{ fontSize: 45, color:this.findColor(140)}} type="laptop" /></li>
         </ul>
         <ul>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(141)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(141)}}>F1</div><Icon style={{ fontSize: 45, color:this.findColor(141)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(142)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(142)}}>F2</div><Icon style={{ fontSize: 45, color:this.findColor(142)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(143)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(143)}}>F3</div><Icon style={{ fontSize: 45, color:this.findColor(143)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(144)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(144)}}>F4</div><Icon style={{ fontSize: 45, color:this.findColor(144)}} type="laptop" /></li>
-            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(145)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(145)}}>F5</div><Icon style={{ fontSize: 45, color:this.findColor(145)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(141)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(141)}}>L5</div><Icon style={{ fontSize: 45, color:this.findColor(141)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(142)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(142)}}>L6</div><Icon style={{ fontSize: 45, color:this.findColor(142)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(143)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(143)}}>L7</div><Icon style={{ fontSize: 45, color:this.findColor(143)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(144)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(144)}}>L8</div><Icon style={{ fontSize: 45, color:this.findColor(144)}} type="laptop" /></li>
+            <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(145)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(145)}}>L9</div><Icon style={{ fontSize: 45, color:this.findColor(145)}} type="laptop" /></li>
         </ul>
         </div>
         </div>

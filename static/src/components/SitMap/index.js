@@ -58,7 +58,7 @@ class SiteMap extends React.Component {
             已经预订<Icon style={{ marginLeft:15,fontSize: 15, color:'#f93533'}} type="minus-square" />
             正在使用<Icon style={{ marginLeft:15,fontSize: 15, color:'blue'}} type="minus-square" />
             试用</div>
-    深度阅读区
+    深度阅读标准区
     <div className={styles.sitplace} >
         <ul>
             <li style={{cursor:'pointer'}} onClick={()=>{this.itemClick(1)}}><div style={{height:0,fontSize:15,marginLeft:13,marginBottom:-6,marginTop:3,color:this.findColor(1)}}>A1</div><Icon style={{ fontSize: 45, color:this.findColor(1)}} type="laptop" /></li>

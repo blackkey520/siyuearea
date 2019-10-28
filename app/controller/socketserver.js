@@ -3,7 +3,9 @@
 // app/controller/news.js
 const Controller = require('egg').Controller; 
 const SockConfig = require('../utils/config').sockconfig;
-
+var net = require('net') //引入网络模块
+const iconv = require('iconv-lite');
+let doorclient=null;
 class SocketServerController extends Controller {
   // 服务器渲染Controller
   * openlight() {
@@ -82,11 +84,32 @@ class SocketServerController extends Controller {
         connectObj
       } = this.app;
       const doorid=this.ctx.params.doorid;
-       console.log('====================================');
-       console.log(`opendoor->${doorid}`);
-       console.log('====================================');
-    } catch (err) {
+      if (doorclient!=null){
+         
+      }
+      else{
+        doorclient = new net.Socket();
+        doorclient.connect({
+          host: '148.70.229.108',
+          port: 60006
+        });
+        doorclient.setKeepAlive(true, 3000);
+      }
        
+      let b = iconv.encode('N3000 -USER "abc" -PASSWORD "123" -Open "m001-1号"', 'GB2312');
+      doorclient.write(b);
+      // doorclient.connect({
+      //   host: '148.70.229.108',
+      //   port: 8500
+      // });
+   
+    // if (connectObj['doorClient'])
+    //   connectObj['doorClient'].write(b);
+    //  doorclient.end(); 
+
+    } catch (err) {
+       doorclient = null;
+       this.openlocker();
     }
       const response = { success: true, message: "操作成功" };
       this.ctx.body = response;

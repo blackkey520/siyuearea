@@ -13,6 +13,7 @@ exports.security = {
   ignore: "/api/",
   domainWhiteList: [
     "http://127.0.0.1:8080",
+    "http://127.0.0.1:7001",
     "http://10.180.144.212:8080",
     "http://localhost:8080",
     "http://3add50a0.ngrok.io",
