@@ -10,40 +10,43 @@ module.exports = app => {
       if (JSON.stringify(condition) != "{}") {
         conditionstr = " where ";
         for (const key in condition) {
-          if (key != 'mid')
-          {
-           
-            if(key!='oid'){
-               if(key!='pid')
-               {
-                 if(key!='pname')
-                 {
-                     if (key != 'mname') {
-                       if (key != 'btime') {
-                         if (key != 'etime') {
-                           conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
-                         } else {
-                           orderCondition = orderCondition + ` and otime<='${condition[key]}'`;
-                         }
-                       } else {
-                         orderCondition = orderCondition + ` and otime>='${condition[key]}'`;
-                       }
-                     } else {
-                       memberCondition = memberCondition + `and mname='${condition[key]}'`;
-                     }
-                 }  
-                else{
-                  placeCondition = placeCondition + `and pname='${condition[key]}'`;
-                }
-               }else{
-                  placeCondition = placeCondition + `and pid='${condition[key]}'`;
-               }
-            }else{
-              orderCondition = orderCondition + ` and oid='${condition[key]}'`;
-            }
-          }else{
-            memberCondition = memberCondition +` and mid='${condition[key]}'`;
+          if(key=='mid'){
+            memberCondition = memberCondition + ` and mid='${condition[key]}'`;
+            continue;
           }
+          if(key=='oid'){
+            orderCondition = orderCondition + ` and oid='${condition[key]}'`;
+            continue;
+          }
+          if(key=='ordercode'){
+            orderCondition = orderCondition + ` and ordercode='${condition[key]}'`;
+            continue;
+          }
+          if(key=='pid')
+          {
+            placeCondition = placeCondition + `and pid='${condition[key]}'`;
+            continue;
+          }
+          if(key=='pname')
+          {
+            placeCondition = placeCondition + `and pname='${condition[key]}'`;
+            continue;
+          }
+          if(key=='mname')
+          {
+            memberCondition = memberCondition + `and mname='${condition[key]}'`;
+            continue;
+          }
+          if(key=='btime')
+          {
+            orderCondition = orderCondition + ` and otime>='${condition[key]}'`;
+            continue;
+          }
+          if(key=='etime')
+          {
+             orderCondition = orderCondition + ` and otime<='${condition[key]}'`;
+          }
+          conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
         }
         conditionstr = conditionstr.substring(
           0,
