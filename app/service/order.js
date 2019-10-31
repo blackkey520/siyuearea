@@ -45,6 +45,7 @@ module.exports = app => {
           if(key=='etime')
           {
              orderCondition = orderCondition + ` and otime<='${condition[key]}'`;
+             continue;
           }
           conditionstr = conditionstr + key + " = '" + condition[key] + "' and ";
         }
