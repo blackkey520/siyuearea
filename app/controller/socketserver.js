@@ -4,6 +4,7 @@
 const Controller = require('egg').Controller; 
 const SockConfig = require('../utils/config').sockconfig;
 const LockerConfig = require('../utils/config').lockerconfig;
+const moment = require('moment');
 var net = require('net') //引入网络模块
 const iconv = require('iconv-lite');
 const request = require('request');
@@ -15,8 +16,9 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
+      debugger;
       console.log('====================================');
-      console.log('openlight-----pid=' + this.ctx.params.pid);
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlight-----pid=' + this.ctx.params.pid) + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer'];
       console.log('====================================');
       const sock = SockConfig.find((item) => {
         return item.pid === parseInt(this.ctx.params.pid)

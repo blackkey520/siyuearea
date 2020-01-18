@@ -12,9 +12,10 @@ class CheckPlace extends Subscription {
     // subscribe 是真正定时任务执行时被运行的函数
     *subscribe() {
         const memberlist =  yield this.service.restql.index('Base_Order',{page:1,pageSize:1000}, {ostate:0});
+        console.log('开始检查过期订单');
         if(memberlist.record.length!==0)
         {
-            console.log(memberlist);
+            // console.log(memberlist);
             for (let i = 0;i<memberlist.record.length; i++) {
                 const item=memberlist.record[i];
                 if(moment().diff(moment(item.otime),'minutes',true)>30)
