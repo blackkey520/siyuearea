@@ -11,7 +11,7 @@
     "server": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "egg-bin test",
-    "start": "egg-scripts start --ignore-stderr  --daemon",
+    "start": "egg-scripts start --ignore-stderr  --daemon --stdout=/home/ubuntu/siyue/logs/prod/run/master-stdout.log --stderr=/home/ubuntu/siyue/logs/prod/run/master-stderr.log",
     "stop": "egg-scripts stop"
   },
   "author": "",
