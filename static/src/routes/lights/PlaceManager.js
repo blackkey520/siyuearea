@@ -29,6 +29,7 @@ const confirm = Modal.confirm;
 @connect(({ place,loading, }) => ({
 		placelist : place.placelist,
         placeloading : loading.effects['place/getplacelist'],
+        doorloading: loading.effects['place/opendoor'],
         selectPlace: place.selectPlace,
         selectRecord: place.selectRecord,
         akey: place.akey
@@ -150,7 +151,9 @@ class PlaceManager extends Component {
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
                             }} type="reload"/>001号馆</span>
-                        }  key="3"><SiteMapSDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
+                        }  key="3"><SiteMapSDWL doorloading={this.props.doorloading} openDoor={(doornum)=>{
+                          this.props.dispatch({ type: "place/opendoor", payload: {  } });
+                          }} ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
                          
                         </Tabs>
                         

@@ -72,7 +72,17 @@ const login = ({
              
           </Row>
         </form>
+       
       </div>
+       <div style = {
+         {
+           position: 'absolute',
+           bottom: 10,
+           marginBottom: 5,
+           width: "calc(100vw)",
+           textAlign: 'center'
+         }
+       }> Copyright© 2019 北京揽月科技文化有限公司 版权所有 <a href="http://www.beian.miit.gov.cn">京ICP备18034708号 - 1</a> </div>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
   queryrecordlist,
   updaterecord
 } from "../services/order";
+import {opendoor} from "../services/locker";
 import { addaccournt } from "../services/accournt";
 import {loadmemeber,update} from "../services/member";
 import { parse } from "qs";
@@ -24,6 +25,8 @@ import {Toast} from 'antd-mobile';
 import moment from 'moment';
 import { GetMoney } from '../utils';
 import {mtype} from '../utils/enum';
+import { delay } from 'dva/saga';
+
 
 export default {
   namespace: "place",
@@ -143,6 +146,10 @@ export default {
              selectRecord
            }
          });
+    },
+    *opendoor({ payload }, { call, put }) {
+       const record = yield call(opendoor, {});
+       yield call(delay, 5000);
     },
     *placehandle({ payload }, { call, put,select }) {
       

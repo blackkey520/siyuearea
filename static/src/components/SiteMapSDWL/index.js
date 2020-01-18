@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from 'antd';
+import { Icon,Button } from 'antd';
 import styles from './index.less';
  
 
@@ -53,11 +53,14 @@ class SiteMap extends React.Component {
   render () {
     return (
         <div style={{...this.props.style}}>
+            
             <div style={{padding:5}}><Icon style={{marginLeft:15,fontSize: 15, color:'grey'}} type="minus-square" />
             可选<Icon style={{ marginLeft:15,fontSize: 15, color:'#e97330'}} type="minus-square" />
             已经预订<Icon style={{ marginLeft:15,fontSize: 15, color:'#f93533'}} type="minus-square" />
             正在使用<Icon style={{ marginLeft:15,fontSize: 15, color:'blue'}} type="minus-square" />
-            试用</div>
+            试用<Button type="primary" style={{marginLeft:10}} icon="lock" loading={this.props.doorloading} onClick={()=>{this.props.openDoor(1)}}>
+      开门
+    </Button></div>
     深度阅读标准区
     <div className={styles.sitplace} >
         <ul>
