@@ -26,7 +26,7 @@ class CheckPlace extends Subscription {
                         const resultplace=yield this.service.restql.update('Base_Place',item.pid, {pstate:0});
                     }
                 }else{
-                    console.log(`没有找到过期订单`);
+                    
                 }   
             }
         }

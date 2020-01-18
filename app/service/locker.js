@@ -29,7 +29,7 @@ module.exports = app => {
         );
       }
        const recordsql = `select * from ( select t2.mid,t1.lid,t1.lname,t1.lstate,t1.lmember,t1.ltype,t2.mname,t2.mtype,t2.mmoney,t2.mregisttime,t2.phonenum from Base_Locker as t1 left join Base_Member as t2 on t1.lmember=t2.mid) as t5 ${conditionstr} order by lstate desc limit ${offset},${query.pageSize}`;
-      console.log(recordsql);   
+
       const totalsql = `select * from ( select t2.mid,t1.lid,t1.lname,t1.lstate,t1.lmember,t1.ltype,t2.mname,t2.mtype,t2.mmoney,t2.mregisttime,t2.phonenum from Base_Locker as t1 left join Base_Member as t2 on t1.lmember=t2.mid) as t5 ${conditionstr} `;
       const record= yield this.app.mysql.query(recordsql);
       const totalRecord = yield this.app.mysql.query(totalsql);

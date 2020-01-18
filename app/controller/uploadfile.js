@@ -41,7 +41,6 @@ function saveStream(stream, filepath) {
     if (filepath.indexOf("/read-error-") > 0) {
       stream.once("readable", () => {
         const buf = stream.read(10240);
-        console.log("read %d bytes", buf.length);
         setTimeout(() => {
           reject(new Error("mock read error"));
         }, 1000);

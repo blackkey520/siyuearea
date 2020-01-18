@@ -1,7 +1,7 @@
 module.exports = app => {
   class RestqlService extends app.Service {
     *index(modal, query, condition = {}) {
-      console.log(modal);
+      
       const offset = (parseInt(query.page) - 1) * parseInt(query.pageSize);
       const record = yield this.app.mysql.select(modal, {
         where: condition,
@@ -24,9 +24,9 @@ module.exports = app => {
       return { record, totalRecord: totalRecord[0].total };
     }
     *show(modal, params) {
-      console.log(modal);
+       
       const modalId = yield this.service.tableinfo.primaryKey(modal);
-      console.log(modalId);
+     
       let condition = {};
       condition[modalId] = params.id;
       let record = yield this.app.mysql.get(modal, condition);
