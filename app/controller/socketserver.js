@@ -16,7 +16,7 @@ class SocketServerController extends Controller {
         connectObj
       } = this.app;
       console.log('====================================');
-      console.log('openlight');
+      console.log('openlight-----pid=' + this.ctx.params.pid);
       console.log('====================================');
       const sock = SockConfig.find((item) => {
         return item.pid === parseInt(this.ctx.params.pid)
@@ -40,9 +40,6 @@ class SocketServerController extends Controller {
   }
   * closelight() {
     try {
-      console.log('====================================');
-      console.log('closelight');
-      console.log('====================================');
       const {
         connectObj
       } = this.app;
