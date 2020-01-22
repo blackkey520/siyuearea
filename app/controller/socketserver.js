@@ -16,9 +16,8 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
-      debugger;
       console.log('====================================');
-      console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlight-----pid=' + this.ctx.params.pid) + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer'];
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlight-----pid=' + this.ctx.params.pid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
       console.log('====================================');
       const sock = SockConfig.find((item) => {
         return item.pid === parseInt(this.ctx.params.pid)
@@ -45,6 +44,9 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
+           console.log('====================================');
+           console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|closelight-----pid=' + this.ctx.params.pid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
+           console.log('====================================');
       const sock = SockConfig.find((item) => {
         return item.pid === parseInt(this.ctx.params.pid)
       });
