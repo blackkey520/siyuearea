@@ -16,6 +16,10 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
+      if (this.ctx.headers['user-agent']=='Go-http-client/1.1')
+      {
+        return;
+      }
       console.log('====================================');
       console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlight-----pid=' + this.ctx.params.pid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
       console.log('====================================');
@@ -44,6 +48,9 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
+      if (this.ctx.headers['user-agent'] == 'Go-http-client/1.1') {
+        return;
+      }
            console.log('====================================');
            console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|closelight-----pid=' + this.ctx.params.pid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
            console.log('====================================');
