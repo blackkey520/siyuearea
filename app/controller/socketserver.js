@@ -82,15 +82,15 @@ class SocketServerController extends Controller {
       const item = LockerConfig.find((i) => {
         return i.lockerid == lockerid;
       });
-      // console.log('dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'+item.deviceid);
-      request({
-        url: `http://cos.wondware.com/mq/device/screen/openCabinet?deviceId=${item.deviceid}&lockTotalNum=1&lockAddress=${item.lockaddress}%2B1&commandType=openOne&sourceType=O&uqKey=A0FE27E0F1A361BC1F0AF5E807431F17`,
-        method: "POST",
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
-      }, function (error, response, body) {
-      });
+       
+      // request({
+      //   url: `http://cos.wondware.com/mq/device/screen/openCabinet?deviceId=${item.deviceid}&lockTotalNum=1&lockAddress=${item.lockaddress}%2B1&commandType=openOne&sourceType=O&uqKey=A0FE27E0F1A361BC1F0AF5E807431F17`,
+      //   method: "POST",
+      //       headers: {
+      //         'content-type': 'application/x-www-form-urlencoded'
+      //       },
+      // }, function (error, response, body) {
+      // });
 
 
 
