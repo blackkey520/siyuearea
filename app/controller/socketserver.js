@@ -119,17 +119,9 @@ class SocketServerController extends Controller {
         doorclient.setKeepAlive(true, 3000);
       }
        
-      let b = iconv.encode('N3000 -USER "abc" -PASSWORD "123" -Open "m001-1号"', 'GB2312');
-      doorclient.write(b);
-      // doorclient.connect({
-      //   host: '148.70.229.108',
-      //   port: 8500
-      // });
-   
-    // if (connectObj['doorClient'])
-    //   connectObj['doorClient'].write(b);
-    //  doorclient.end(); 
-
+      // let b = iconv.encode('N3000 -USER "abc" -PASSWORD "123" -Open "m001-1号"', 'GB2312');
+      // doorclient.write(b);
+       
     } catch (err) {
        doorclient = null;
        this.openlocker();
