@@ -16,7 +16,7 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
-      if (this.ctx.headers['user-agent']=='Go-http-client/1.1')
+      if (this.ctx.headers['referer'] == undefined)
       {
         return;
       }
