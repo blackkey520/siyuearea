@@ -83,14 +83,14 @@ class SocketServerController extends Controller {
         return i.lockerid == lockerid;
       });
        
-      // request({
-      //   url: `http://cos.wondware.com/mq/device/screen/openCabinet?deviceId=${item.deviceid}&lockTotalNum=1&lockAddress=${item.lockaddress}%2B1&commandType=openOne&sourceType=O&uqKey=A0FE27E0F1A361BC1F0AF5E807431F17`,
-      //   method: "POST",
-      //       headers: {
-      //         'content-type': 'application/x-www-form-urlencoded'
-      //       },
-      // }, function (error, response, body) {
-      // });
+      request({
+        url: `http://cos.wondware.com/mq/device/screen/openCabinet?deviceId=${item.deviceid}&lockTotalNum=1&lockAddress=${item.lockaddress}%2B1&commandType=openOne&sourceType=O&uqKey=A0FE27E0F1A361BC1F0AF5E807431F17`,
+        method: "POST",
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+      }, function (error, response, body) {
+      });
 
 
 
@@ -119,8 +119,8 @@ class SocketServerController extends Controller {
         doorclient.setKeepAlive(true, 3000);
       }
        
-      // let b = iconv.encode('N3000 -USER "abc" -PASSWORD "123" -Open "m001-1号"', 'GB2312');
-      // doorclient.write(b);
+      let b = iconv.encode('N3000 -USER "abc" -PASSWORD "123" -Open "m001-1号"', 'GB2312');
+      doorclient.write(b);
        
     } catch (err) {
        doorclient = null;
