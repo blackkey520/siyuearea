@@ -4,7 +4,6 @@ import { loadsingle } from "../services/config";
 import moment from 'moment';
 import { routerRedux } from "dva/router";
 import {mtype} from '../utils/enum';
-import { message } from "_antd@2.13.14@antd";
 export default {
   namespace: "member",
   state: {
@@ -357,7 +356,6 @@ export default {
           }); 
         if (membercheck.data.record.length !== 0)
         {
-            message.error('电话号码已存在')
         }
 				else{
           data = yield call(register, payload.param);
