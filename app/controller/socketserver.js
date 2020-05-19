@@ -79,7 +79,9 @@ class SocketServerController extends Controller {
         connectObj
       } = this.app;
       const lockerid=this.ctx.params.lockerid;
-      
+      console.log('====================================');
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlocker-----lockerid=' + this.ctx.params.lockerid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
+      console.log('====================================');
       const item = LockerConfig.find((i) => {
         return i.lockerid == lockerid;
       });
