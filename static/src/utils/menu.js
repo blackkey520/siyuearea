@@ -1,6 +1,6 @@
 module.exports = [
   {
-    key: "memlist",
+    key: "memberlist",
     name: "会员信息", //模块
     icon: "database",
     child: [{
@@ -41,27 +41,27 @@ module.exports = [
     ]
   },
   {
-    key: "plamanager",
+    key: "placemanager",
     name: "座位管理", //模块
     icon: "tablet",
   },
   {
-    key: "lockmanager",
+    key: "lockermanager",
     name: "储物柜管理", //模块
     icon: "lock",
   },
     {
-      key: "tralist",
+      key: "traillist",
       name: "试用记录", //模块
       icon: "folder",
     },
   {
-    key: "ordlist",
+    key: "orderlist",
     name: "订单信息", //模块
     icon: "bars",
   },
   {
-    key: "producard",
+    key: "productcard",
     name: "优惠卡信息", //模块
     icon: "book",
     child: [{
@@ -81,17 +81,17 @@ module.exports = [
     ]
   },
   {
-    key: "accouslist",
+    key: "accountslist",
     name: "操作记录",
     icon: "api",
   },
   {
-    key: "coig",
+    key: "config",
     name: "系统设置", //模块
     icon: "setting",
   },
   {
-    key: "tablanager",
+    key: "tablemanager",
     name: "模块管理", //模块
     icon: "database",
     child: [
