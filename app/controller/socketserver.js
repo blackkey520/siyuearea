@@ -116,7 +116,7 @@ class SocketServerController extends Controller {
       else{
         doorclient = new net.Socket();
         doorclient.connect({
-          host: '148.70.229.108',
+          host: '140.143.39.138',
           port: 60006
         });
         doorclient.setKeepAlive(true, 3000);

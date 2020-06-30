@@ -280,7 +280,7 @@ const Routers = function({ history, app }) {
           <Route
             exact
             path="/"
-            render={() => <Redirect to="/memlist" />}
+            render={() => <Redirect to="/memberlist" />}
           />
           {routes.map(({ path, ...dynamics }, key) => (
             <Route key={key}
