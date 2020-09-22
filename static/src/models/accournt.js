@@ -37,14 +37,19 @@ export default {
   effects: {
     *getaccourntlistbymid({ payload }, { call, put,select }) {
       const param={};
-      let {
-        atype
-      } = yield select(state => state.accournt);
       param.mid = payload.mid;
-      if (atype!==100)
-      {
-        param.atype=atype;
+       
+      if (payload.atype !== undefined) {
+        param.atype = payload.atype;
       }
+      if (payload.astate !== undefined) {
+        param.astate = payload.astate;
+      }
+      if (payload.btime !== undefined) {
+        param.btime = payload.btime;
+        param.etime = payload.etime;
+      }
+      
       const data = yield call(querylist, payload.page,payload.pageSize,param);
       yield put({
         type: "loaddataSuccess",

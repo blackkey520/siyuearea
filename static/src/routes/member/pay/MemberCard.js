@@ -99,8 +99,7 @@ class MemberCard extends React.Component {
             columnNum={3}
             itemStyle={{ height: '80px'}}
             onClick={_el => { 
-                  const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员卡购买'}/2/${_el.type}/${ _el.title}`;
-                  window.open(url, "_self");
+                   
             }}
             renderItem={dataItem => {
               return(<div style={{height:'100%',width:'100%'}}>

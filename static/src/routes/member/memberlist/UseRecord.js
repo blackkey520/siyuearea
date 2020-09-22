@@ -3,17 +3,17 @@ import { connect } from "dva";
 import {
 	Table,
 	Button,
-	Modal,
-	Switch,
-	Menu,
-	Dropdown,
-	Icon,
-	Radio
+	Select,
+	DatePicker,
+	Input
 } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import { atype,astate } from '../../../utils/enum'; 
-
+const Search = Input.Search;
+const Option = Select.Option;
+const RangePicker = DatePicker.RangePicker;
+import zhCN from 'antd/lib/locale-provider/zh_TW';
 @connect(({ accournt,loading }) => ({accourntlist: accournt.accourntlist,
 	accourntloading: loading.effects['accournt/getaccourntlistbymid'],
 	pagination: accournt.pagination,
@@ -26,12 +26,34 @@ class UseRecord extends Component {
 	componentDidMount() {
 		this.loadTableData();
 	}
-
+  constructor(props, context) {
+  	super(props, context);
+  	this.state = {
+  		membercode: undefined,
+  		atype: undefined,
+  		astate: undefined,
+  		btime: undefined,
+  		etime: undefined
+  	}
+  }
 	loadTableData(page = 1, pageSize = 10) {
-		this.props.dispatch({
-			type: "accournt/getaccourntlistbymid",
-			payload: { page, pageSize,mid:this.props.match.params.id }
-		});
+	 
+		const {
+            membercode, atype, astate, btime, etime
+        }=this.state;
+        this.props.dispatch({
+                type: "accournt/getaccourntlistbymid",
+                payload: {
+					mid: this.props.match.params.id,
+					page,
+                	pageSize,
+                	membercode,
+                	atype,
+                	astate,
+                	btime,
+                	etime
+                }
+            });
 	}
 
 	tableChange(pagination) {
@@ -97,24 +119,39 @@ class UseRecord extends Component {
 					>
 						返回
 					</Button> 
-						<Radio.Group style={{marginLeft:15}} onChange={(e)=>{
-					 
-						this.props.dispatch({
-							type: "accournt/updateState",
-							payload: {
-								atype: e.target.value
-							}
-						});
-						this.loadTableData(1, 10);
-						}} value={this.props.atype}>
-						<Radio.Button value={100}>{'全部'}</Radio.Button>
-						{
-							atype.map((item, key) => {
-								if(key!==0)
-									return(<Radio.Button key={key}  value={key}>{item}</Radio.Button>);
-							})
-						}
-      </Radio.Group>
+						 
+	   <Select defaultValue="all" style={{marginLeft:5,width: 120}} onChange={(value)=>{
+									this.setState({
+										atype: value === "all" ? undefined : parseInt(value)
+									});
+								}}>
+								<Option value="all">全部</Option>
+                                {
+                                    atype.map((item,key)=><Option key={key} value={key.toString()}>{item}</Option>)
+                                }
+							</Select>
+                            <RangePicker placeholder={['开始时间','结束时间']} locale={zhCN} allowClear style={{ marginLeft: 5 }} onChange={(date, dateString)=>{
+                                if(date.length===0){
+                                    this.setState({
+                                        btime: undefined,
+                                        etime: undefined,
+                                    });
+                                }else{
+                                    this.setState({
+                                        btime: date[0].format('YYYY-MM-DD 00:00:00'),
+                                        etime: date[1].format('YYYY-MM-DD 00:00:00  '),
+                                    });
+                                }
+                            }} /> 
+							<Button
+						onClick={()=>{
+							this.loadTableData(1, 10);
+						}}
+                         type = "primary"
+						style={{ marginLeft: 10 }}
+					>
+						查询
+					</Button> 
 				</div>
 
 				<Table

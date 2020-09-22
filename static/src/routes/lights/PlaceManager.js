@@ -135,7 +135,7 @@ class PlaceManager extends Component {
                           });
                         }}
                         tabPosition={'left'}
-                        style={{ height: 500 }}
+                        style={{ height:600 }}
                         >
                         <TabPane tab={
                           <span><Icon onClick={()=>{

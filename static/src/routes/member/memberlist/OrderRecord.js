@@ -1,17 +1,21 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
-import { Table, Button, Modal, Switch,Menu, Dropdown,Icon  } from "antd";
+import { Table, Button, Modal, Switch,Menu, DatePicker,Icon  } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
 import {
 	ostate,
 	placelist
 } from '../../../utils/enum';
- 
-
+ const {
+ 	RangePicker
+ } = DatePicker;
+import { GetMoney,GetMoneyDetail } from '../../../utils'
 @connect(({ order,loading }) => ({orderlist: order.orderlist,
 	orderloading: loading.effects['member/getorderlist'],
-	pagination: order.pagination
+	pagination: order.pagination,
+	btime: order.btime,
+		etime: order.etime
  }))
 class OrderRecord extends Component {
 	static contextTypes = {
@@ -68,6 +72,34 @@ class OrderRecord extends Component {
 					);
 				}
             }, {
+            title: '开始时间',
+			dataIndex: 'btime',
+			render: (text, record, index) => {
+				if (text != null)
+				return (
+					moment(text).format('YYYY-MM-DD HH:mm:ss')
+				);
+			}
+            },  {
+            title: '结束时间',
+			dataIndex: 'etime',
+			render: (text, record, index) => {
+				if(text!=null)
+				return (
+					moment(text).format('YYYY-MM-DD HH:mm:ss')
+				);
+			}
+            }, {
+            title: '消费明细',
+			dataIndex: 'discount',
+			width:300,
+			render: (text, record, index) => {
+				
+				return (
+					<div>{record.disid==0?GetMoneyDetail(moment(record.btime), moment(record.etime),record.discount):'-'}</div>
+				);
+			}
+            }, {
             	title: '操作',
             	render: (text, record, index) => { 
 					 
@@ -101,18 +133,17 @@ class OrderRecord extends Component {
 					>
 						返回
 					</Button> 
-					{/* <Button
-						onClick={()=>{
-							this.props.dispatch(
-								routerRedux.push({
-									pathname: `/memberlist/orderrecord/${this.props.match.params.id}/add`
-								})
-							);
-						}}
-						style={{ marginRight: 10 }}
-					>
-						新增订单
-					</Button>  */}
+					<RangePicker style={{marginLeft:15}} value={[this.props.btime,this.props.etime]} onChange={(date, dateString)=>{
+						 
+						this.props.dispatch({
+							type: "order/updateState",
+							payload: {
+								btime: date[0],
+								etime:date[1]
+							}
+						});
+						this.loadTableData(1, 10);
+							}} />	 
 				</div>
 
 				<Table

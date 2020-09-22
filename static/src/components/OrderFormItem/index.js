@@ -42,7 +42,7 @@ const { getFieldDecorator } = this.props.form;
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime)),
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount),
 							})(
 								<Input
 									type="textarea"
@@ -76,7 +76,7 @@ const { getFieldDecorator } = this.props.form;
 						</FormItem><FormItem { ...formItemLayout
 							}
 							label = "使用明细" >
-							{GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime))}
+							{GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount)}
 						</FormItem></div>:null
 						}
 						<FormItem {...formItemLayout} label="持续时间(小时)">
@@ -86,7 +86,7 @@ const { getFieldDecorator } = this.props.form;
 						</FormItem>
 						<FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime)),
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount),
 							})(
 								<Input
 									type="textarea"

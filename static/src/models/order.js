@@ -1,12 +1,17 @@
-import {add, queryorderlist, updateorder, queryrecordlist,updaterecord} from "../services/order";
-import {loadmemeber,update} from "../services/member";
+import {add,addorder, queryorderlist, updateorder, queryrecordlist,updaterecord} from "../services/order";
+import {loadmemeber,update,loadmemeberdetail,updatememberdetail} from "../services/member";
 import {
   updateplace,
   closelight,
   openlight
 } from "../services/place";
 import { addaccournt } from "../services/accournt";
-import {mtype} from '../utils/enum';
+import {
+  mtype,
+  memberlevelupdate,
+  discount,
+  mlevel
+} from '../utils/enum';
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
@@ -69,6 +74,38 @@ export default {
   subscriptions: {
   },
   effects: {
+    *maddrecord({ payload }, { call, put }) { 
+        const callback = payload.callback;
+        const orderr=yield call(addorder,{
+          pid: 1,
+            ordercode: Math.random().toString(20).substr(2),
+            mid: payload.mid,
+            ostate:2,
+            otime: moment().format('YYYY-MM-DD HH:mm:ss'),
+            pdesc:'管理员手动添加订单'
+        }); 
+          const resultadd = yield call(add, {pid:1,
+          mid:payload.mid,
+          oid: orderr.data.uid,
+          ostate:2,
+          btime:moment().format('YYYY-MM-DD HH:mm:ss'),
+          etime:moment().format('YYYY-MM-DD HH:mm:ss'),
+          disid:1,
+          discount:1,
+          money:0,
+          pdesc:'管理员手动添加订单'}); 
+          const accournt = {};
+          accournt.mid = payload.mid;
+            accournt.atype = 1;
+            accournt.amoney = 0;
+            accournt.asmoney = 0;
+            accournt.adesc = `管理员创建订单-学习卡消费`;
+              accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
+              accournt.astate = 1;
+                    //记账
+                    const accourntdata = yield call(addaccournt, accournt); 
+        callback && callback(accourntdata);
+    },
     *addrecord({ payload }, { call, put }) {
         const param={
           pid:payload.pid,
@@ -77,7 +114,7 @@ export default {
           ostate:0,
           btime:moment().format('YYYY-MM-DD HH:mm:ss'),
           etime:moment().format('YYYY-MM-DD HH:mm:ss'),
-          disid:1,
+          disid:0,
           discount:1,
           money:0,
           pdesc:payload.pdesc
@@ -120,51 +157,60 @@ export default {
             }
           });
          let errormsg='';
+         let disid=0;
           let { memberdetail } = yield select(state => state.order);
             const accournt = {};
             accournt.mid = memberdetail.mid;
+             payload.param.money = payload.param.money * discount[memberdetail.mpd];
             const days = moment(memberdetail.etime).diff(moment(), 'days', false);
-             
-              if (memberdetail.mtype===0)
-              {
-                if (memberdetail.mmoney >= payload.param.money) {
-                  accournt.atype = 3;
-                  accournt.amoney = memberdetail.mmoney;
-                  accournt.asmoney = parseInt(memberdetail.mmoney) - parseInt(payload.param.money);
-                  accournt.adesc = `人工结束订单->充值消费 ${payload.param.money} 元`;
-                  yield call(update, {
-                    mid: memberdetail.mid,
-                    mmoney: memberdetail.mmoney - payload.param.money
+             if (memberdetail.mtype > 0 && days > 0) {
+              accournt.atype = 1;
+              accournt.amoney = 0;
+              accournt.asmoney = 0;
+              accournt.adesc = `管理员结束订单-> ${ mtype[memberdetail.mtype]}学习卡消费`;
+              disid=1;
+             }else{ 
+              if (memberdetail.mmoney >= payload.param.money) {
+                accournt.atype = 1;
+                accournt.amoney = memberdetail.mmoney;
+                accournt.asmoney = parseFloat(memberdetail.mmoney) - parseFloat(payload.param.money);
+                accournt.adesc = `管理员结束订单->肆阅币消费 ${payload.param.money} 元，会员等级${mlevel[memberdetail.mpd]},会员折扣${discount[memberdetail.mpd]}`;
+ 
+                yield call(update, {
+                  mid: memberdetail.mid,
+                  mmoney: parseFloat(memberdetail.mmoney) - parseFloat(payload.param.money)
+                });
+                //需要在这增加积分逻辑了
+                const mddata = yield call(loadmemeberdetail, {
+                  id: memberdetail.mid,
+                });
+                if (mddata.data.record.length>0)
+                {
+                  let mdresult={};
+                  mdresult = mddata.data.record[0];
+                  const credit = parseFloat(mdresult.credit) + parseFloat(payload.param.money);
+
+                  yield call(updatememberdetail, {
+                    mdid: mdresult.mdid,
+                    credit
                   });
-                } else {
-                  errormsg = 'outofmoney';
+
+                  const newlevel = memberlevelupdate.find((item) => {
+                    return item.cridit >= credit
+                  })
+                  if (newlevel && memberdetail.mpd != newlevel.level && memberdetail.mpd != 0) {
+                    yield call(update, {
+                      mid: memberdetail.mid,
+                      mpd: newlevel.level
+                    });
+                  }
                 }
+                
+              } else {
+                errormsg = 'outofmoney';
               }
-              else{
-                let overtime = moment(memberdetail.mregisttime);
-                if (memberdetail.mtype===1)
-                {
-                  overtime = overtime.add(1,'days');
-                }else if(memberdetail.mtype===2)
-                {
-                  overtime = overtime.add(1, 'weeks');
-                }else if(memberdetail.mtype===3)
-                {
-                  overtime = overtime.add(1, 'months');
-                }else{
-                  overtime = overtime.add(1, 'quarters');
-                }
-                const now = moment();
-                const hours = now.diff(overtime, 'hours', true);
-                if (Math.ceil(hours) > 0)
-                {
-                  errormsg = 'outofcardtime';
-                }
-                accournt.atype = 3;
-                accournt.amoney = 0;
-                accournt.asmoney =0;
-                 accournt.adesc = `人工结束订单-> ${ mtype[memberdetail.mtype]}会员卡消费`;
-              } 
+             }
+               
           payload.record.ostate = 2;
           accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
           accournt.astate = 1;
@@ -184,7 +230,9 @@ export default {
                   rid: payload.record.rid,
                   ostate: payload.record.ostate,
                   money: payload.param.money,
-                  etime: moment().format('YYYY-MM-DD HH:mm:ss')
+                  etime: moment().format('YYYY-MM-DD HH:mm:ss'),
+                  disid,
+                  discount: discount[memberdetail.mpd]
                 });
                 if (dataurecord.success) {
                   const data = yield call(updateplace, {
@@ -232,6 +280,7 @@ export default {
       param.btime = btime.format('YYYY-MM-DD HH:mm:ss');
       param.etime = etime.format('YYYY-MM-DD HH:mm:ss');
       const data = yield call(queryorderlist, payload.page, payload.pageSize, param);
+ 
       yield put({
         type: "loaddataSuccess",
         payload: {

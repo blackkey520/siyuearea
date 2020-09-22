@@ -17,7 +17,8 @@ import moment from "moment";
 import {
 	mtype,
 	mstate,
-	placelist
+	placelist,
+	mlevel
 } from '../../../utils/enum';
 
 const FormItem = Form.Item;
@@ -79,6 +80,7 @@ class MemberForm extends Component {
 						mmoney:values.mmoney,
 						mrtime:values.mrtime,
 						registplace: values.registplace,
+						mpd:values.mpd,
 						highauthority: values.highauthority?1:0
 					},
 					callback: data => {
@@ -202,10 +204,20 @@ class MemberForm extends Component {
 									}
 								</RadioGroup>)}
 						</FormItem>
-						<FormItem {...formItemLayout} label="优惠卡">
-							 {
-								 cpd
-							 }
+						<FormItem {...formItemLayout} label="会员等级">
+							 {getFieldDecorator("mpd", {
+								initialValue: this.props.checkmember.mpd ? this.props.checkmember.mpd : 0
+							})(
+								<RadioGroup>
+									{
+										mlevel.map((item, key) => {
+											 
+												return (<RadioButton key={item} value={key}>{item}</RadioButton>)
+											 
+										})
+									}
+								</RadioGroup>
+							)}
 						</FormItem>
 						<FormItem {...formItemLayout} label="到期时间">
 							{getFieldDecorator("mregisttime", {

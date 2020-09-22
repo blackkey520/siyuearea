@@ -45,8 +45,7 @@ class Recharge extends React.Component {
       title: '5000',
       desc: '',
       money: 5000
-    }];
-    const openid = this.props.loginuser.member ? this.props.loginuser.member.memberopenid:'wu'
+    }]; 
     return (
       <Tab>
                 <NavBar>
@@ -77,8 +76,7 @@ class Recharge extends React.Component {
             columnNum={3}
             itemStyle={{ height: '80px'}}
             onClick={_el => {
-              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${_el.money}/${'会员充值'}/1/${_el.title}/${_el.title}`;
-              window.open(url, "_self");
+               
             }}
             renderItem={dataItem => {
               if(dataItem.desc!=='')

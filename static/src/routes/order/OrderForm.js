@@ -92,10 +92,10 @@ class OrderForm extends Component {
 		let isdis = false;
 		let message = null;
 		const days = moment(this.props.memberdetail.mregisttime).diff(moment(), 'days', true);
-		if (days < 0) {
+		if (this.props.memberdetail.mpd==0&&days < 0) {
 			isdis = true;
 			if (this.props.orderdetail.ostate === 0) {
-				message =<Alert message={'会员卡已经过期过期，不能开台，请充值、开卡或者延期'} type="error" /> ;
+				message =<Alert message={'学习卡已经过期过期，不能开台，请充值、开卡或者延期'} type="error" /> ;
 			}
 		}
 		if (this.props.memberdetail.mstate === 2) {
@@ -117,7 +117,7 @@ class OrderForm extends Component {
 
 			} else {
 				isdis = true;
-				message = <Alert message={'您的会员卡只能在六点到八点之间使用'} type="error" />;
+				message = <Alert message={'您的学习卡只能在六点到八点之间使用'} type="error" />;
 			}
 		}
         if(this.props.formloading)

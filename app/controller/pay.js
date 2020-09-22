@@ -31,7 +31,7 @@ class PayController extends Controller {
     let money = ctx.params.money;
     if (ctx.params.type==="1")
     {
-        money = parseInt(ctx.params.money)
+        money = parseFloat(ctx.params.money)
         
          if (money == 500 || money == 1000) {
            money = money * 0.8;
@@ -53,40 +53,40 @@ class PayController extends Controller {
     {
         switch (ctx.params.mtype) {
             case '1':
-                money = parseInt(ctx.params.money) * config.record[0].daydis
+                money = parseFloat(ctx.params.money) * config.record[0].daydis
                 break;
             case '2':
-                money = parseInt(ctx.params.money) * config.record[0].weekdis
+                money = parseFloat(ctx.params.money) * config.record[0].weekdis
                 break;
             case '3':
-                money = parseInt(ctx.params.money) * config.record[0].monthdis
+                money = parseFloat(ctx.params.money) * config.record[0].monthdis
                 break;
             case '4':
-                money = parseInt(ctx.params.money) * config.record[0].sessiondis
+                money = parseFloat(ctx.params.money) * config.record[0].sessiondis
                 break;
             case '5':
-                money = parseInt(ctx.params.money) * config.record[0].hyeardis
+                money = parseFloat(ctx.params.money) * config.record[0].hyeardis
                 break;
             case '6':
-                money = parseInt(ctx.params.money) * config.record[0].yeardis
+                money = parseFloat(ctx.params.money) * config.record[0].yeardis
                 break;
             case '7':
-                money = parseInt(ctx.params.money) * config.record[0].weekzmdis
+                money = parseFloat(ctx.params.money) * config.record[0].weekzmdis
                 break;
             case '8':
-                money = parseInt(ctx.params.money) * config.record[0].monthzmdis
+                money = parseFloat(ctx.params.money) * config.record[0].monthzmdis
                 break;
             case '9':
-                money = parseInt(ctx.params.money) * config.record[0].sessionzmdis
+                money = parseFloat(ctx.params.money) * config.record[0].sessionzmdis
                 break;
             case '10':
-                money = parseInt(ctx.params.money) * config.record[0].weekzydis
+                money = parseFloat(ctx.params.money) * config.record[0].weekzydis
                 break;
             case '11':
-                money = parseInt(ctx.params.money) * config.record[0].monthzydis
+                money = parseFloat(ctx.params.money) * config.record[0].monthzydis
                 break;
             case '12':
-                money = parseInt(ctx.params.money) * config.record[0].sessionzydis
+                money = parseFloat(ctx.params.money) * config.record[0].sessionzydis
                 break;
             default:
                 break;
@@ -99,7 +99,8 @@ class PayController extends Controller {
           out_trade_no: 'siyuearea' + (+new Date),
           total_fee: money * 100,
         //   total_fee: 0.1 * 100,
-          spbill_create_ip: '140.143.159.216',
+        //   spbill_create_ip: '140.143.159.216',//linux
+        spbill_create_ip: '140.143.39.138', //win
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
@@ -142,7 +143,7 @@ class PayController extends Controller {
       });
       let money = ctx.params.money;
       if (ctx.params.type === "1") {
-          money = parseInt(ctx.params.money)
+          money = parseFloat(ctx.params.money)
           if (money <= 500) {
               money = money * config.record[0].rechargedistwo;
           }
@@ -162,40 +163,40 @@ class PayController extends Controller {
       if (ctx.params.type === '2') {
           switch (ctx.params.mtype) {
               case '1':
-                  money = parseInt(ctx.params.money) * config.record[0].daydis
+                  money = parseFloat(ctx.params.money) * config.record[0].daydis
                   break;
               case '2':
-                  money = parseInt(ctx.params.money) * config.record[0].weekdis
+                  money = parseFloat(ctx.params.money) * config.record[0].weekdis
                   break;
               case '3':
-                  money = parseInt(ctx.params.money) * config.record[0].monthdis
+                  money = parseFloat(ctx.params.money) * config.record[0].monthdis
                   break;
               case '4':
-                  money = parseInt(ctx.params.money) * config.record[0].sessiondis
+                  money = parseFloat(ctx.params.money) * config.record[0].sessiondis
                   break;
               case '5':
-                  money = parseInt(ctx.params.money) * config.record[0].hyeardis
+                  money = parseFloat(ctx.params.money) * config.record[0].hyeardis
                   break;
               case '6':
-                  money = parseInt(ctx.params.money) * config.record[0].yeardis
+                  money = parseFloat(ctx.params.money) * config.record[0].yeardis
                   break;
               case '7':
-                  money = parseInt(ctx.params.money) * config.record[0].weekzmdis
+                  money = parseFloat(ctx.params.money) * config.record[0].weekzmdis
                   break;
               case '8':
-                  money = parseInt(ctx.params.money) * config.record[0].monthzmdis
+                  money = parseFloat(ctx.params.money) * config.record[0].monthzmdis
                   break;
               case '9':
-                  money = parseInt(ctx.params.money) * config.record[0].sessionzmdis
+                  money = parseFloat(ctx.params.money) * config.record[0].sessionzmdis
                   break;
               case '10':
-                  money = parseInt(ctx.params.money) * config.record[0].weekzydis
+                  money = parseFloat(ctx.params.money) * config.record[0].weekzydis
                   break;
               case '11':
-                  money = parseInt(ctx.params.money) * config.record[0].monthzydis
+                  money = parseFloat(ctx.params.money) * config.record[0].monthzydis
                   break;
               case '12':
-                  money = parseInt(ctx.params.money) * config.record[0].sessionzydis
+                  money = parseFloat(ctx.params.money) * config.record[0].sessionzydis
                   break;
               default:
                   break;
@@ -208,7 +209,8 @@ class PayController extends Controller {
           out_trade_no: 'siyuearea' + (+new Date),
           total_fee: money * 100,
           //   total_fee: 0.1 * 100,
-          spbill_create_ip: '140.143.159.216',
+        //   spbill_create_ip: '140.143.159.216',//linux
+          spbill_create_ip: '140.143.39.138', //win
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };

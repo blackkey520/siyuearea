@@ -2,7 +2,7 @@
 // const cors = require('koa-cors');
 
 module.exports = app => {
-    console.log(app.oAuth2Server);
+     const { router, controller, io } = app;
   app.get('/', 'client.index');
   app.get('/mobile/init/:routeid', 'wechat.redirect');
   app.get('/mobile/login/:routeid', 'client.index');
@@ -38,7 +38,7 @@ module.exports = app => {
   app.get('/memberlist/orderrecord/:id/:oid/orderend', 'client.index');
 
   app.post('/api/upload', 'uploadfile');
-
+  app.post('/uploadimg', 'imgupload.index');
   app.get('/api/restql/:res','restql.index');
   app.get('/api/restql/:res/:id','restql.show');
   app.post('/api/restql/:res', 'restql.create');
@@ -56,9 +56,10 @@ module.exports = app => {
   app.post('/api/member/findmemberlist', 'member.findlist');
   app.get('/api/member/getsinglemember/:id', 'member.single');
   app.post('/api/order/getordercount','order.count');
+  app.post('/api/order/getrecordcount', 'order.recordcount');
   app.post('/api/order/getorderlist', 'order.index');
   app.post('/api/locker/getlockerlist', 'locker.index');
-
+ app.post('/api/suggest/getsuggestlist', 'suggest.index');
   app.post('/api/trail/gettraillist','trail.index');
   app.post('/api/order/getrecordlist', 'order.record');
   app.get('/api/wechat/getusr/:code','wechat.index');
@@ -75,4 +76,16 @@ module.exports = app => {
   app.get('/socket/:pid/closelight', 'socketserver.closelight');
   app.get('/socket/:lockerid/openlocker', 'socketserver.openlocker');
   app.get('/socket/:doorid/opendoor', 'socketserver.opendoor');
+  app.post('/api/message/findcommunitylist', 'message.findcommunitylist');
+   app.post('/api/message/findcommunitymemberlist', 'message.findcommunitymemberlist');
+  app.post('/api/message/findmessagelist', 'message.index');
+  app.post('/api/message/addmessage', 'message.add');
+  app.post('/api/message/addlike', 'message.addlike');
+  app.post('/api/message/dellike', 'message.dellike');
+   app.post('/api/message/delcomment', 'message.delcomment');
+    app.post('/api/message/delmessage', 'message.delmessage');
+  app.post('/api/message/addcomment', 'message.addcomment');
+  app.post('/api/message/findcomment', 'message.findcomment');
+  app.get('/api/sroom/getsroomstate','sroom.getsroomstate')
+  // io.of('/').route('exchange', io.controller.nsp.exchange);
 };

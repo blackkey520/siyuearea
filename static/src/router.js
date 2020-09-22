@@ -13,7 +13,7 @@ const Routers = function({ history, app }) {
     component: () => import("./routes/error")
   });
   const routes = [
-     {
+    {
       path: "/mobile/login/:routeid",
       models: () => [import("./models/member")],
       component: () => import("./routes/member/login/index")
@@ -103,14 +103,7 @@ const Routers = function({ history, app }) {
       models: () => [],
       component: () => import("./routes/lights")
     },
-    {
-      path: "/productcard",
-      models: () => [
-        import ("./models/productcard")
-      ],
-      component: () =>
-        import ("./routes/productcard/index")
-    },
+     
     {
       path: "/placemanager",
       models: () => [
@@ -136,25 +129,11 @@ const Routers = function({ history, app }) {
         import ("./routes/config/index")
     },
     {
-      path: "/productcard/create",
-      models: () => [
-        import ("./models/productcard")
-      ],
-      component: () =>
-        import ("./routes/productcard/ProductCardForm")
-    }, {
-      path: "/productcard/edit/:id",
-      models: () => [
-        import ("./models/productcard")
-      ],
-      component: () =>
-        import ("./routes/productcard/ProductCardForm")
-    },
-    {
       path: "/memberlist",
       models: () => [
         import ("./models/member"),
-        import("./models/locker")
+        import("./models/locker"),
+        import("./models/order"),
       ],
       component: () =>
         import ("./routes/member/memberlist/index")
@@ -182,6 +161,45 @@ const Routers = function({ history, app }) {
       ],
       component: () =>
         import ("./routes/accournt/index")
+    },
+    {
+      path: "/message/:communityid",
+      models: () => [
+        import("./models/message")
+      ],
+      component: () =>
+        import("./routes/message/index")
+    },
+    {
+      path: "/messagedetail/:msgid",
+      models: () => [
+        import("./models/message")
+      ],
+      component: () =>
+        import("./routes/message/messagedetail")
+    },
+    {
+      path: "/discus",
+      models: () => [
+          import("./models/message")
+        ],
+        component: () =>
+        import("./routes/message/discus")
+    },
+    {
+      path: "/discus/create",
+      models: () => [
+        import("./models/message")
+      ],
+      component: () =>
+        import("./routes/message/discusform")
+    }, {
+      path: "/discus/edit/:id",
+      models: () => [
+        import("./models/message")
+      ],
+      component: () =>
+        import("./routes/message/discusform")
     },
     {
       path: "/memberlist/recharge/:id",
@@ -271,6 +289,36 @@ const Routers = function({ history, app }) {
       models: () => [import("./models/tableForm")],
       component: () => import("./routes/tableManager/TableForm")
     },
+     {
+       path: "/product",
+       models: () => [import("./models/product")],
+       component: () => import("./routes/product/index")
+     },
+       {
+         path: "/goods",
+         models: () => [import("./models/goods")],
+         component: () => import("./routes/product/Goods")
+       },
+     {
+       path: "/suggest",
+       models: () => [import("./models/suggest")],
+       component: () => import("./routes/suggest/index")
+     },
+     {
+       path: "/product/create",
+       models: () => [
+         import("./models/product")
+       ],
+       component: () =>
+         import("./routes/product/ProductForm")
+     }, {
+       path: "/product/edit/:id",
+       models: () => [
+         import("./models/product")
+       ],
+       component: () =>
+         import("./routes/product/ProductForm")
+     },
   ];
   return (
      <ConnectedRouter history={history}>

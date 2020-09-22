@@ -28,7 +28,7 @@ class CheckPlace extends Subscription {
                     }
                 }else{
                     
-                }   
+                }
             }
         }
     }

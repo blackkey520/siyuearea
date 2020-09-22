@@ -84,6 +84,7 @@ exports.update = function*() {
 
 // 5 删除内容信息
 exports.destroy = function*() {
+  debugger;
   const response = { success: false, message: "操作失败" };
   var res = this.params.res;
   const tableList = yield this.service.tableinfo.index();

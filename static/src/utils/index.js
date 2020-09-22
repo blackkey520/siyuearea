@@ -115,7 +115,8 @@ const GetMoney=(btime,etime)=>{
   const minutes = moment(etime).diff(btime, 'minutes');
   return minutes * 0.2;
 }
-const GetMoneyDetail = (btime, etime) => {
+
+const GetMoneyDetail = (btime, etime,dis) => {
   // let rtnval='';
   // let momey=0;
   // let begintime = btime;
@@ -189,7 +190,7 @@ const GetMoneyDetail = (btime, etime) => {
   // // }
   // return rtnval + "总金额" + momey;
   const minutes = moment(etime).diff(btime, 'minutes');
-  const rtnval = `使用时间:${btime.format('YYYY-MM-DD HH:mm:ss')}到${etime.format('YYYY-MM-DD HH:mm:ss')},使用时长:${minutes/60}小时,消费：${minutes*0.2}元`;
+  const rtnval = `使用时间:${btime.format('YYYY-MM-DD HH:mm:ss')}到${etime.format('YYYY-MM-DD HH:mm:ss')},使用时长:${minutes/60}小时,肆阅币消费：${minutes*0.2}元,折扣${dis},折后,${minutes*0.2*dis}`;
   return rtnval;
 }
 const MD5 = s => {
@@ -495,6 +496,18 @@ const createAction = type => payload => ({
   type,
   payload
 });
+const guid = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
+const getBase64=(img, callback)=>{
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 module.exports = {
   config,
   menu,
@@ -506,5 +519,7 @@ module.exports = {
   decode64,
   createAction,
   GetMoney,
-  GetMoneyDetail
+  GetMoneyDetail,
+  guid,
+  getBase64
 };

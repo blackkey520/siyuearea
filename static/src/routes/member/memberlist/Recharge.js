@@ -227,7 +227,7 @@ class Recharge extends Component {
 								/>元
 							</Tooltip>
 						</TabPane>
-						<TabPane tab="储值卡" key="2">
+						<TabPane tab="肆阅卡" key="2">
 							<RadioGroup onChange={(e)=>{
 									this.setState({
 										cardtype: e.target.value

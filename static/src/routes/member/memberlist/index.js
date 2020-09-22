@@ -85,6 +85,14 @@ class MemberList extends Component {
 			showTotal: total => `共${total}条数据`,
 			...this.props.pagination
 		};
+		const ppone = ['升学考试', '英语类考试', '财经类考试', '法律类', '其他'];
+		const pptwo = [
+			['硕士研究生', '高考', '中考', '小升初'],
+			['雅思', '托福', 'GRE', 'SAT', '大学英语四、六级', '专业英语四、八级', '翻译资格证'],
+			['CPA', 'CFA', 'ACCA', 'CIA', '会计职称考试'],
+			['司法考试'],
+			['公务员', '教师资格证', '建造师', '教师资格证', '保密']
+		]
 		 const {
 		 	getFieldDecorator
 		 } = this.props.form;
@@ -99,7 +107,9 @@ class MemberList extends Component {
 		  
         const columns = [{
             title: '会员名称',
-            dataIndex: 'mname',
+			dataIndex: 'mname',
+				width: 150,
+			fixed: 'left',
             render: (text, record, index) => {
 				if(record.mstate!==0)
 				{
@@ -110,10 +120,12 @@ class MemberList extends Component {
 					return(<span>{text}</span>);
 				},
             }, {
-            title: '联系方式',
+			title: '联系方式',
+			fixed: 'left',
             dataIndex: 'phonenum',
             }, {
-            	title: '到期时间',
+				title: '到期时间',
+					width: 300,
 				dataIndex: 'mregisttime',
 				render: (text, record, index) => {
 					const days = moment(record.mregisttime).diff(moment(), 'days', false);
@@ -126,13 +138,15 @@ class MemberList extends Component {
 					
 				}
             }, {
-            	title: '注册时间',
+				title: '注册时间',
+					width: 300,
 				dataIndex: 'mrtime',
 				render: (text, record, index) => {
 					return(<div>{moment(text).format('YYYY-MM-DD hh:mm:ss')}</div>);
 				}
             }, {
-                title: '会员类型',
+				title: '会员类型',
+					width: 300,
 				dataIndex: 'mtype',
 				render: (text, record, index) => {
 					const days = moment(record.mregisttime).diff(moment(), 'days', false);
@@ -147,8 +161,63 @@ class MemberList extends Component {
             title: '备注',
             dataIndex: 'mdesc',
             width:300
-            },{
-            	title: '操作',
+            }, {
+            	title: '昵称',
+            	dataIndex: 'nikname',
+            	width: 150
+            }, {
+            	title: '性别',
+            	dataIndex: 'sex',
+				width: 150,
+				render: (text, record, index) => {
+					if(text==0)
+						return(<div>男</div>);
+					else if(text==1)
+						return(<div>女</div>);
+					else if(text==2)
+						return(<div>保密</div>);
+					else
+						return(<div></div>);
+				}
+            }, {
+            	title: '居住地',
+            	dataIndex: 'email',
+            	width: 300
+            }, {
+            	title: '出生日期',
+            	dataIndex: 'birthday',
+				width: 300,
+				render: (text, record, index) => {
+					if(text){
+						return(<div>{moment(text).format('YYYY-MM-DD hh:mm:ss')}</div>);
+					}
+					
+				}
+            }, {
+            	title: '学习目的一',
+            	dataIndex: 'purposeone',
+				width: 150,
+				render: (text, record, index) => {
+					if(text!=null)
+						return(<div>{ppone[text]}</div>);
+				}
+			}, 
+			 {
+			 	title: '学习目的二',
+			 	dataIndex: 'purposetwo',
+				 width: 150,
+				 render: (text, record, index) => {
+					 if (text != null)
+					 	return(<div>{pptwo[record.purposeone][record.purposetwo]}</div>);
+				 }
+			 }, {
+			 	title: '累计充值',
+			 	dataIndex: 'credit',
+			 	width: 150
+			 }, {
+				title: '操作',
+				fixed: 'right',
+				width: 150,
             	render: (text, record, index) => { 
 					const menu=(<Menu record={record} onClick={(e)=>{
 							   if(e.key==="1")
@@ -245,16 +314,47 @@ class MemberList extends Component {
 											});
 										},
 									});
+							   }else if(e.key=="9")
+							   {
+								   const that = this;
+								   Modal.confirm({
+									   title: '新建订单',
+									   content: (
+										   <div>为 <span style={{ color: 'red' }}>{record.mname}</span> 新建订单 ，改会员本日次数将被手动扣除</div>
+									   ),
+									   okText: '确定',
+									   cancelText: '取消',
+									   onOk() {
+										   const hide = message.loading("正在保存...", 0);
+										   that.props.dispatch({
+											   type: "order/maddrecord",
+											   payload: {
+												   mid:record.mid,
+												   param: record,
+												   callback: data => {
+													   hide();
+													   if (data && data.success) {
+														   that.loadTableData(that.props.pagination.current, that.props.pagination.pageSize, that.props.searchval);
+														   message.success("保存成功");
+													   } else {
+														   message.error("保存失败");
+													   }
+												   }
+											   }
+										   });
+									   },
+								   });
 							   }
 							}}>
 							<Menu.Item key ="1">充值/开卡</Menu.Item>
 							<Menu.Item key="2">编辑</Menu.Item>
-							<Menu.Item key="3">预订记录</Menu.Item>
-							<Menu.Item key="4">使用记录</Menu.Item>
+							<Menu.Item key="3">订单信息</Menu.Item>
+							<Menu.Item key="4">使用日志</Menu.Item>
 							<Menu.Item key="5">延期</Menu.Item>
 							<Menu.Item key="6">扣钱</Menu.Item>
 							<Menu.Item key="7">分配储物柜</Menu.Item>
 							<Menu.Item key="8">{record.mstate==2&&record.pausemark!=null?'恢复':'暂停'}</Menu.Item>
+							<Menu.Item key="9">创建订单</Menu.Item>
 						</Menu>);
 					return (
 						<Dropdown onVisibleChange={()=>{
@@ -317,6 +417,7 @@ class MemberList extends Component {
 					loading={this.props.memberloading}
 					bordered
 					onChange={this.tableChange.bind(this)}
+					scroll={{ x: 2950 }}
 				/>
 				<Modal
           title="分配储物柜"

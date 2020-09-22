@@ -4,7 +4,6 @@ import { loadsingle } from "../services/config";
 import moment from 'moment';
 import { routerRedux } from "dva/router";
 import {mtype} from '../utils/enum';
-import { message } from "_antd@2.13.14@antd";
 export default {
   namespace: "member",
   state: {
@@ -76,46 +75,7 @@ export default {
         }
     },
     *register({ payload }, { call, put,select }) {
-        const { loginuser } = yield select(state => state.member);
-        let result=null;
-        const loaduser = yield call(loadmemberbyphone, {phonenum:payload.phone});
-        if (loaduser.data.record.length !== 0)
-        {
-          const mem = loaduser.data.record[0];
-          mem.memberopenid = payload.userInfo.openid;
-          mem.mregisttime = moment(mem.mregisttime).format('YYYY-MM-DD HH:mm:ss');
-          mem.mrtime = moment().format('YYYY-MM-DD HH:mm:ss');
-          result = yield call(update, mem);
-           loginuser.member = mem;
-          yield put({
-              type: "updateState",
-              payload: {
-                loginuser,
-              }
-            });
-             
-            yield put(routerRedux.push({ pathname: `/mobile/${payload.routerid}`, }));
-        }
-        else{
-          yield put(routerRedux.push({ pathname: `/mobile/result/false/认证失败`, }));
-          // const param = {
-          //   membercode: Math.random().toString(20).substr(2),
-          //   memberopenid: payload.userInfo.openid,
-          //   mpd: 0,
-          //   mname: payload.userInfo.nickname,
-          //   phonenum: payload.phone,
-          //   mstate: 0,
-          //   mregisttime: moment().format('YYYY-MM-DD HH:mm:ss'),
-          //   mtype: 0,
-          //   mdesc: '',
-          //   mmoney: 0
-          // }
-          // result = yield call(register, param);
-          // const luser = yield call(loadmemberbyphone, {
-          //   phonenum: payload.phone
-          // });
-          //  loginuser.member = luser.data.record[0];
-        }
+         
         
     },
     *getmemberlist({ payload }, { call, put }) {
@@ -155,10 +115,10 @@ export default {
       let overdate = moment().format('YYYY-MM-DD HH:mm:ss');
       let mmtype=checkmember.mtype;
       let mmoney = checkmember.mmoney == null ? 0 : checkmember.mmoney;
-      let mpd = checkmember.mpd;
+      // let mpd = checkmember.mpd;
       if (payload.rechargetype === "1")
       {
-        let rechargev = parseInt(payload.rechargevalue);
+        let rechargev = parseFloat(payload.rechargevalue);
         if (rechargev <= 1000) {
            overdate = moment().add(4, 'month').format('YYYY-MM-DD 00:00:00');
         }
@@ -175,13 +135,13 @@ export default {
         if (rechargev == 4500 && rechargev == 5000) {
            overdate = moment().add(12, 'month').format('YYYY-MM-DD 00:00:00');
         }
-         accournt.amoney = parseInt(mmoney);
-         accournt.asmoney = rechargev + parseInt(mmoney);
+         accournt.amoney = parseFloat(mmoney);
+         accournt.asmoney = rechargev + parseFloat(mmoney);
         //充值的
         mmtype = 0;
-        mmoney = parseInt(mmoney) + rechargev;
-        accournt.atype=1;
-        accournt.adesc = `人工会员充值->${rechargev}元`;
+        mmoney = parseFloat(mmoney) + rechargev;
+        accournt.atype =1;
+        accournt.adesc = `管理员肆阅币充值->${rechargev}元`;
       } else if (payload.rechargetype === "2") {
         let kkmoney=0;
 
@@ -251,7 +211,7 @@ export default {
         accournt.atype = 1;
         accournt.amoney = 0;
         accournt.asmoney = 0;
-        accournt.adesc = `人工会员开卡->${mtype[payload.cardtype]}`;
+        accournt.adesc = `管理员会员开通学习卡->${mtype[payload.cardtype]}`;
       } 
       accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
       accournt.astate = 0; 
@@ -261,7 +221,6 @@ export default {
         mregisttime:overdate,
         mtype: mmtype,
         mmoney,
-        mpd
       });
       //记账
       const accourntdata = yield call(addaccournt, accournt);
@@ -283,7 +242,7 @@ export default {
            pausemark: null,
            mregisttime: moment().add((payload.param.pausemark+1),'days').format('YYYY-MM-DD HH:mm:ss')
          });
-         accournt.adesc = `人工会员恢复->为用户恢复${payload.param.pausemark}天，恢复后时间 ${moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')}`;
+         accournt.adesc = `管理员会员恢复->为用户恢复${payload.param.pausemark}天，恢复后时间 ${moment().add(payload.param.pausemark,'days').format('YYYY-MM-DD HH:mm:ss')}`;
       }else{
         const aaa= moment(payload.param.mregisttime);
          data = yield call(update, {
@@ -308,9 +267,9 @@ export default {
         accournt.atype = 1;
         accournt.astate = 0;
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
-        accournt.amoney = parseInt(payload.param.mmoney);
-        accournt.asmoney = parseInt(payload.param.mmoney);
-        accournt.adesc = `人工延期：->${payload.extenddays}天，说明：${payload.yqdesc}`;
+        accournt.amoney = parseFloat(payload.param.mmoney);
+        accournt.asmoney = parseFloat(payload.param.mmoney);
+        accournt.adesc = `管理员会员延期：->${payload.extenddays}天，说明：${payload.yqdesc}`;
         const accourntdata = yield call(addaccournt, accournt);
 			callback && callback(data);
     },
@@ -322,10 +281,11 @@ export default {
        accournt.atype = 1;
        accournt.astate = 1;
        accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
-       accournt.amoney = parseInt(payload.param.mmoney);
-       accournt.asmoney = parseInt(payload.param.mmoney) - parseInt(payload.kftext);
-       accournt.adesc = `人工扣费：->${payload.kftext}元`;
+       accournt.amoney = parseFloat(payload.param.mmoney);
+       accournt.asmoney = parseFloat(payload.param.mmoney) - parseFloat(payload.kftext);
+       accournt.adesc = `管理员后台扣除肆阅币：->${payload.kftext}元`;
        const accourntdata = yield call(addaccournt, accournt);
+       //需要在这增加积分逻辑了
       data = yield call(update, {
         mid: payload.param.mid,
         mmoney: payload.param.mmoney - payload.kftext
@@ -338,9 +298,9 @@ export default {
 				tableData = null;
 			const callback = payload.callback;
       delete payload.callback;
-      payload.param.mpd=0;
 			if (payload.param.id) {
         payload.param.mid = payload.param.id;
+      
         payload.param.mregisttime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
         delete payload.param.id;
         payload.param.mrtime = moment(payload.param.mrtime).format('YYYY-MM-DD HH:mm:ss');
@@ -357,7 +317,7 @@ export default {
           }); 
         if (membercheck.data.record.length !== 0)
         {
-            message.error('电话号码已存在')
+            
         }
 				else{
           data = yield call(register, payload.param);

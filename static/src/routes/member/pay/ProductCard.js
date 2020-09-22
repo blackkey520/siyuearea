@@ -22,8 +22,7 @@ class ProductCard extends React.Component {
     const row = (rowData, sectionID, rowID) => {
         return (
           <div key={rowID} onClick={()=>{
-              const url = `http://${self.location.host}/requestpayment/${this.props.loginuser.member.memberopenid}/${rowData.value}/${'优惠卡购买'}/3/${rowData.pcid}/${rowData.pcname}`;
-              window.open(url, "_self");
+              
             }} style={{ padding: '0 15px' }}>
             <div style={{flexDirection:'row',padding: '15px 0',borderBottom: '2px solid #F6F6F6',backgroundColor:'#fff' }}>
               <div style={{ flexDirection:'column',width:'100%'}}>

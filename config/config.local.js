@@ -17,3 +17,17 @@ exports.mysql = {
   // 是否加载到 agent 上，默认关闭
   agent: false
 };
+// exports.io = {
+//   init: {}, // passed to engine.io
+//   namespace: {
+//      '/': {
+//        connectionMiddleware: ['auth'],
+//        packetMiddleware: [], // 针对消息的处理暂时不实现
+//      },
+//   },
+//    // cluster 模式下，通过 redis 实现数据共享
+//   //  redis: {
+//   //    host: '127.0.0.1',
+//   //    port: 6379,
+//   //  },
+// };

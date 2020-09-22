@@ -82,9 +82,13 @@ export default {
             message.error('此储物柜正在有人使用')
             return ;
           }
-          if (memberdetail.mstate == 2 || memberdetail.mstate == 1 || moment(memberdetail.mregisttime).diff(moment(), 'days') < 0)
+          if (memberdetail.mstate == 2 || memberdetail.mstate == 1 )
           {
-            message.error('会员已经过期或者已经停用')
+            message.error('会员已经停用')
+            return;
+          }
+          if (memberdetail.mpd == 0 && moment(memberdetail.mregisttime).diff(moment(), 'days') < 0){
+            message.error('会员已经过期')
             return;
           }
           const result = yield call(querylist, {

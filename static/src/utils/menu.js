@@ -46,6 +46,11 @@ module.exports = [
     icon: "tablet",
   },
   {
+    key: "discus",
+    name: "讨论区", //模块
+    icon: "message",
+  },
+  {
     key: "lockermanager",
     name: "储物柜管理", //模块
     icon: "lock",
@@ -61,30 +66,25 @@ module.exports = [
     icon: "bars",
   },
   {
-    key: "productcard",
-    name: "优惠卡信息", //模块
-    icon: "book",
-    child: [{
-        key: "create",
-        name: "添加优惠卡",
-        icon: "file",
-        isMenuTab: false,
-        clickable: false
-      },
-      {
-        key: "edit",
-        name: "编辑优惠卡",
-        icon: "file",
-        isMenuTab: false,
-        clickable: false
-      },
-    ]
-  },
-  {
     key: "accountslist",
     name: "操作记录",
     icon: "api",
   },
+  {
+    key: 'suggest',
+    name:'意见反馈',
+    icon:'api'
+  },
+  {
+    key: "product",
+    name: "商品管理",
+    icon: "api",
+  },
+    {
+      key: "goods",
+      name: "商品预定信息",
+      icon: "api",
+    }, 
   {
     key: "config",
     name: "系统设置", //模块

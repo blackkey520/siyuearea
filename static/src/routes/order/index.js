@@ -14,6 +14,7 @@ import {
 } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
+import { GetMoney,GetMoneyDetail } from '../../utils'
 import {
 	ostate,
 	placelist
@@ -85,6 +86,14 @@ class OrderList extends Component {
 			dataIndex: 'ostate',
 			render:text=><span>{ostate[text]}</span>,
             }, {
+            title: '结账类型',
+			dataIndex: 'disid',
+			render: (text, record, index) => {
+				return (
+					<div>{text==0?'肆阅币消费':'学习卡消费'}</div>
+				);
+			}
+            },    {
                 title: '预订时间',
 				dataIndex: 'otime',
 				render: (text, record, index) => { 
@@ -93,6 +102,34 @@ class OrderList extends Component {
 					);
 				}
             }, {
+            title: '开始时间',
+			dataIndex: 'btime',
+			render: (text, record, index) => {
+				if (text != null)
+				return (
+					moment(text).format('YYYY-MM-DD HH:mm:ss')
+				);
+			}
+            },  {
+            title: '结束时间',
+			dataIndex: 'etime',
+			render: (text, record, index) => {
+				if(text!=null)
+				return (
+					moment(text).format('YYYY-MM-DD HH:mm:ss')
+				);
+			}
+            }, {
+            title: '消费明细',
+			dataIndex: 'discount',
+			width:300,
+			render: (text, record, index) => {
+				
+				return (
+					<div>{record.disid==0?GetMoneyDetail(moment(record.btime), moment(record.etime),record.discount):'-'}</div>
+				);
+			}
+            },{
             	title: '操作',
             	render: (text, record, index) => { 
 					 

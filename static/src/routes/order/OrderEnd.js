@@ -146,7 +146,7 @@ class OrderEnd extends Component {
             return (
                  <Result
                             type="error"
-                            title={'您的会员卡已经到期'}
+                            title={'您的学习卡已经到期'}
                             description={`您的${mtype[this.props.memberdetail.mtype]}已经到期`}
                             extra={''}
                             actions={<div>
@@ -199,8 +199,7 @@ class OrderEnd extends Component {
 							})(<Input disabled / > )}
 						</FormItem>
 					</Form>
-					{
-						this.props.memberdetail.mtype === 0?<Form style={{marginTop:15}}  	>
+					 <Form style={{marginTop:15}}  	>
 						<FormItem {...formItemWiLayout} label="收款金额(元)">
 							{getFieldDecorator("money", {
 								initialValue: GetMoney(moment(this.props.recorddetail.btime), moment())
@@ -212,7 +211,7 @@ class OrderEnd extends Component {
 							})( <Input disabled / > )
 							}
 						</FormItem>
-					</Form>:<Form style={{marginTop:15}}  	>
+					</Form><Form style={{marginTop:15}}  	>
 						<FormItem {...formItemWiLayout} label="会员类型">
 							 {getFieldDecorator("mtype", {
 								initialValue: this.props.memberdetail.mtype ? this.props.memberdetail.mtype : 0
@@ -225,11 +224,10 @@ class OrderEnd extends Component {
 								</RadioGroup>)}
 						</FormItem>
 					</Form>
-					}
 					<Form style={{marginTop:15}}>
 						{this.props.memberdetail.mtype === 0?<FormItem {...formItemWiLayout} label="收款明细">
 							{getFieldDecorator("pdetail", {
-								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment()),
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(),this.props.recorddetail.discount),
 							})(
 								<Input
 									type="textarea"
@@ -239,7 +237,7 @@ class OrderEnd extends Component {
 						</FormItem>:null}
 						<FormItem {...formItemWiLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
-								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime)),
+								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(),this.props.recorddetail.discount),
 							})(
 								<Input
 									type="textarea"

@@ -30,6 +30,17 @@ export async function loadmemeber(params) {
     method: "get"
   });
 }
+export async function loadmemeberdetail(params) {
+  const id = params.id || 0;
+  const url = `/api/restql/Base_MemberDetail`;
+  return request({
+    url,
+    data:{
+      mid: id
+    },
+    method: "get"
+  });
+}
 export async function loadmemberbyphone(params) {
   return request({
     url: "/api/restql/Base_Member",
@@ -40,6 +51,13 @@ export async function loadmemberbyphone(params) {
 export async function update(params) {
   return request({
     url: `/api/restql/Base_Member/${params.mid}`,
+    method: "put",
+    data: params
+  });
+}
+export async function updatememberdetail(params) {
+  return request({
+    url: `/api/restql/Base_MemberDetail/${params.mdid}`,
     method: "put",
     data: params
   });

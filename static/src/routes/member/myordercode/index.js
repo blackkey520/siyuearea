@@ -59,8 +59,8 @@ constructor(props, context) {
                 <PreviewItem label="使用时间" value={moment(this.props.selectedmobileorder.btime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="结束时间" value={moment(this.props.selectedmobileorder.etime).format('YYYY-MM-DD HH:mm:ss')} />
                 <PreviewItem label="使用时长(小时)" value={Math.round(moment().diff(moment(this.props.selectedmobileorder.btime),'hours',true))} />
-                 <PreviewItem label="消费金额（元" value={this.props.selectedmobileorder.money} /> 
-                     <PreviewItem label="消费明细" value={GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))} /> }
+                 <PreviewItem label="消费肆阅币（元" value={this.props.selectedmobileorder.money} /> 
+                     <PreviewItem label="消费肆阅币明细" value={GetMoneyDetail(moment(this.props.selectedmobileorder.btime), moment(this.props.selectedmobileorder.etime))} /> }
                 </div>);
       }
  

@@ -19,6 +19,7 @@ exports.security = {
     "http://3add50a0.ngrok.io",
     "http://www.bjlanyue.cn",
     "http://140.143.159.216",
+    "http://140.143.39.138",
   ],
   methodnoallow: { enable: false },
   csrf: {
@@ -33,7 +34,13 @@ exports.cors = {
   allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH"
 };
 exports.multipart = {
-  fileExtensions: [".xls", ".doc", ".ppt", ".docx", ".xlsx", ".pptx"]
+      mode: 'stream',
+         
+        cleanSchedule: {
+          // run tmpdir clean job on every day 04:30 am
+          cron: '0 30 4 * * *',
+        },
+        fileSize: '50mb', //    文件大小限制-string, 错误：400 Bad request
 };
 exports.view = {
   defaultViewEngine: 'nunjucks',

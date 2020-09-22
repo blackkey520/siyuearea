@@ -15,6 +15,10 @@ exports.cors = {
   enable: true,
   package: "egg-cors"
 };
+exports.io = {
+  enable: true,
+  package: 'egg-socket.io',
+};
 exports.tcpsocket = {
   enable: true,
   path: path.join(__dirname, '../app/lib/plugin/egg-tcpsocket'),

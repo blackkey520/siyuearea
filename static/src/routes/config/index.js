@@ -12,9 +12,7 @@ import {
     InputNumber,
 	message,
 	Radio,
-} from "antd";
-import { GetMoney,GetMoneyDetail } from '../../utils'
-
+} from "antd"; 
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	

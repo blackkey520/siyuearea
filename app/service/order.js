@@ -103,6 +103,17 @@ const totalsql = `select * from (select t1.oid,t1.ordercode,t1.pid,t2.pdesc as '
         record: totalRecord,total: totalRecord.length
       };
     }
+      * recordcount(modal, query, condition = {}) {
+        const totalsql = `select DATE_FORMAT( btime, "%Y-%m-%d" ) AS time,COUNT(rid) AS total from Base_Record where mid=${condition.mid} 
+        and btime >'${condition.btime}' and etime<'${condition.etime}' and ostate=2 GROUP BY DATE_FORMAT( btime, "%Y-%m-%d" )  `;
+
+        const totalRecord = yield this.app.mysql.query(totalsql);
+
+        return {
+          record: totalRecord,
+          total: totalRecord.length
+        };
+      } 
   }
   return RestqlService;
 };

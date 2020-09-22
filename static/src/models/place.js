@@ -15,19 +15,29 @@ import {
   queryrecordlist,
   updaterecord
 } from "../services/order";
+
 import {opendoor} from "../services/locker";
 import { addaccournt } from "../services/accournt";
-import {loadmemeber,update} from "../services/member";
+import {
+  loadmemeber,
+  update,
+  loadmemeberdetail,
+  updatememberdetail
+} from "../services/member";
 import { parse } from "qs";
 import { message } from "antd";
 import Cookie from "../utils/js.cookie";
 import {Toast} from 'antd-mobile';
 import moment from 'moment';
 import { GetMoney } from '../utils';
-import {mtype} from '../utils/enum';
 import { delay } from 'dva/saga';
 
-
+import {
+  mtype,
+  memberlevelupdate,
+  discount,
+  mlevel
+} from '../utils/enum';
 export default {
   namespace: "place",
   state: {
@@ -54,30 +64,59 @@ export default {
         const orderr = yield call(queryorderlist, 1,2,{pid:payload.selectPlace.pid});
         const recordr=yield call(queryrecordlist,1,2,{pid:payload.selectPlace.pid});
         const memberr=yield call(loadmemeber,{id:recordr.data.record[0].mid});
-        const money = GetMoney(moment(recordr.data.record[0].btime), moment());
+        let money = GetMoney(moment(recordr.data.record[0].btime), moment());
         const accournt = {};
         const member = memberr.data;
         const order = orderr.data.record[0];
         const record = recordr.data.record[0];
         accournt.mid = member.mid;
-        if (member.mtype === 0)
-        {
-          // if (member.mmoney >= money) {
-            accournt.atype = 3;
-            accournt.amoney = parseInt(member.mmoney);
-            accournt.asmoney = parseInt(member.mmoney) - parseInt(money);
-           accournt.adesc = `人工结束订单->充值消费 ${money} 元`;
-            yield call(update, {
-              mid:member.mid,
-              mmoney: member.mmoney - money
-            });
-          // }
-        }else{
-          accournt.atype = 3;
+        const days = moment(member.etime).diff(moment(), 'days', false);
+        let disid=0;
+
+         money = money * discount[member.mpd];
+        if (member.mtype > 0 && days > 0) {
+          accournt.atype = 1;
           accournt.amoney = 0;
           accournt.asmoney = 0;
-           accournt.adesc = `人工结束订单-> ${ mtype[member.mtype]}会员卡消费`;
+          accournt.adesc = `管理员结束订单-> ${ mtype[member.mtype]}学习卡消费`;
+          disid=1;
+        }else{
+           accournt.atype = 1;
+           accournt.amoney = parseFloat(member.mmoney);
+           accournt.asmoney = parseFloat(member.mmoney) - parseFloat(money);
+           accournt.adesc = `管理员结束订单->肆阅币消费 ${money} 元，会员等级${mlevel[member.mpd]},会员折扣${discount[member.mpd]}`;
+           
+           yield call(update, {
+             mid: member.mid,
+             mmoney: parseFloat(member.mmoney) - parseFloat(money)
+           });
+            //需要在这增加积分逻辑了
+            const mddata = yield call(loadmemeberdetail, {
+              id: member.mid,
+            });
+            if (mddata.data.record.length > 0) {
+              let mdresult = {};
+              mdresult = mddata.data.record[0];
+              const credit = parseFloat(mdresult.credit) + parseFloat(money);
+
+              yield call(updatememberdetail, {
+                mdid: mdresult.mdid,
+                credit
+              });
+
+              const newlevel = memberlevelupdate.find((item) => {
+                return item.cridit >= credit
+              })
+              if (newlevel && member.mpd != newlevel.level && member.mpd != 0) {
+                yield call(update, {
+                  mid: member.mid,
+                  mpd: newlevel.level
+                });
+              }
+            }
         }
+
+      
         accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
         accournt.astate = 1; 
         yield call(addaccournt, accournt);
@@ -89,7 +128,9 @@ export default {
           rid: record.rid,
           ostate: 2,
           money:money,
-          etime: moment().format('YYYY-MM-DD HH:mm:ss')
+          etime: moment().format('YYYY-MM-DD HH:mm:ss'),
+          disid,
+          discount: discount[member.mpd]
         });
         yield call(updateplace, {
           pid: payload.selectPlace.pid,
@@ -190,10 +231,10 @@ export default {
         let data = null;
         const callback = payload.callback;
         const days = moment(payload.mregisttime).diff(moment(), 'days', true);
-        if (days < 0) {
-          //过期了
-          Toast.info('您的会员已过期', 1);
-        }else{
+        // if (days < 0) {
+        //   //过期了
+        //   Toast.info('您的会员已过期', 1);
+        // }else{
           const ordered = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:0});
          const useed = yield call(queryorderlist, 1,100,{mid:payload.mid,ostate:1}); 
          if (ordered.data.record.length === 0 && useed.data.record.length === 0)
@@ -204,7 +245,8 @@ export default {
             mid:payload.mid,
             ostate:0,
             otime:payload.orderdate,
-            pdesc:payload.desc
+            pdesc:payload.desc,
+            disid:0
           }
           const result=yield call(addorder,order);
           if(result.success)
@@ -216,7 +258,7 @@ export default {
          }else{
            callback && callback();
          }
-        }
+        // }
          
         
     },

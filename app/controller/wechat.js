@@ -51,7 +51,18 @@ exports.program = function* () {
   if (memberlist.record.length !== 0) {
     rtnval.ismember = true;
     rtnval.member = memberlist.record[0];
+    const memberdetaillist = yield this.service.restql.index('Base_MemberDetail', {
+      page: 1,
+      pageSize: 1000
+    }, {
+      mid: memberlist.record[0].mid
+    });
+
+    if (memberdetaillist.record.length !== 0) {
+      rtnval.memberdetail = memberdetaillist.record[0];
+    }
   }
+  
   rtnval.openid = result.openid;
   response.message = "操作成功";
   response.success = true;

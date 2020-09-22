@@ -14,7 +14,7 @@ module.exports = app => {
         );
       }
       const recordsql = "select * from (select t1.highauthority,t1.pausemark,t1.registplace,t1.mid,t1.mmoney,t1.mdesc,t1.mname,t1.mregisttime,t1.mstate,t1.mtype,t1.phonenum,t1.mpd,t1.membercode"
-+",t1.memberopenid,t1.memberprogramopenid,t2.pcname,t2.btime,t2.etime,t2.isused,t2.pcdesc,t2.`value`  from Base_Member  as t1 left join Base_ProductCard as t2 on t1.mpd=t2.pcid) as t5 "
++",t1.memberopenid,t1.memberprogramopenid,t2.nikname,t2.sex,t2.birthday,t2.purposeone,t2.purposetwo,t2.credit,t2.wechatmsg,t2.email  from Base_Member  as t1 left join Base_MemberDetail as t2 on t1.mid=t2.mid) as t5 "
       +conditionstr + " order by mid desc limit " + offset + "," + query.pageSize;
       const totalsql = "select count(*) as total from Base_Member" + conditionstr;
       const record= yield this.app.mysql.query(recordsql);
@@ -28,7 +28,7 @@ module.exports = app => {
          conditionstr = ` where mname like '%${condition.membercode}%' or phonenum like '%${condition.membercode}%' or membercode like '%${condition.membercode}%'`;
        }
       const recordsql = "select * from (select t1.highauthority,t1.pausemark,t1.registplace,t1.mid,t1.mmoney,t1.mdesc,t1.mname,t1.mregisttime,t1.mrtime,t1.mstate,t1.mtype,t1.phonenum,t1.mpd,t1.membercode"
-+",t1.memberopenid,t2.pcname,t2.btime,t2.etime,t2.isused,t2.pcdesc,t2.`value`  from Base_Member  as t1 left join Base_ProductCard as t2 on t1.mpd=t2.pcid) as t5 "
++",t1.memberopenid,t1.memberprogramopenid,t2.nikname,t2.sex,t2.birthday,t2.purposeone,t2.purposetwo,t2.credit,t2.wechatmsg,t2.email  from Base_Member  as t1 left join Base_MemberDetail as t2 on t1.mid=t2.mid) as t5 "
       +conditionstr + " order by mid desc limit " + offset + "," + query.pageSize;
       const totalsql = "select count(*) as total from Base_Member" + conditionstr;
       const record= yield this.app.mysql.query(recordsql);
@@ -37,7 +37,7 @@ module.exports = app => {
     }
     *single(modal,query, condition = {}) { 
  const recordsql = "select * from (select t1.highauthority,t1.pausemark,t1.registplace,t1.mid,t1.mmoney,t1.mdesc,t1.mname,t1.mregisttime,t1.mrtime,t1.mstate,t1.mtype,t1.phonenum,t1.mpd,t1.membercode" +
-     ",t1.memberopenid,t2.pcname,t2.btime,t2.etime,t2.isused,t2.pcdesc,t2.`value`  from Base_Member  as t1 left join Base_ProductCard as t2 on t1.mpd=t2.pcid) as t5 where mid= " + modal.id;
+     ",t1.memberopenid,t1.memberprogramopenid,t2.nikname,t2.sex,t2.birthday,t2.purposeone,t2.purposetwo,t2.credit,t2.wechatmsg,t2.email  from Base_Member  as t1 left join Base_MemberDetail as t2 on t1.mid=t2.mid) as t5 where mid= " + modal.id;
       const record= yield this.app.mysql.query(recordsql);
       return record;
     }
