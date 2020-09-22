@@ -317,7 +317,10 @@ export default {
           }); 
         if (membercheck.data.record.length !== 0)
         {
+<<<<<<< HEAD
             
+=======
+>>>>>>> 8f22a6316d820ed22103c3b01a752233065d1576
         }
 				else{
           data = yield call(register, payload.param);

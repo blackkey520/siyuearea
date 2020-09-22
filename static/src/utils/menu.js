@@ -91,7 +91,7 @@ module.exports = [
     icon: "setting",
   },
   {
-    key: "tableManager",
+    key: "tablemanager",
     name: "模块管理", //模块
     icon: "database",
     child: [

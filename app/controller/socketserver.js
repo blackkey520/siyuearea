@@ -48,7 +48,12 @@ class SocketServerController extends Controller {
       const {
         connectObj
       } = this.app;
+<<<<<<< HEAD
       if (this.ctx.headers['referer'] == undefined) {
+=======
+      if (this.ctx.headers['referer'] == undefined)
+      {
+>>>>>>> 8f22a6316d820ed22103c3b01a752233065d1576
         return;
       }
            console.log('====================================');
@@ -78,6 +83,7 @@ class SocketServerController extends Controller {
         connectObj
       } = this.app;
       const lockerid=this.ctx.params.lockerid;
+<<<<<<< HEAD
        console.log('====================================');
        console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlocker-----lockerid=' + this.ctx.params.lockerid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
        console.log('====================================');
@@ -85,6 +91,15 @@ class SocketServerController extends Controller {
         return i.lockerid == lockerid;
       });
          
+=======
+      console.log('====================================');
+      console.log(moment().format('YYYY-MM-DD HH:mm:ss') + '|openlocker-----lockerid=' + this.ctx.params.lockerid + '|' + this.ctx.headers['user-agent'] + '|' + this.ctx.headers['host'] + '|' + this.ctx.headers['referer']);
+      console.log('====================================');
+      const item = LockerConfig.find((i) => {
+        return i.lockerid == lockerid;
+      });
+       
+>>>>>>> 8f22a6316d820ed22103c3b01a752233065d1576
       request({
         url: `http://cos.wondware.com/mq/device/screen/openCabinet?deviceId=${item.deviceid}&lockTotalNum=1&lockAddress=${item.lockaddress}%2B1&commandType=openOne&sourceType=O&uqKey=A0FE27E0F1A361BC1F0AF5E807431F17`,
         method: "POST",
