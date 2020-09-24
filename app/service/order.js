@@ -25,6 +25,7 @@ module.exports = app => {
           if(key=='pid')
           {
             placeCondition = placeCondition + `and pid='${condition[key]}'`;
+            orderCondition=orderCondition+`and pid='${condition[key]}'`
             continue;
           }
           if(key=='pname')
