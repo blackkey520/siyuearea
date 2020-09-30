@@ -99,8 +99,8 @@ class PayController extends Controller {
           out_trade_no: 'siyuearea' + (+new Date),
           total_fee: money * 100,
         //   total_fee: 0.1 * 100,
-        //   spbill_create_ip: '140.143.159.216',//linux
-        spbill_create_ip: '140.143.39.138', //win
+          spbill_create_ip: '140.143.159.216',//linux
+        // spbill_create_ip: '140.143.39.138', //win
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
@@ -209,8 +209,8 @@ class PayController extends Controller {
           out_trade_no: 'siyuearea' + (+new Date),
           total_fee: money * 100,
           //   total_fee: 0.1 * 100,
-        //   spbill_create_ip: '140.143.159.216',//linux
-          spbill_create_ip: '140.143.39.138', //win
+          spbill_create_ip: '140.143.159.216',//linux
+        //   spbill_create_ip: '140.143.39.138', //win
           openid: ctx.params.openid,
           trade_type: 'JSAPI'
       };
