@@ -110,7 +110,7 @@ handleCancel=()=>{
         }
       >
         <List.Item.Meta
-          avatar={<Avatar src={item.wechatmsg.avatarUrl} />}
+          avatar={<Avatar src={item.wechatmsg} />}
           title={<a onClick={()=>{
             
              this.props.dispatch({
@@ -154,7 +154,7 @@ handleCancel=()=>{
       });    
       }}>删除</a></span>]}
           author={item.mname}
-          avatar={item.wechatmsg.avatarUrl}
+          avatar={item.wechatmsg}
           content={item.comcontent}
           datetime={item.comtime}
         />

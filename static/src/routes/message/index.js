@@ -133,7 +133,7 @@ handleCancel=()=>{
         }
       >
         <List.Item.Meta
-          avatar={<Avatar src={item.wechatmsg.avatarUrl} />}
+          avatar={<Avatar src={item.wechatmsg} />}
           title={<a onClick={()=>{ 
              this.props.dispatch({
                   type: "message/updateState",

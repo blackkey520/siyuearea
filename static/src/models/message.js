@@ -61,8 +61,7 @@ export default {
             commentlist.map((item, key) => {
 
               item.level = mlevel[item.mpd];
-              // item.likemidb = item.likemid == member.mid ?'text-red':'';
-              item.wechatmsg = JSON.parse(item.wechatmsg);
+              // item.likemidb = item.likemid == member.mid ?'text-red':''; 
               item.comtime = moment(item.comtime).fromNow()
             })
             yield put({
@@ -157,8 +156,7 @@ export default {
                       newimg[imgindex] = `/public/upload/${imgitem}`;
                   });
                   item.newimg = newimg;
-                  item.level = mlevel[item.mpd];
-                  item.wechatmsg = JSON.parse(item.wechatmsg);
+                  item.level = mlevel[item.mpd]; 
                   item.msgtime = moment(item.msgtime).fromNow()
                 })
                 if (payload.page == 1) {
