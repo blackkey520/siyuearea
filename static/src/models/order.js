@@ -162,7 +162,7 @@ export default {
             const accournt = {};
             accournt.mid = memberdetail.mid;
              payload.param.money = payload.param.money * discount[memberdetail.mpd];
-            const days = moment(memberdetail.etime).diff(moment(), 'days', false);
+            const days = moment(memberdetail.mregisttime).diff(moment(), 'days', false);
              if (memberdetail.mtype > 0 && days > 0) {
               accournt.atype = 1;
               accournt.amoney = 0;

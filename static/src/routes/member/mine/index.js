@@ -27,7 +27,7 @@ class Mine extends React.Component {
     let cpd = null;
     if (this.props.loginuser.member)
     {
-        const days = moment(this.props.loginuser.member.etime).diff(moment(), 'days', false);
+        const days = moment(this.props.loginuser.member.mregisttime).diff(moment(), 'days', false);
       
         if (this.props.loginuser.member.pcname !== null)
         {

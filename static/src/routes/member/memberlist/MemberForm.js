@@ -108,7 +108,7 @@ class MemberForm extends Component {
 		{
 			return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)
 		}
-		const days = moment(this.props.checkmember.etime).diff(moment(), 'days', false);
+		const days = moment(this.props.checkmember.mregisttime).diff(moment(), 'days', false);
 		let cpd=null;
 		if (this.props.checkmember.pcname !== null)
 		{

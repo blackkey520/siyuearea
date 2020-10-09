@@ -70,9 +70,9 @@ export default {
         const order = orderr.data.record[0];
         const record = recordr.data.record[0];
         accournt.mid = member.mid;
-        const days = moment(member.etime).diff(moment(), 'days', false);
+        const days = moment(member.mregisttime).diff(moment(), 'days', false);
         let disid=0;
-
+     
          money = money * discount[member.mpd];
         if (member.mtype > 0 && days > 0) {
           accournt.atype = 1;
