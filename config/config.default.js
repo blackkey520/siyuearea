@@ -18,6 +18,7 @@ exports.security = {
     "http://localhost:8080",
     "http://3add50a0.ngrok.io",
     "http://www.bjlanyue.cn",
+    "http://manager.bjlanyue.cn",
     "http://140.143.159.216",
     "http://140.143.39.138",
   ],
