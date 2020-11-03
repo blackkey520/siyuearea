@@ -72,7 +72,6 @@ export default {
         accournt.mid = member.mid;
         const days = moment(member.mregisttime).diff(moment(), 'days', false);
         let disid=0;
-     
          money = money * discount[member.mpd];
         if (member.mtype > 0 && days > 0) {
           accournt.atype = 1;
@@ -85,7 +84,7 @@ export default {
            accournt.amoney = parseFloat(member.mmoney);
            accournt.asmoney = parseFloat(member.mmoney) - parseFloat(money);
            accournt.adesc = `管理员结束订单->肆阅币消费 ${money} 元，会员等级${mlevel[member.mpd]},会员折扣${discount[member.mpd]}`;
-           
+           debugger;
            yield call(update, {
              mid: member.mid,
              mmoney: parseFloat(member.mmoney) - parseFloat(money)
