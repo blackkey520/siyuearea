@@ -24,7 +24,7 @@ import {
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;	
-
+const { TextArea } = Input;
 
 @connect(({ member,loading }) => ({
 		checkmember: member.checkmember,
@@ -242,10 +242,8 @@ class MemberForm extends Component {
 							{getFieldDecorator("mdesc", {
 								initialValue: this.props.checkmember.mdesc,
 							})(
-								<Input
-									type="textarea"
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
+								<TextArea rows={4} />
+								 
 							)}
 						</FormItem>
 					</Form> 
