@@ -234,17 +234,7 @@ class OrderEnd extends Component {
 									autosize={{ minRows: 5, maxRows: 10 }}
 								/>
 							)}
-						</FormItem>:null}
-						<FormItem {...formItemWiLayout} label="使用备注">
-							{getFieldDecorator("pdesc", {
-								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(),this.props.recorddetail.discount),
-							})(
-								<Input
-									type="textarea"
-									autosize={{ minRows: 5, maxRows: 10 }}
-								/>
-							)}
-						</FormItem>
+						</FormItem>:null} 
 					</Form>
 					
 				</div>)

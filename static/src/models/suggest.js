@@ -1,5 +1,6 @@
 import {
     querylist,
+    updatesuggest
 } from "../services/suggest";
 
 export default {
@@ -20,6 +21,14 @@ export default {
   subscriptions: {
   },
   effects: {
+    *feedbackmsg({ payload }, { call, put,select }) {
+      const callback = payload.callback;
+      let data = yield call(updatesuggest, {
+        sid:payload.sid,
+        feedback:payload.feedback,
+      });  
+      callback && callback(data);
+    },
     *getsuggestlist({payload},{call,out,put}){
       const result = yield call(querylist, {
            page:payload.page,

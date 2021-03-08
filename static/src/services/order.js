@@ -36,6 +36,14 @@ export async function queryrecordlist(page,pageSize,body){
     data: body
   });
 }
+export async function getrecordcount(body)
+{
+   return request({
+    url: `/api/order/getrecordcount`,
+    method: "POST",
+    data: body
+  });
+}
 export async function updateorder(params) {
   return request({
     url: `/api/restql/Base_Order/${params.oid}`,

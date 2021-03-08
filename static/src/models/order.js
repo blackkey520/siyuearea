@@ -1,4 +1,4 @@
-import {add,addorder, queryorderlist, updateorder, queryrecordlist,updaterecord} from "../services/order";
+import {add,addorder, queryorderlist, updateorder, queryrecordlist,updaterecord,getrecordcount} from "../services/order";
 import {loadmemeber,update,loadmemeberdetail,updatememberdetail} from "../services/member";
 import {
   updateplace,
@@ -169,6 +169,33 @@ export default {
               accournt.asmoney = 0;
               accournt.adesc = `管理员结束订单-> ${ mtype[memberdetail.mtype]}学习卡消费`;
               disid=1;
+              if(memberdetail.mtype>=7){
+                 let begintime = moment(memberdetail.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
+                let endtime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+                let times=0;
+                if (memberdetail.mtype === 7) {
+                  times=2;
+                  begintime = moment(memberdetail.mregisttime).add(-7,'days').format('YYYY-MM-DD HH:mm:ss');
+                  endtime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+                }
+                if (memberdetail.mtype === 8) {
+                  times = 10;
+                }
+                if (memberdetail.mtype === 9) {
+                  times = 20;
+                }
+                if (memberdetail.mtype === 10) {
+                  times = 30;
+                }
+                if (memberdetail.mtype === 11) {
+                  times = 50;
+                }  
+               const dataurecord = yield call(getrecordcount, {
+                  mid: memberdetail.mid,btime:begintime,etime:endtime
+                });
+                debugger;
+                accournt.adesc+=`已经使用${dataurecord.data.total+1}次，剩余${times-(dataurecord.data.total+1)}。`
+              }
              }else{ 
               if (memberdetail.mmoney >= payload.param.money) {
                 accournt.atype = 1;

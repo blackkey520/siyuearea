@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "dva";
-import { Table, Button, Modal, Switch,Menu, Dropdown,Icon,Input  } from "antd";
+import { Table, Button, Modal, Switch,Menu, Dropdown,message,Input  } from "antd";
 import moment from "moment";
 import { routerRedux } from "dva/router";
+const { TextArea } = Input;
 
 @connect(({
             suggest,
@@ -20,6 +21,9 @@ class SuggestCard extends Component {
 		super(props, context);
 		this.state={
             record:null,
+			isshowsuggest:false,
+			selectitem:null,
+			feedback:''
 		}
 	}
 	componentDidMount() {
@@ -35,6 +39,12 @@ class SuggestCard extends Component {
 
 	tableChange(pagination) {
 		this.loadTableData(pagination.current, pagination.pageSize);
+	}
+	handleCancel=()=>{
+		this.setState({
+			  isshowsuggest:false,
+			  selectitem:null
+		  })
 	}
 	render() {
 		 
@@ -55,7 +65,23 @@ class SuggestCard extends Component {
             title: '建议内容',
 			dataIndex: 'sdesc',
 			 
-            } ];
+            },{
+            title: '回复内容',
+			dataIndex: 'feedback',
+			 
+            },{
+				title: '操作',
+				fixed: 'right',
+				width: 150,
+            	render: (text, record, index) => {
+					return (  <Button type="primary" onClick={()=>{ 
+						this.setState({
+							isshowsuggest:true,
+							selectitem:record
+						});
+						}}>回复</Button>);
+				 }
+			} ];
 		return (
 			<div className="content-inner">
 				 
@@ -73,6 +99,42 @@ class SuggestCard extends Component {
 					bordered
 					onChange={this.tableChange.bind(this)}
 				/>
+					<Modal
+          title="意见回复"
+		  width = "1000"
+		  onOk={()=>{ 
+			  const hide = message.loading("正在保存...", 0);
+			   this.props.dispatch({
+			  	type: "suggest/feedbackmsg",
+			  	payload: {
+			  		sid: this.state.selectitem.sid,
+					feedback: this.state.feedback,
+			  		callback: data => {
+			  			hide();
+			  			if (data && data.success) {
+			  				this.loadTableData(this.props.pagination.current, this.props.pagination.pageSize);
+			  				message.success("保存成功");
+			  			} else {
+			  				message.error("保存失败");
+			  			}
+						this.setState({
+							selectitem:null,
+							feedback:'',
+							isshowsuggest:false,
+						});
+			  		}
+			  	}
+			  });
+		  }}
+		  visible={this.state.isshowsuggest}
+          onCancel={this.handleCancel}
+		  >
+		  	 <TextArea value={this.state.feedback} onChange={(e)=>{
+														this.setState({
+															feedback:e.target.value
+														});
+														}}  rows={4} />
+		  </Modal>
 			</div>
 		);
 	}

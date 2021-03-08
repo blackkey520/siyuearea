@@ -112,14 +112,14 @@ class OrderForm extends Component {
 			// 	message = <Alert message={'您的会员卡只能在周六和周日使用'} type="error" />;
 			// }
 		}
-		if (this.props.memberdetail.mtype === 10 || this.props.memberdetail.mtype === 11|| this.props.memberdetail.mtype === 12) {
-			if (moment().hour() >= 6 && moment().hour() <= 8) {
+		// if (this.props.memberdetail.mtype === 10 || this.props.memberdetail.mtype === 11|| this.props.memberdetail.mtype === 12) {
+		// 	if (moment().hour() >= 6 && moment().hour() <= 8) {
 
-			} else {
-				isdis = true;
-				message = <Alert message={'您的学习卡只能在六点到八点之间使用'} type="error" />;
-			}
-		}
+		// 	} else {
+		// 		isdis = true;
+		// 		message = <Alert message={'您的学习卡只能在六点到八点之间使用'} type="error" />;
+		// 	}
+		// }
         if(this.props.formloading)
         {
             return ( <div style={{width:'100%',textAlign:'center',paddingTop:280}}><Spin/></div>)

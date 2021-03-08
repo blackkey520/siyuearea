@@ -90,16 +90,6 @@ class OrderRecord extends Component {
 				);
 			}
             }, {
-            title: '消费明细',
-			dataIndex: 'discount',
-			width:300,
-			render: (text, record, index) => {
-				
-				return (
-					<div>{record.disid==0?GetMoneyDetail(moment(record.btime), moment(record.etime),record.discount):'-'}</div>
-				);
-			}
-            }, {
             	title: '操作',
             	render: (text, record, index) => { 
 					 

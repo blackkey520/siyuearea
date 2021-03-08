@@ -13,7 +13,8 @@ import {
   queryorderlist,
   updateorder,
   queryrecordlist,
-  updaterecord
+  updaterecord,
+  getrecordcount
 } from "../services/order";
 
 import {opendoor} from "../services/locker";
@@ -79,6 +80,32 @@ export default {
           accournt.asmoney = 0;
           accournt.adesc = `管理员结束订单-> ${ mtype[member.mtype]}学习卡消费`;
           disid=1;
+          if(member.mtype>=7){
+                 let begintime = moment(member.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
+                let endtime = moment(member.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+                let times=0;
+                if (member.mtype === 7) {
+                  times=2;
+                  begintime = moment(member.mregisttime).add(-7,'days').format('YYYY-MM-DD HH:mm:ss');
+                  endtime = moment(member.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+                }
+                if (member.mtype === 8) {
+                  times = 10;
+                }
+                if (member.mtype === 9) {
+                  times = 20;
+                }
+                if (member.mtype === 10) {
+                  times = 30;
+                }
+                if (member.mtype === 11) {
+                  times = 50;
+                }  
+               const dataurecord = yield call(getrecordcount, {
+                  mid: member.mid,btime:begintime,etime:endtime
+                });
+                accournt.adesc+=`已经使用${dataurecord.data.total+1}次，剩余${times-(dataurecord.data.total+1)}。`
+              }
         }else{
            accournt.atype = 1;
            accournt.amoney = parseFloat(member.mmoney);

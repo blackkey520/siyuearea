@@ -40,7 +40,7 @@ const { getFieldDecorator } = this.props.form;
 								moment().diff(moment(this.props.recorddetail.btime), 'hours',true)
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="使用备注">
+						{/* <FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
 								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount),
 							})(
@@ -50,7 +50,7 @@ const { getFieldDecorator } = this.props.form;
 									autosize={{ minRows: 5, maxRows: 10 }}
 								/>
 							)}
-						</FormItem>
+						</FormItem> */}
 					</Form>)
 		}else{
 			return (<Form style={{paddingTop:50}}>
@@ -73,18 +73,20 @@ const { getFieldDecorator } = this.props.form;
 							{getFieldDecorator("money", {
 								initialValue: this.props.recorddetail.money
 							})(<Input disabled / > )}
-						</FormItem><FormItem { ...formItemLayout
+						</FormItem>
+						{/* <FormItem { ...formItemLayout
 							}
 							label = "使用明细" >
 							{GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount)}
-						</FormItem></div>:null
+						</FormItem> */}
+						</div>:null
 						}
 						<FormItem {...formItemLayout} label="持续时间(小时)">
 							{
 								Math.round(moment(this.props.recorddetail.etime).diff(moment(this.props.recorddetail.btime), 'hours', true))
 							}
 						</FormItem>
-						<FormItem {...formItemLayout} label="使用备注">
+						{/* <FormItem {...formItemLayout} label="使用备注">
 							{getFieldDecorator("pdesc", {
 								initialValue: GetMoneyDetail(moment(this.props.recorddetail.btime), moment(this.props.recorddetail.etime),this.props.recorddetail.discount),
 							})(
@@ -94,7 +96,7 @@ const { getFieldDecorator } = this.props.form;
 									autosize={{ minRows: 5, maxRows: 10 }}
 								/>
 							)}
-						</FormItem>
+						</FormItem> */}
 					</Form>)
 		}
 	}
