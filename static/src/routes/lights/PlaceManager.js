@@ -142,11 +142,11 @@ class PlaceManager extends Component {
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
                             }}  type="reload" />中关村</span>
                         } key="1"><SitMap ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
-                        <TabPane  tab={
+                        {/* <TabPane  tab={
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });
                             }} type="reload"/>大望路</span>
-                        }  key="2"><SitMapDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane>
+                        }  key="2"><SitMapDWL ref={(r)=>this.placemap=r} sitemap={this.props.placelist} placeClick={this.placeClick}  /></TabPane> */}
                           <TabPane  tab={
                           <span><Icon onClick={()=>{
                               this.props.dispatch({ type: "place/getplacelist", payload: {  } });

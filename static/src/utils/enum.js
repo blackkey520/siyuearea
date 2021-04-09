@@ -5,9 +5,9 @@ export const astate = ['会员变更', '会员使用']
 // export const atype = ['普通','会员操作', '储物柜', '会员消费','开门']
 export const atype = ['普通', '管理员会员操作', '储物柜', '肆阅币消费', '开门', '会员购卡', '会员充值', '学习卡消费', '开通高级会员'];
 
-export const placetype = ['会员自助注册', '中关村', '大望路', '001号馆']
+export const placetype = ['会员自助注册', '中关村', '-', '001号馆']
 export const odrtype=['试用','大众点评','美团','其他']
-export const placelist=['','中关村','大望路','001号馆']
+export const placelist=['','中关村','-','001号馆']
 export const ltype =['','普通（大）','普通（小）','自助']
 export const mlevel = ['普通会员', '管理员', '小学', '初中', '高中', '大学', '硕士研究生', '博士研究生', '博士后', '教授']
 export const protype=['学习卡','学习周边'];
