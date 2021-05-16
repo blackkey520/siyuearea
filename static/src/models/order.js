@@ -100,6 +100,35 @@ export default {
             accournt.amoney = 0;
             accournt.asmoney = 0;
             accournt.adesc = `管理员创建订单-学习卡消费`;
+            if(payload.param.mtype>=7)
+            {
+              let begintime = moment(payload.param.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
+              let endtime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+              let times=0;
+              if (payload.param.mtype === 7) {
+                times=2;
+                begintime = moment(payload.param.mregisttime).add(-7,'days').format('YYYY-MM-DD HH:mm:ss');
+                endtime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
+              }
+              if (payload.param.mtype === 8) {
+                times = 10;
+              }
+              if (payload.param.mtype === 9) {
+                times = 20;
+              }
+              if (payload.param.mtype === 10) {
+                times = 30;
+              }
+              if (payload.param.mtype === 11) {
+                times = 50;
+              }
+
+                const data=yield call(getrecordcount,{
+                  mid: payload.param.mid,btime:begintime,etime:endtime
+                }); 
+               accournt.adesc = `管理员创建订单-学习卡消费-已经使用${data.data.total+1}次，剩余${times-(data.data.total+1)}。`;
+            }
+            
               accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
               accournt.astate = 1;
                     //记账

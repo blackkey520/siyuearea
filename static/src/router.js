@@ -38,35 +38,7 @@ const Routers = function({ history, app }) {
       models: () => [],
       component: () => import("./routes/member/mymembercode/index")
     },
-    {
-      path: "/mobile/mine/pay/recharge",
-      models: () => [
-        import ("./models/pay"),
-        import ("./models/member")
-      ],
-      component: () =>
-        import ("./routes/member/pay/Recharge")
-    },
-    {
-      path: "/mobile/mine/pay/productcard",
-      models: () => [
-        import ("./models/pay"),
-        import ("./models/member"),
-        import ("./models/productcard")
-      ],
-      component: () =>
-        import ("./routes/member/pay/ProductCard")
-    },
-    {
-      path: "/mobile/mine/pay/membercard",
-      models: () => [
-        import ("./models/pay"),
-        import ("./models/member"),
-        import ("./models/config")
-      ],
-      component: () =>
-        import ("./routes/member/pay/MemberCard")
-    },
+      
     {
       path: "/mobile/order",
       models: () => [import("./models/member"),import("./models/order")],
@@ -92,12 +64,7 @@ const Routers = function({ history, app }) {
       models: () => [],
       component: () => import("./routes/wechat/paypage")
     }, 
-    {
-      path: "/mobile/payresult/:issuc/:openid/:money/:type/:mtype/:title",
-      models: () => [import("./models/pay")],
-      component: () =>
-        import ("./routes/member/pay/PayResult")
-    },
+    
     {
       path: "/mobile/lights/:placeid",
       models: () => [],
