@@ -105,9 +105,9 @@ const totalsql = `select * from (select t1.oid,t1.ordercode,t1.pid,t2.pdesc as '
       };
     }
       * recordcount(modal, query, condition = {}) {
-        const totalsql = `select DATE_FORMAT( btime, "%Y-%m-%d" ) AS time,COUNT(rid) AS total from Base_Record where mid=${condition.mid} 
-        and btime >'${condition.btime}' and etime<'${condition.etime}' and ostate=2 GROUP BY DATE_FORMAT( btime, "%Y-%m-%d" )  `;
-
+        const totalsql = `select DATE_FORMAT( otime, "%Y-%m-%d" ) AS time,COUNT(oid) AS total from Base_Order where mid=${condition.mid} 
+        and otime >'${condition.btime}' and otime<'${condition.etime}' and (ostate=1 or ostate=2) GROUP BY DATE_FORMAT( otime, "%Y-%m-%d" )  `;
+console.log(totalsql);
         const totalRecord = yield this.app.mysql.query(totalsql);
 
         return {
