@@ -14,7 +14,7 @@
 //   attachmentURL: "http://140.143.39.138:7001/public/uploads",
 //   hourprice: 30,
 // };
-//linux
+// //linux
 module.exports = {
   name: "预约管理系统",
   prefix: "fomenyesu",
