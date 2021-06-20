@@ -80,7 +80,7 @@ export default {
           accournt.asmoney = 0;
           accournt.adesc = `管理员结束订单-> ${ mtype[member.mtype]}学习卡消费`;
           disid=1;
-          if(member.mtype>=7){
+          if(member.mtype>=7&&member.mtype<12){
                  let begintime = moment(member.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
                 let endtime = moment(member.mregisttime).format('YYYY-MM-DD HH:mm:ss');
                 let times=0;
@@ -105,6 +105,9 @@ export default {
                   mid: member.mid,btime:begintime,etime:endtime
                 });
                 accournt.adesc+=`已经使用${dataurecord.data.total+1}次，剩余${times-(dataurecord.data.total+1)}。`
+              }
+              else{
+                accournt.adesc='工作日晚间月卡消费';
               }
         }else{
            accournt.atype = 1;

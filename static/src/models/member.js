@@ -206,8 +206,12 @@ export default {
           if (payload.cardtype === 6) {
             overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD 00:00:00');
           } 
-           if (payload.cardtype >7) {
+           if (payload.cardtype >7&&payload.cardtype<12) {
             overdate = moment(payload.cardusedate).add(12, 'month').format('YYYY-MM-DD 00:00:00');
+          }
+          if(payload.cardtype==12)
+          {
+            overdate=moment(payload.cardusedate).add(1, 'month').format('YYYY-MM-DD 00:00:00');
           } 
         //开卡的 
         mmtype = parseInt(payload.cardtype);

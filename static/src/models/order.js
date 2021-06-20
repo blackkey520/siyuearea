@@ -100,7 +100,7 @@ export default {
             accournt.amoney = 0;
             accournt.asmoney = 0;
             accournt.adesc = `管理员创建订单-学习卡消费`;
-            if(payload.param.mtype>=7)
+            if(payload.param.mtype>=7&&payload.param.mtype<12)
             {
               let begintime = moment(payload.param.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
               let endtime = moment(payload.param.mregisttime).format('YYYY-MM-DD HH:mm:ss');
@@ -128,7 +128,10 @@ export default {
                 }); 
                accournt.adesc = `管理员创建订单-学习卡消费-已经使用${data.data.total+1}次，剩余${times-(data.data.total+1)}。`;
             }
-            
+            if(payload.param.mtype==12)
+            {
+              accournt.adesc = `工作日晚间月卡消费`;
+            }
               accournt.atime = moment().format('YYYY-MM-DD HH:mm:ss');
               accournt.astate = 1;
                     //记账
@@ -198,7 +201,7 @@ export default {
               accournt.asmoney = 0;
               accournt.adesc = `管理员结束订单-> ${ mtype[memberdetail.mtype]}学习卡消费`;
               disid=1;
-              if(memberdetail.mtype>=7){
+              if(memberdetail.mtype>=7&&memberdetail.mtype<12){
                  let begintime = moment(memberdetail.mregisttime).add(-12, 'months').format('YYYY-MM-DD HH:mm:ss');
                 let endtime = moment(memberdetail.mregisttime).format('YYYY-MM-DD HH:mm:ss');
                 let times=0;
@@ -224,6 +227,11 @@ export default {
                 });
                 debugger;
                 accournt.adesc+=`已经使用${dataurecord.data.total+1}次，剩余${times-(dataurecord.data.total+1)}。`
+              }else{
+                if(memberdetail.mtype==12)
+                {
+                  accournt.adesc+=`工作日晚间月卡消费`
+                }
               }
              }else{ 
               if (memberdetail.mmoney >= payload.param.money) {

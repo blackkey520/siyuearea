@@ -82,7 +82,16 @@ class TrialList extends Component {
 						text==0?'正在使用':'使用完成'
 					);
 				}
-            },{
+            },
+			{
+				 title: '试用地点',
+				dataIndex: 'pdesc',
+				render: (text, record, index) => { 
+					return (
+						text==1?'中关村':'大望路'
+					);
+				}
+			},{
             title: '使用座位',
 			dataIndex: 'pname',
             },{
